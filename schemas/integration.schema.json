@@ -1,0 +1,552 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Seeed-Projects/reterminal-sticky-playground-registry/blob/main/schemas/integration.schema.json",
+  "title": "reTerminal Sticky Playground integration",
+  "description": "Declarative metadata for one platform or community project in the reTerminal Sticky Playground registry.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "name",
+    "group",
+    "mode",
+    "status",
+    "summary",
+    "description",
+    "author",
+    "source",
+    "support",
+    "compatibility",
+    "assets"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "minLength": 2,
+      "maxLength": 64
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "group": {
+      "type": "string",
+      "enum": [
+        "official",
+        "community"
+      ]
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "external",
+        "template",
+        "download",
+        "flash"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "experimental",
+        "beta",
+        "stable"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 140
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 800
+    },
+    "author": {
+      "$ref": "#/$defs/attribution"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url"
+      ],
+      "properties": {
+        "url": {
+          "$ref": "#/$defs/httpsUrl"
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        }
+      }
+    },
+    "support": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url"
+      ],
+      "properties": {
+        "url": {
+          "$ref": "#/$defs/httpsUrl"
+        }
+      }
+    },
+    "documentationUrl": {
+      "$ref": "#/$defs/httpsUrl"
+    },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "devices"
+      ],
+      "properties": {
+        "devices": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "const": "reterminal-sticky"
+          }
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 400
+        }
+      }
+    },
+    "assets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "logo",
+        "preview",
+        "previewAlt"
+      ],
+      "properties": {
+        "logo": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "preview": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "previewAlt": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 180
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "maxItems": 6,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 32
+      }
+    },
+    "external": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "label",
+        "url",
+        "description"
+      ],
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "url": {
+          "$ref": "#/$defs/httpsUrl"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 400
+        }
+      }
+    },
+    "template": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "outputExtension",
+        "mimeType",
+        "fileNamePattern",
+        "options"
+      ],
+      "properties": {
+        "outputExtension": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+$",
+          "maxLength": 12
+        },
+        "mimeType": {
+          "type": "string",
+          "pattern": "^[a-z0-9.+-]+/[a-z0-9.+-]+$",
+          "maxLength": 80
+        },
+        "fileNamePattern": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "headerPath": {
+          "$ref": "#/$defs/localPath"
+        },
+        "footerPath": {
+          "$ref": "#/$defs/localPath"
+        },
+        "options": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/templateOption"
+          }
+        }
+      }
+    },
+    "download": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url",
+        "steps"
+      ],
+      "properties": {
+        "url": {
+          "$ref": "#/$defs/httpsUrl"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "fileName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "steps": {
+          "$ref": "#/$defs/instructions"
+        }
+      }
+    },
+    "flash": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "versions"
+      ],
+      "properties": {
+        "versions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/flashVersion"
+          }
+        },
+        "notes": {
+          "$ref": "#/$defs/instructions"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "external"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "external"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "template"
+              ]
+            },
+            {
+              "required": [
+                "download"
+              ]
+            },
+            {
+              "required": [
+                "flash"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "template"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "template"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "external"
+              ]
+            },
+            {
+              "required": [
+                "download"
+              ]
+            },
+            {
+              "required": [
+                "flash"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "download"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "download"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "external"
+              ]
+            },
+            {
+              "required": [
+                "template"
+              ]
+            },
+            {
+              "required": [
+                "flash"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "flash"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "flash"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "external"
+              ]
+            },
+            {
+              "required": [
+                "template"
+              ]
+            },
+            {
+              "required": [
+                "download"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "httpsUrl": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://",
+      "maxLength": 2048
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "localPath": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]+$",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "assetPath": {
+      "type": "string",
+      "pattern": "^assets/[A-Za-z0-9._/-]+\\.(?:png|jpe?g|webp|svg)$",
+      "maxLength": 240
+    },
+    "attribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "url"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "url": {
+          "$ref": "#/$defs/httpsUrl"
+        }
+      }
+    },
+    "templateOption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "description",
+        "path"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "maxLength": 64
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "path": {
+          "$ref": "#/$defs/localPath"
+        },
+        "required": {
+          "type": "boolean",
+          "default": false
+        },
+        "defaultSelected": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "instruction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "description"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      }
+    },
+    "instructions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "$ref": "#/$defs/instruction"
+      }
+    },
+    "flashVersion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "channel",
+        "manifestUrl",
+        "manifestSha256",
+        "releaseUrl"
+      ],
+      "properties": {
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "channel": {
+          "type": "string",
+          "enum": [
+            "experimental",
+            "beta",
+            "stable"
+          ]
+        },
+        "manifestUrl": {
+          "$ref": "#/$defs/httpsUrl"
+        },
+        "manifestSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "releaseUrl": {
+          "$ref": "#/$defs/httpsUrl"
+        }
+      }
+    }
+  }
+}
+

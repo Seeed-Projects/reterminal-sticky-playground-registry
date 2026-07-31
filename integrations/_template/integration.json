@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "example-platform",
+  "name": "Example Platform",
+  "group": "community",
+  "mode": "external",
+  "status": "experimental",
+  "summary": "A short sentence describing what this integration gives Sticky users.",
+  "description": "Explain the platform, its main use case, required services, and what users should expect after following the integration flow.",
+  "author": {
+    "name": "Project author or team",
+    "url": "https://github.com/example"
+  },
+  "source": {
+    "url": "https://github.com/example/example-platform",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/example/example-platform/issues"
+  },
+  "documentationUrl": "https://github.com/example/example-platform#readme",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Describe the tested hardware revision or any required accessory."
+  },
+  "assets": {
+    "logo": "assets/logo.svg",
+    "preview": "assets/preview.webp",
+    "previewAlt": "Example Platform running on reTerminal Sticky"
+  },
+  "tags": [
+    "example",
+    "dashboard"
+  ],
+  "external": {
+    "label": "Open official tool",
+    "url": "https://example.com/tool",
+    "description": "Continue in the upstream tool to install, configure, and manage the integration."
+  }
+}

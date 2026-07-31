@@ -1,0 +1,14 @@
+{
+  "name": "reterminal-sticky-playground-registry",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Public integration registry for the reTerminal Sticky Playground.",
+  "scripts": {
+    "test": "node --test scripts/validate-registry.test.mjs",
+    "validate": "node scripts/validate-registry.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
