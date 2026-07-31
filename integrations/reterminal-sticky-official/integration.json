@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "id": "reterminal-sticky-official",
+  "name": "reTerminal Sticky Official Firmware",
+  "group": "official",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "Restore the official Seeedash-ready firmware package for reTerminal Sticky.",
+  "description": "Install or restore the official firmware package maintained for reTerminal Sticky devices.",
+  "author": {
+    "name": "Seeed Studio",
+    "url": "https://www.seeedstudio.com/reTerminal-Sticky-p-6861.html"
+  },
+  "source": {
+    "url": "https://github.com/Seeed-Projects/OSHW-reTerminal-Sticky"
+  },
+  "support": {
+    "url": "https://github.com/Seeed-Projects/OSHW-reTerminal-Sticky/issues"
+  },
+  "documentationUrl": "https://github.com/Seeed-Projects/OSHW-reTerminal-Sticky#readme",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Tested with reTerminal Sticky production hardware."
+  },
+  "assets": {
+    "logo": "assets/logo.png",
+    "preview": "assets/preview.jpg",
+    "previewAlt": "reTerminal Sticky connected to a phone"
+  },
+  "tags": [
+    "official",
+    "factory",
+    "recovery"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "1.0.1",
+        "channel": "stable",
+        "manifestUrl": "https://github.com/Seeed-Projects/reterminal-sticky-playground-registry/releases/download/sticky-official-v1.0.1/manifest.json",
+        "manifestSha256": "df17ad62c5099d38f4a7c7bf3d4d5aee884b44ac90fcdc86fbe56c3d97bae83b",
+        "releaseUrl": "https://github.com/Seeed-Projects/reterminal-sticky-playground-registry/releases/tag/sticky-official-v1.0.1"
+      },
+      {
+        "version": "0.5.1",
+        "channel": "stable",
+        "manifestUrl": "https://github.com/Seeed-Projects/reterminal-sticky-playground-registry/releases/download/sticky-official-v0.5.1/manifest.json",
+        "manifestSha256": "3dd731b0037ab8c128b7c1f7d996ffba83a83a6b74da99898f4481eb00597b10",
+        "releaseUrl": "https://github.com/Seeed-Projects/reterminal-sticky-playground-registry/releases/tag/sticky-official-v0.5.1"
+      },
+      {
+        "version": "0.4.1",
+        "channel": "stable",
+        "manifestUrl": "https://github.com/Seeed-Projects/reterminal-sticky-playground-registry/releases/download/sticky-official-v0.4.1/manifest.json",
+        "manifestSha256": "62fa75ceeacdefb667ce03960c4f7cbe1fd64e0ece517b99fb6208dd044036b0",
+        "releaseUrl": "https://github.com/Seeed-Projects/reterminal-sticky-playground-registry/releases/tag/sticky-official-v0.4.1"
+      },
+      {
+        "version": "0.3.3",
+        "channel": "stable",
+        "manifestUrl": "https://github.com/Seeed-Projects/reterminal-sticky-playground-registry/releases/download/sticky-official-v0.3.3/manifest.json",
+        "manifestSha256": "5e0784d79bbb8d348abe381afa99898737b0b6bcf36e6039466960a2319530f7",
+        "releaseUrl": "https://github.com/Seeed-Projects/reterminal-sticky-playground-registry/releases/tag/sticky-official-v0.3.3"
+      },
+      {
+        "version": "0.2.1",
+        "channel": "stable",
+        "manifestUrl": "https://github.com/Seeed-Projects/reterminal-sticky-playground-registry/releases/download/sticky-official-v0.2.1/manifest.json",
+        "manifestSha256": "c0a9d029fb61d421027583cdebb7af04fbcbf47343edd166bb4c9f42eb8e72cd",
+        "releaseUrl": "https://github.com/Seeed-Projects/reterminal-sticky-playground-registry/releases/tag/sticky-official-v0.2.1"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Factory recovery",
+        "description": "Use the erase option when restoring a device from a community firmware."
+      }
+    ]
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "id": "crosspoint-reader",
+  "name": "CrossPoint Reader",
+  "group": "community",
+  "mode": "flash",
+  "status": "beta",
+  "summary": "Transform your Sticky into a portable open-source e-reader.",
+  "description": "Install the CrossPoint Reader firmware package prepared for reTerminal Sticky.",
+  "author": {
+    "name": "CrossPoint Reader",
+    "url": "https://github.com/crosspoint-reader"
+  },
+  "source": {
+    "url": "https://github.com/crosspoint-reader/crosspoint-reader"
+  },
+  "support": {
+    "url": "https://github.com/crosspoint-reader/crosspoint-reader/issues"
+  },
+  "documentationUrl": "https://github.com/crosspoint-reader/crosspoint-reader#readme",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Sticky RC2 is prepared for reTerminal Sticky production hardware."
+  },
+  "assets": {
+    "logo": "assets/logo.jpg",
+    "preview": "assets/preview.jpg",
+    "previewAlt": "CrossPoint Reader logo"
+  },
+  "tags": [
+    "ereader",
+    "community",
+    "books"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "Sticky RC2",
+        "channel": "beta",
+        "manifestUrl": "https://github.com/Seeed-Projects/reterminal-sticky-playground-registry/releases/download/crosspoint-reader-sticky-rc2/manifest.json",
+        "manifestSha256": "420177703a24cd92d0a6b32b005906d5fbb9f9fe441ab3e42442f53344d98df4",
+        "releaseUrl": "https://github.com/Seeed-Projects/reterminal-sticky-playground-registry/releases/tag/crosspoint-reader-sticky-rc2"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "The standard option writes the complete four-part CrossPoint Reader package."
+      }
+    ]
+  }
+}
