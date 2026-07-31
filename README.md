@@ -80,7 +80,7 @@ upstream resources. Rendering logic, browser flashing logic, deployment
 credentials, and website configuration remain maintainer-owned.
 
 Flash-mode submissions receive additional review because they can modify a
-user's device. Every firmware version therefore identifies an immutable release
+user's device. Every firmware version therefore identifies a versioned release
 page, an HTTPS manifest URL, and the exact SHA-256 of that manifest. The
 manifest is expected to provide the size, flash offset, and SHA-256 of every
 firmware file it references.
@@ -109,10 +109,16 @@ metadata.
 
 ## Project status
 
-This repository currently defines the public contribution contract and
-validation workflow. The private reTerminal Sticky website is not yet consuming
-this registry automatically. Initial integrations will be added and reviewed
-through pull requests before website synchronization is enabled.
+This repository defines the public contribution contract, validation workflow,
+and versioned integration catalog. The initial catalog contains:
+
+- reTerminal Sticky Official Firmware, versions 0.2.1 through 1.0.1;
+- CrossPoint Reader, Sticky RC2.
+
+The private reTerminal Sticky website consumes a maintainer-selected Registry
+commit. Registry review and website publication remain separate approval steps,
+so a merged contribution can be tested before it appears on the production
+website.
 
 ## License
 
