@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "crosspoint-reader",
+  "id": "crosspoint",
   "name": "CrossPoint Reader",
   "group": "community",
   "mode": "flash",
