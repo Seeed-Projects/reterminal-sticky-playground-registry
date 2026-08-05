@@ -1,16 +1,15 @@
-# Integration template
+# Example Community Firmware
 
-Copy this directory to `integrations/<integration-id>/`, then:
+Copy this directory to `integrations/<integration-id>/`, then provide:
 
-1. Update `integration.json`.
-2. Keep the common metadata and replace the `external` example with the object
-   for your selected mode when needed.
-3. Add `assets/logo.*` and `assets/preview.*`.
-4. Add text fragments under `templates/` for template mode.
-5. Run `npm run validate` from the repository root.
+1. Complete metadata in `integration.json`.
+2. A licensed, reproducible ESP-IDF project under `source/`.
+3. The packaged firmware and manifest under `firmware/<version>/`.
+4. A project logo and a real Sticky preview under `assets/`.
+5. The firmware behavior and physical-device test result in this README.
 
-Complete field references and examples for all four modes are available in:
+Run `npm test` and `npm run validate` from the repository root before opening a
+pull request.
 
 - [English contribution guide](../../CONTRIBUTING.md)
 - [中文贡献指南](../../CONTRIBUTING.zh-CN.md)
-

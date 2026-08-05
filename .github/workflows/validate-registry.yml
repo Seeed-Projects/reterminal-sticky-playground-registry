@@ -42,3 +42,54 @@ jobs:
 
       - name: Validate registry
         run: npm run validate
+
+  discover-firmware:
+    name: Discover source builds
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.targets.outputs.matrix }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Read build targets
+        id: targets
+        run: echo "matrix=$(node scripts/list-build-targets.mjs)" >> "$GITHUB_OUTPUT"
+
+  build-firmware:
+    name: Build ${{ matrix.id }}
+    needs:
+      - validate
+      - discover-firmware
+    if: ${{ needs.discover-firmware.outputs.matrix != '{"include":[]}' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.discover-firmware.outputs.matrix) }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Build ESP-IDF project
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: v${{ matrix.idfVersion }}
+          target: ${{ matrix.target }}
+          path: ${{ matrix.path }}
+          command: idf.py build
+
+      - name: Verify packaged firmware
+        run: node scripts/verify-esp-idf-build.mjs "${{ matrix.id }}"

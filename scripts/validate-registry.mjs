@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 
 import {
+  createHash,
+} from 'node:crypto';
+import {
   existsSync,
   lstatSync,
   readFileSync,
@@ -8,7 +11,7 @@ import {
   realpathSync,
   statSync,
 } from 'node:fs';
-import { dirname, extname, isAbsolute, join, relative, resolve, sep } from 'node:path';
+import { basename, dirname, extname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
@@ -21,6 +24,8 @@ const SCHEMA_PATH = join(REPOSITORY_ROOT, 'schemas', 'integration.schema.json');
 const ALLOWED_GROUPS = new Set(['official', 'community']);
 const ALLOWED_MODES = new Set(['external', 'template', 'download', 'flash']);
 const ALLOWED_STATUSES = new Set(['experimental', 'beta', 'stable']);
+const ALLOWED_CATALOG_SECTIONS = new Set(['official', 'platform', 'community', 'draft']);
+const ALLOWED_BUILD_SYSTEMS = new Set(['esp-idf']);
 const ALLOWED_ASSET_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.svg']);
 const ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const SHA256_PATTERN = /^[a-f0-9]{64}$/;
@@ -30,6 +35,7 @@ const COMMON_FIELDS = new Set([
   'id',
   'name',
   'group',
+  'catalogSection',
   'mode',
   'status',
   'summary',
@@ -41,6 +47,7 @@ const COMMON_FIELDS = new Set([
   'compatibility',
   'assets',
   'tags',
+  'build',
   ...MODE_FIELDS,
 ]);
 
@@ -138,7 +145,7 @@ function validateAttribution(value, scope) {
 }
 
 function validateSource(value, scope) {
-  const allowedKeys = new Set(['url', 'license']);
+  const allowedKeys = new Set(['url', 'license', 'path']);
   if (!validateObjectKeys(value, ['url'], allowedKeys, scope)) {
     return;
   }
@@ -146,6 +153,88 @@ function validateSource(value, scope) {
   validateHttpsUrl(value.url, `${scope}.url`);
   if (value.license !== undefined) {
     validateString(value.license, `${scope}.license`, { max: 80 });
+  }
+}
+
+function validateLocalDirectoryPath(value, integrationDir, scope) {
+  if (!validateString(value, scope, { max: 240 })) {
+    return null;
+  }
+  if (isAbsolute(value) || value.split(/[\\/]/).includes('..')) {
+    addError(scope, 'must stay inside the integration directory');
+    return null;
+  }
+
+  const resolvedPath = resolve(integrationDir, value);
+  if (!existsSync(resolvedPath) || !statSync(resolvedPath).isDirectory()) {
+    addError(scope, `references a missing directory: ${value}`);
+    return null;
+  }
+  if (lstatSync(resolvedPath).isSymbolicLink()) {
+    addError(scope, 'must reference a regular directory, not a symbolic link');
+    return null;
+  }
+
+  const realIntegrationDir = realpathSync(integrationDir);
+  const realDirectoryPath = realpathSync(resolvedPath);
+  if (!realDirectoryPath.startsWith(`${realIntegrationDir}${sep}`)) {
+    addError(scope, 'must stay inside the integration directory');
+    return null;
+  }
+  return resolvedPath;
+}
+
+function validateBuild(value, integrationDir, source, scope) {
+  const allowedKeys = new Set(['system', 'version', 'target', 'projectPath']);
+  if (!validateObjectKeys(value, ['system', 'version', 'target', 'projectPath'], allowedKeys, scope)) {
+    return;
+  }
+  validateEnum(value.system, ALLOWED_BUILD_SYSTEMS, `${scope}.system`);
+  validateString(value.version, `${scope}.version`, {
+    max: 20,
+    pattern: /^\d+\.\d+\.\d+$/,
+  });
+  validateString(value.target, `${scope}.target`, { max: 40, pattern: ID_PATTERN });
+  const projectPath = validateLocalDirectoryPath(value.projectPath, integrationDir, `${scope}.projectPath`);
+  if (source?.path && value.projectPath !== source.path) {
+    addError(`${scope}.projectPath`, 'must match source.path');
+  }
+  if (projectPath && !existsSync(join(projectPath, 'CMakeLists.txt'))) {
+    addError(`${scope}.projectPath`, 'must contain CMakeLists.txt for an ESP-IDF project');
+  }
+}
+
+function validateReproducibleEspIdfBuild(projectPath, integrationDir, scope) {
+  if (!projectPath) {
+    return;
+  }
+
+  const defaultsPath = validateLocalFilePath(
+    join(projectPath, 'sdkconfig.defaults'),
+    integrationDir,
+    `${scope}.sdkconfig.defaults`,
+  );
+  if (!defaultsPath) {
+    return;
+  }
+
+  const defaults = readFileSync(defaultsPath, 'utf8');
+  if (!/^CONFIG_APP_REPRODUCIBLE_BUILD=y\s*$/m.test(defaults)) {
+    addError(
+      `${scope}.sdkconfig.defaults`,
+      'must enable CONFIG_APP_REPRODUCIBLE_BUILD=y',
+    );
+  }
+}
+
+function validateCommunityProjectFiles(integrationDir, sourcePath, scope) {
+  validateLocalFilePath('README.md', integrationDir, `${scope}.README.md`);
+  if (sourcePath) {
+    validateLocalFilePath(
+      join(sourcePath, 'LICENSE'),
+      integrationDir,
+      `${scope}.source.LICENSE`,
+    );
   }
 }
 
@@ -420,7 +509,89 @@ function validateDownloadMode(value, scope) {
   validateInstructions(value.steps, `${scope}.steps`);
 }
 
-function validateFlashMode(value, scope) {
+function validateLocalFlashManifest(manifestPath, integrationDir, version, scope) {
+  if (typeof manifestPath === 'string' && !manifestPath.startsWith('firmware/')) {
+    addError(scope, 'must be inside the firmware/ directory');
+  }
+  const resolvedManifestPath = validateLocalFilePath(manifestPath, integrationDir, scope, {
+    extensions: new Set(['.json']),
+    maxBytes: 1024 * 1024,
+  });
+  if (!resolvedManifestPath) return;
+
+  let manifest;
+  try {
+    manifest = JSON.parse(readFileSync(resolvedManifestPath, 'utf8'));
+  } catch (error) {
+    addError(scope, `contains invalid JSON (${error.message})`);
+    return;
+  }
+  if (manifest.version !== version) {
+    addError(scope, `version must match firmware version "${version}"`);
+  }
+  if (!Array.isArray(manifest.builds) || manifest.builds.length === 0) {
+    addError(scope, 'must contain at least one build');
+    return;
+  }
+
+  for (const [buildIndex, build] of manifest.builds.entries()) {
+    const buildScope = `${scope}.builds[${buildIndex}]`;
+    if (!Array.isArray(build.parts) || build.parts.length === 0) {
+      addError(buildScope, 'must contain at least one firmware part');
+      continue;
+    }
+    const ranges = [];
+    for (const [partIndex, part] of build.parts.entries()) {
+      const partScope = `${buildScope}.parts[${partIndex}]`;
+      if (!isObject(part)) {
+        addError(partScope, 'must be an object');
+        continue;
+      }
+      if (!Number.isInteger(part.offset) || part.offset < 0) {
+        addError(`${partScope}.offset`, 'must be a non-negative integer');
+      }
+      if (!Number.isInteger(part.size) || part.size <= 0) {
+        addError(`${partScope}.size`, 'must be a positive integer');
+      }
+      if (!validateString(part.path, `${partScope}.path`, { max: 120 })) {
+        continue;
+      }
+      if (part.path !== basename(part.path) || extname(part.path).toLowerCase() !== '.bin') {
+        addError(`${partScope}.path`, 'must be one .bin filename beside the manifest');
+        continue;
+      }
+      if (!validateString(part.sha256, `${partScope}.sha256`, { min: 64, max: 64, pattern: SHA256_PATTERN })) {
+        continue;
+      }
+      const binaryPath = validateLocalFilePath(
+        join(dirname(manifestPath), part.path),
+        integrationDir,
+        `${partScope}.path`,
+        { extensions: new Set(['.bin']), maxBytes: 32 * 1024 * 1024 },
+      );
+      if (!binaryPath) continue;
+      const content = readFileSync(binaryPath);
+      if (content.length !== part.size) {
+        addError(`${partScope}.size`, `expected ${part.size} bytes but found ${content.length}`);
+      }
+      const actualHash = createHash('sha256').update(content).digest('hex');
+      if (actualHash !== part.sha256) {
+        addError(`${partScope}.sha256`, 'does not match the firmware file');
+      }
+      if (Number.isInteger(part.offset) && Number.isInteger(part.size) && part.size > 0) {
+        ranges.push({ start: part.offset, end: part.offset + part.size, partScope });
+      }
+    }
+    ranges.sort((a, b) => a.start - b.start);
+    for (let index = 1; index < ranges.length; index += 1) {
+      if (ranges[index].start < ranges[index - 1].end) {
+        addError(ranges[index].partScope, 'overlaps the previous firmware part');
+      }
+    }
+  }
+}
+
+function validateFlashMode(value, integrationDir, scope) {
   const allowedKeys = new Set(['versions', 'notes']);
   if (!validateObjectKeys(value, ['versions'], allowedKeys, scope)) {
     return;
@@ -440,14 +611,9 @@ function validateFlashMode(value, scope) {
       'manifestUrl',
       'manifestSha256',
       'releaseUrl',
+      'manifestPath',
     ]);
-    const requiredVersionKeys = [
-      'version',
-      'channel',
-      'manifestUrl',
-      'manifestSha256',
-      'releaseUrl',
-    ];
+    const requiredVersionKeys = ['version', 'channel'];
     if (!validateObjectKeys(entry, requiredVersionKeys, allowedVersionKeys, versionScope)) {
       return;
     }
@@ -460,13 +626,20 @@ function validateFlashMode(value, scope) {
     }
 
     validateEnum(entry.channel, ALLOWED_STATUSES, `${versionScope}.channel`);
-    validateHttpsUrl(entry.manifestUrl, `${versionScope}.manifestUrl`);
-    validateString(entry.manifestSha256, `${versionScope}.manifestSha256`, {
-      min: 64,
-      max: 64,
-      pattern: SHA256_PATTERN,
-    });
-    validateHttpsUrl(entry.releaseUrl, `${versionScope}.releaseUrl`);
+    if (entry.manifestPath !== undefined) {
+      if (entry.manifestUrl !== undefined || entry.manifestSha256 !== undefined || entry.releaseUrl !== undefined) {
+        addError(versionScope, 'must use either manifestPath or remote manifest fields');
+      }
+      validateLocalFlashManifest(entry.manifestPath, integrationDir, entry.version, `${versionScope}.manifestPath`);
+    } else {
+      validateHttpsUrl(entry.manifestUrl, `${versionScope}.manifestUrl`);
+      validateString(entry.manifestSha256, `${versionScope}.manifestSha256`, {
+        min: 64,
+        max: 64,
+        pattern: SHA256_PATTERN,
+      });
+      validateHttpsUrl(entry.releaseUrl, `${versionScope}.releaseUrl`);
+    }
   });
 
   if (value.notes !== undefined) {
@@ -498,6 +671,7 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
     'id',
     'name',
     'group',
+    'catalogSection',
     'mode',
     'status',
     'summary',
@@ -528,12 +702,16 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
 
   validateString(integration.name, `${scope}.name`, { max: 80 });
   validateEnum(integration.group, ALLOWED_GROUPS, `${scope}.group`);
+  validateEnum(integration.catalogSection, ALLOWED_CATALOG_SECTIONS, `${scope}.catalogSection`);
   validateEnum(integration.mode, ALLOWED_MODES, `${scope}.mode`);
   validateEnum(integration.status, ALLOWED_STATUSES, `${scope}.status`);
   validateString(integration.summary, `${scope}.summary`, { max: 140 });
   validateString(integration.description, `${scope}.description`, { max: 800 });
   validateAttribution(integration.author, `${scope}.author`);
   validateSource(integration.source, `${scope}.source`);
+  if (integration.source?.path !== undefined) {
+    validateLocalDirectoryPath(integration.source.path, integrationDir, `${scope}.source.path`);
+  }
   validateSupport(integration.support, `${scope}.support`);
   validateCompatibility(integration.compatibility, `${scope}.compatibility`);
   validateAssets(integration.assets, integrationDir, `${scope}.assets`);
@@ -558,6 +736,37 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
     }
   }
 
+  if (integration.build !== undefined) {
+    validateBuild(integration.build, integrationDir, integration.source, `${scope}.build`);
+  }
+
+  if (integration.catalogSection === 'community') {
+    validateCommunityProjectFiles(integrationDir, integration.source?.path, scope);
+    if (integration.group !== 'community') {
+      addError(`${scope}.group`, 'must be "community" for the community catalog section');
+    }
+    if (integration.mode !== 'flash') {
+      addError(`${scope}.mode`, 'must be "flash" for the community catalog section');
+    }
+    if (!integration.source?.path) {
+      addError(`${scope}.source.path`, 'is required for community firmware');
+    }
+    if (!integration.build) {
+      addError(`${scope}.build`, 'is required for community firmware');
+    } else if (integration.build.system === 'esp-idf') {
+      validateReproducibleEspIdfBuild(
+        integration.build.projectPath,
+        integrationDir,
+        `${scope}.build`,
+      );
+    }
+    for (const [index, version] of (integration.flash?.versions || []).entries()) {
+      if (!version.manifestPath) {
+        addError(`${scope}.flash.versions[${index}].manifestPath`, 'is required for community firmware');
+      }
+    }
+  }
+
   for (const modeField of MODE_FIELDS) {
     if (modeField === integration.mode) {
       if (!(modeField in integration)) {
@@ -578,7 +787,7 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
     validateDownloadMode(integration.download, `${scope}.download`);
   }
   if (integration.mode === 'flash' && integration.flash !== undefined) {
-    validateFlashMode(integration.flash, `${scope}.flash`);
+    validateFlashMode(integration.flash, integrationDir, `${scope}.flash`);
   }
 }
 

@@ -5,8 +5,9 @@
   "type": "module",
   "description": "Public integration registry for the reTerminal Sticky Playground.",
   "scripts": {
-    "test": "node --test scripts/validate-registry.test.mjs",
-    "validate": "node scripts/validate-registry.mjs"
+    "test": "node --test scripts/*.test.mjs",
+    "validate": "node scripts/validate-registry.mjs",
+    "package:esp-idf": "node scripts/package-esp-idf.mjs"
   },
   "engines": {
     "node": ">=20"

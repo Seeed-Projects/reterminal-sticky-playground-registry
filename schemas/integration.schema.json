@@ -10,6 +10,7 @@
     "id",
     "name",
     "group",
+    "catalogSection",
     "mode",
     "status",
     "summary",
@@ -41,6 +42,15 @@
       "enum": [
         "official",
         "community"
+      ]
+    },
+    "catalogSection": {
+      "type": "string",
+      "enum": [
+        "official",
+        "platform",
+        "community",
+        "draft"
       ]
     },
     "mode": {
@@ -87,6 +97,9 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 80
+        },
+        "path": {
+          "$ref": "#/$defs/localPath"
         }
       }
     },
@@ -157,6 +170,34 @@
         "type": "string",
         "minLength": 1,
         "maxLength": 32
+      }
+    },
+    "build": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "system",
+        "version",
+        "target",
+        "projectPath"
+      ],
+      "properties": {
+        "system": {
+          "const": "esp-idf"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "maxLength": 20
+        },
+        "target": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "maxLength": 40
+        },
+        "projectPath": {
+          "$ref": "#/$defs/localPath"
+        }
       }
     },
     "external": {
@@ -517,10 +558,7 @@
       "additionalProperties": false,
       "required": [
         "version",
-        "channel",
-        "manifestUrl",
-        "manifestSha256",
-        "releaseUrl"
+        "channel"
       ],
       "properties": {
         "version": {
@@ -544,9 +582,25 @@
         },
         "releaseUrl": {
           "$ref": "#/$defs/httpsUrl"
+        },
+        "manifestPath": {
+          "$ref": "#/$defs/localPath"
         }
-      }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "manifestPath"
+          ]
+        },
+        {
+          "required": [
+            "manifestUrl",
+            "manifestSha256",
+            "releaseUrl"
+          ]
+        }
+      ]
     }
   }
 }
-

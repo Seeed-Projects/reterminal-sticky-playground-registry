@@ -3,6 +3,7 @@
   "id": "reterminal-sticky-2048-eink-game",
   "name": "Sticky 2048",
   "group": "community",
+  "catalogSection": "draft",
   "mode": "download",
   "status": "experimental",
   "summary": "A native ESP-IDF 2048 game demo running on reTerminal Sticky with E-Ink display and touch control.",

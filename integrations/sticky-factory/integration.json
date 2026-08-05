@@ -3,6 +3,7 @@
   "id": "sticky-factory",
   "name": "reTerminal Sticky Official Firmware",
   "group": "official",
+  "catalogSection": "official",
   "mode": "flash",
   "status": "stable",
   "summary": "Restore the official Seeedash-ready firmware package for reTerminal Sticky.",

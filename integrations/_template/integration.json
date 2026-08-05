@@ -3,7 +3,8 @@
   "id": "example-platform",
   "name": "Example Platform",
   "group": "community",
-  "mode": "external",
+  "catalogSection": "community",
+  "mode": "flash",
   "status": "experimental",
   "summary": "A short sentence describing what this integration gives Sticky users.",
   "description": "Explain the platform, its main use case, required services, and what users should expect after following the integration flow.",
@@ -13,7 +14,8 @@
   },
   "source": {
     "url": "https://github.com/example/example-platform",
-    "license": "MIT"
+    "license": "MIT",
+    "path": "source"
   },
   "support": {
     "url": "https://github.com/example/example-platform/issues"
@@ -34,9 +36,19 @@
     "example",
     "dashboard"
   ],
-  "external": {
-    "label": "Open official tool",
-    "url": "https://example.com/tool",
-    "description": "Continue in the upstream tool to install, configure, and manage the integration."
+  "build": {
+    "system": "esp-idf",
+    "version": "5.4.2",
+    "target": "esp32s3",
+    "projectPath": "source"
+  },
+  "flash": {
+    "versions": [
+      {
+        "version": "1.0.0",
+        "channel": "stable",
+        "manifestPath": "firmware/1.0.0/manifest.json"
+      }
+    ]
   }
 }

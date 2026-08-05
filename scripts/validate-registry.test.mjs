@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import {
   mkdirSync,
   mkdtempSync,
@@ -31,6 +32,7 @@ function validBase(id, mode) {
     id,
     name: 'Example Platform',
     group: 'community',
+    catalogSection: 'platform',
     mode,
     status: 'experimental',
     summary: 'A test integration for reTerminal Sticky.',
@@ -191,6 +193,117 @@ test('accepts a valid flash integration', () => {
   const result = runValidator(root);
 
   assert.equal(result.status, 0);
+});
+
+test('accepts a community firmware with local source and verified binaries', () => {
+  const root = createRegistry();
+  const integration = validBase('community-firmware', 'flash');
+  integration.catalogSection = 'community';
+  integration.source.path = 'source';
+  integration.build = {
+    system: 'esp-idf',
+    version: '5.4.2',
+    target: 'esp32s3',
+    projectPath: 'source',
+  };
+  integration.flash = {
+    versions: [{
+      version: '1.0.0',
+      channel: 'stable',
+      manifestPath: 'firmware/1.0.0/manifest.json',
+    }],
+  };
+  const integrationDir = writeIntegration(root, integration);
+  writeFileSync(join(integrationDir, 'README.md'), '# Community Firmware\n');
+  mkdirSync(join(integrationDir, 'source'), { recursive: true });
+  writeFileSync(join(integrationDir, 'source', 'CMakeLists.txt'), 'project(example)\n');
+  writeFileSync(join(integrationDir, 'source', 'LICENSE'), 'MIT License\n');
+  writeFileSync(
+    join(integrationDir, 'source', 'sdkconfig.defaults'),
+    'CONFIG_APP_REPRODUCIBLE_BUILD=y\n',
+  );
+  mkdirSync(join(integrationDir, 'firmware', '1.0.0'), { recursive: true });
+  const binary = Buffer.from([0xe9, 0x01, 0x02, 0x03]);
+  const sha256 = createHash('sha256').update(binary).digest('hex');
+  writeFileSync(join(integrationDir, 'firmware', '1.0.0', 'firmware.bin'), binary);
+  writeFileSync(
+    join(integrationDir, 'firmware', '1.0.0', 'manifest.json'),
+    `${JSON.stringify({
+      name: 'Community Firmware',
+      version: '1.0.0',
+      flashSize: '16MB',
+      builds: [{
+        chipFamily: 'ESP32-S3',
+        parts: [{ path: 'firmware.bin', offset: 65536, size: binary.length, sha256 }],
+      }],
+    }, null, 2)}\n`,
+  );
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 0, result.stderr);
+});
+
+test('rejects a community ESP-IDF build without reproducible output', () => {
+  const root = createRegistry();
+  const integration = validBase('non-reproducible-firmware', 'flash');
+  integration.catalogSection = 'community';
+  integration.source.path = 'source';
+  integration.build = {
+    system: 'esp-idf',
+    version: '5.4.2',
+    target: 'esp32s3',
+    projectPath: 'source',
+  };
+  integration.flash = {
+    versions: [{
+      version: '1.0.0',
+      channel: 'stable',
+      manifestPath: 'firmware/1.0.0/manifest.json',
+    }],
+  };
+  const integrationDir = writeIntegration(root, integration);
+  writeFileSync(join(integrationDir, 'README.md'), '# Non-reproducible Firmware\n');
+  mkdirSync(join(integrationDir, 'source'), { recursive: true });
+  writeFileSync(join(integrationDir, 'source', 'CMakeLists.txt'), 'project(example)\n');
+  writeFileSync(join(integrationDir, 'source', 'LICENSE'), 'MIT License\n');
+  mkdirSync(join(integrationDir, 'firmware', '1.0.0'), { recursive: true });
+  const binary = Buffer.from([0xe9, 0x01]);
+  const sha256 = createHash('sha256').update(binary).digest('hex');
+  writeFileSync(join(integrationDir, 'firmware', '1.0.0', 'firmware.bin'), binary);
+  writeFileSync(
+    join(integrationDir, 'firmware', '1.0.0', 'manifest.json'),
+    `${JSON.stringify({
+      name: 'Non-reproducible Firmware',
+      version: '1.0.0',
+      builds: [{
+        chipFamily: 'ESP32-S3',
+        parts: [{ path: 'firmware.bin', offset: 65536, size: binary.length, sha256 }],
+      }],
+    }, null, 2)}\n`,
+  );
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /sdkconfig\.defaults: references a missing file/);
+});
+
+test('rejects a community catalog entry without local firmware source', () => {
+  const root = createRegistry();
+  const integration = validBase('source-link-only', 'download');
+  integration.catalogSection = 'community';
+  integration.download = {
+    url: 'https://github.com/example/platform/releases/download/v1.0.0/project.zip',
+    steps: [{ title: 'Download', description: 'Download the source archive.' }],
+  };
+  writeIntegration(root, integration);
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /must be "flash" for the community catalog section/);
+  assert.match(result.stderr, /source\.path: is required for community firmware/);
 });
 
 test('reports a directory and integration ID mismatch', () => {
