@@ -1,0 +1,12 @@
+idf_component_register(
+    SRCS
+        "epaper_panel.c"
+        "driver/uc8179.c"
+        "driver/ssd1677.c"
+    INCLUDE_DIRS
+        "."
+    REQUIRES
+        driver
+        esp_timer
+        debug_logging
+)
