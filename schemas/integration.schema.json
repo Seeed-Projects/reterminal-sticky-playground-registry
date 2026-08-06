@@ -187,8 +187,9 @@
         },
         "version": {
           "type": "string",
-          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
-          "maxLength": 20
+          "description": "ESP-IDF Docker image tag used to build this firmware.",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "maxLength": 64
         },
         "target": {
           "type": "string",

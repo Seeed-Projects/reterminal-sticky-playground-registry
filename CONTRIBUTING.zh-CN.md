@@ -129,7 +129,7 @@ cp -R integrations/_template integrations/my-firmware
   "tags": ["dashboard", "offline"],
   "build": {
     "system": "esp-idf",
-    "version": "5.4.2",
+    "version": "v5.4",
     "target": "esp32s3",
     "projectPath": "source"
   },
@@ -161,7 +161,7 @@ cp -R integrations/_template integrations/my-firmware
 | `status` | 按成熟度填写 `experimental`、`beta` 或 `stable` |
 | `source.path` | 本地源码目录，通常填写 `source` |
 | `build.system` | 当前支持 `esp-idf` |
-| `build.version` | 完整 ESP-IDF 版本，包含补丁号，例如 `5.4.2` |
+| `build.version` | 项目实际使用的 ESP-IDF Docker 标签，例如 `v5.0.5`、`v5.1.6`、`v5.4` 或 `latest` |
 | `build.target` | reTerminal Sticky 使用 `esp32s3` |
 | `build.projectPath` | ESP-IDF 工程目录，与 `source.path` 保持一致 |
 | `flash.versions[].manifestPath` | 当前项目目录内的 manifest 路径 |

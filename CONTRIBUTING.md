@@ -125,7 +125,7 @@ Normal third-party submissions use `"group": "community"`,
   "tags": ["dashboard", "offline"],
   "build": {
     "system": "esp-idf",
-    "version": "5.4.2",
+    "version": "v5.4",
     "target": "esp32s3",
     "projectPath": "source"
   },
@@ -157,7 +157,7 @@ Normal third-party submissions use `"group": "community"`,
 | `status` | `experimental`, `beta`, or `stable` according to project maturity |
 | `source.path` | Local source directory, normally `source` |
 | `build.system` | Currently `esp-idf` |
-| `build.version` | The exact ESP-IDF release, including patch version, such as `5.4.2` |
+| `build.version` | The ESP-IDF Docker tag used by the project, such as `v5.0.5`, `v5.1.6`, `v5.4`, or `latest` |
 | `build.target` | `esp32s3` for reTerminal Sticky |
 | `build.projectPath` | The ESP-IDF project directory, matching `source.path` |
 | `flash.versions[].manifestPath` | Local manifest under the same integration directory |

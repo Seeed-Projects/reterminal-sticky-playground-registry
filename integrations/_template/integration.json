@@ -38,7 +38,7 @@
   ],
   "build": {
     "system": "esp-idf",
-    "version": "5.4.2",
+    "version": "v5.4",
     "target": "esp32s3",
     "projectPath": "source"
   },

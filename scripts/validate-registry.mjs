@@ -191,8 +191,8 @@ function validateBuild(value, integrationDir, source, scope) {
   }
   validateEnum(value.system, ALLOWED_BUILD_SYSTEMS, `${scope}.system`);
   validateString(value.version, `${scope}.version`, {
-    max: 20,
-    pattern: /^\d+\.\d+\.\d+$/,
+    max: 64,
+    pattern: /^[A-Za-z0-9][A-Za-z0-9._-]*$/,
   });
   validateString(value.target, `${scope}.target`, { max: 40, pattern: ID_PATTERN });
   const projectPath = validateLocalDirectoryPath(value.projectPath, integrationDir, `${scope}.projectPath`);

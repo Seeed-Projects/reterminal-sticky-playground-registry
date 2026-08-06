@@ -123,6 +123,31 @@ test('accepts a valid external integration', () => {
   assert.match(result.stdout, /Registry validation passed \(1 integration\(s\)\)\./);
 });
 
+test('rejects an unsafe ESP-IDF Docker tag', () => {
+  const root = createRegistry();
+  const integration = validBase('unsafe-idf-tag', 'external');
+  integration.source.path = 'source';
+  integration.build = {
+    system: 'esp-idf',
+    version: 'v5.4;echo',
+    target: 'esp32s3',
+    projectPath: 'source',
+  };
+  integration.external = {
+    label: 'Open official tool',
+    url: 'https://example.com/tool',
+    description: 'Continue in the maintained upstream tool.',
+  };
+  const integrationDir = writeIntegration(root, integration);
+  mkdirSync(join(integrationDir, 'source'), { recursive: true });
+  writeFileSync(join(integrationDir, 'source', 'CMakeLists.txt'), 'project(example)\n');
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /build\.version: has an invalid format/);
+});
+
 test('accepts a valid template integration with local fragments', () => {
   const root = createRegistry();
   const integration = validBase('template-platform', 'template');
@@ -202,7 +227,7 @@ test('accepts a community firmware with local source and verified binaries', () 
   integration.source.path = 'source';
   integration.build = {
     system: 'esp-idf',
-    version: '5.4.2',
+    version: 'v5.0.5',
     target: 'esp32s3',
     projectPath: 'source',
   };
@@ -251,7 +276,7 @@ test('rejects a community ESP-IDF build without reproducible output', () => {
   integration.source.path = 'source';
   integration.build = {
     system: 'esp-idf',
-    version: '5.4.2',
+    version: 'latest',
     target: 'esp32s3',
     projectPath: 'source',
   };

@@ -86,7 +86,7 @@ jobs:
       - name: Build ESP-IDF project
         uses: espressif/esp-idf-ci-action@v1
         with:
-          esp_idf_version: v${{ matrix.idfVersion }}
+          esp_idf_version: ${{ matrix.idfVersion }}
           target: ${{ matrix.target }}
           path: ${{ matrix.path }}
           command: idf.py build
