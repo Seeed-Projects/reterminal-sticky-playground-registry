@@ -13,7 +13,8 @@
     "url": "https://github.com/crosspoint-reader"
   },
   "source": {
-    "url": "https://github.com/crosspoint-reader/crosspoint-reader"
+    "url": "https://github.com/crosspoint-reader/crosspoint-reader",
+    "license": "MIT"
   },
   "support": {
     "url": "https://github.com/crosspoint-reader/crosspoint-reader/issues"
@@ -23,7 +24,7 @@
     "devices": [
       "reterminal-sticky"
     ],
-    "notes": "Sticky RC2 is prepared for reTerminal Sticky production hardware."
+    "notes": "Version 1.5 is tested on reTerminal Sticky production hardware."
   },
   "assets": {
     "logo": "assets/logo.jpg",
@@ -37,6 +38,11 @@
   ],
   "flash": {
     "versions": [
+      {
+        "version": "1.5",
+        "channel": "beta",
+        "manifestPath": "firmware/1.5/manifest.json"
+      },
       {
         "version": "Sticky RC2",
         "channel": "beta",
