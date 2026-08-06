@@ -742,18 +742,24 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
 
   if (integration.catalogSection === 'community') {
     validateCommunityProjectFiles(integrationDir, integration.source?.path, scope);
+    const hasLocalSource = Boolean(integration.source?.path);
+    const hasBuildConfig = integration.build !== undefined;
     if (integration.group !== 'community') {
       addError(`${scope}.group`, 'must be "community" for the community catalog section');
     }
     if (integration.mode !== 'flash') {
       addError(`${scope}.mode`, 'must be "flash" for the community catalog section');
     }
-    if (!integration.source?.path) {
-      addError(`${scope}.source.path`, 'is required for community firmware');
+    if (hasBuildConfig && !hasLocalSource) {
+      addError(`${scope}.source.path`, 'is required when build is provided');
     }
-    if (!integration.build) {
-      addError(`${scope}.build`, 'is required for community firmware');
-    } else if (integration.build.system === 'esp-idf') {
+    if (hasLocalSource && !hasBuildConfig) {
+      addError(`${scope}.build`, 'is required when source.path is provided');
+    }
+    if (!hasLocalSource && !integration.source?.license) {
+      addError(`${scope}.source.license`, 'is required for firmware-only contributions');
+    }
+    if (hasBuildConfig && integration.build.system === 'esp-idf') {
       validateReproducibleEspIdfBuild(
         integration.build.projectPath,
         integrationDir,

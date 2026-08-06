@@ -269,6 +269,100 @@ test('accepts a community firmware with local source and verified binaries', () 
   assert.equal(result.status, 0, result.stderr);
 });
 
+test('accepts a firmware-only community contribution with verified binaries', () => {
+  const root = createRegistry();
+  const integration = validBase('firmware-only', 'flash');
+  integration.catalogSection = 'community';
+  integration.flash = {
+    versions: [{
+      version: '1.0.0',
+      channel: 'stable',
+      manifestPath: 'firmware/1.0.0/manifest.json',
+    }],
+  };
+  const integrationDir = writeIntegration(root, integration);
+  writeFileSync(join(integrationDir, 'README.md'), '# Firmware-only contribution\n');
+  mkdirSync(join(integrationDir, 'firmware', '1.0.0'), { recursive: true });
+  const binary = Buffer.from([0xe9, 0x01, 0x02, 0x03]);
+  const sha256 = createHash('sha256').update(binary).digest('hex');
+  writeFileSync(join(integrationDir, 'firmware', '1.0.0', 'firmware.bin'), binary);
+  writeFileSync(
+    join(integrationDir, 'firmware', '1.0.0', 'manifest.json'),
+    `${JSON.stringify({
+      name: 'Firmware-only contribution',
+      version: '1.0.0',
+      flashSize: '16MB',
+      builds: [{
+        chipFamily: 'ESP32-S3',
+        parts: [{ path: 'firmware.bin', offset: 65536, size: binary.length, sha256 }],
+      }],
+    }, null, 2)}\n`,
+  );
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 0, result.stderr);
+});
+
+test('rejects a firmware-only community contribution without a source license', () => {
+  const root = createRegistry();
+  const integration = validBase('firmware-only-no-license', 'flash');
+  integration.catalogSection = 'community';
+  delete integration.source.license;
+  integration.flash = {
+    versions: [{
+      version: '1.0.0',
+      channel: 'stable',
+      manifestPath: 'firmware/1.0.0/manifest.json',
+    }],
+  };
+  const integrationDir = writeIntegration(root, integration);
+  writeFileSync(join(integrationDir, 'README.md'), '# Firmware-only contribution\n');
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /source\.license: is required for firmware-only contributions/);
+});
+
+test('rejects a community contribution with local source but no build config', () => {
+  const root = createRegistry();
+  const integration = validBase('incomplete-source', 'flash');
+  integration.catalogSection = 'community';
+  integration.source.path = 'source';
+  integration.flash = {
+    versions: [{
+      version: '1.0.0',
+      channel: 'stable',
+      manifestPath: 'firmware/1.0.0/manifest.json',
+    }],
+  };
+  const integrationDir = writeIntegration(root, integration);
+  writeFileSync(join(integrationDir, 'README.md'), '# Incomplete source contribution\n');
+  mkdirSync(join(integrationDir, 'source'), { recursive: true });
+  writeFileSync(join(integrationDir, 'source', 'LICENSE'), 'MIT License\n');
+  mkdirSync(join(integrationDir, 'firmware', '1.0.0'), { recursive: true });
+  const binary = Buffer.from([0xe9, 0x01]);
+  const sha256 = createHash('sha256').update(binary).digest('hex');
+  writeFileSync(join(integrationDir, 'firmware', '1.0.0', 'firmware.bin'), binary);
+  writeFileSync(
+    join(integrationDir, 'firmware', '1.0.0', 'manifest.json'),
+    `${JSON.stringify({
+      name: 'Incomplete source contribution',
+      version: '1.0.0',
+      builds: [{
+        chipFamily: 'ESP32-S3',
+        parts: [{ path: 'firmware.bin', offset: 65536, size: binary.length, sha256 }],
+      }],
+    }, null, 2)}\n`,
+  );
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /build: is required when source\.path is provided/);
+});
+
 test('rejects a community ESP-IDF build without reproducible output', () => {
   const root = createRegistry();
   const integration = validBase('non-reproducible-firmware', 'flash');
@@ -314,7 +408,7 @@ test('rejects a community ESP-IDF build without reproducible output', () => {
   assert.match(result.stderr, /sdkconfig\.defaults: references a missing file/);
 });
 
-test('rejects a community catalog entry without local firmware source', () => {
+test('rejects a non-flash community catalog entry', () => {
   const root = createRegistry();
   const integration = validBase('source-link-only', 'download');
   integration.catalogSection = 'community';
@@ -328,7 +422,6 @@ test('rejects a community catalog entry without local firmware source', () => {
 
   assert.equal(result.status, 1);
   assert.match(result.stderr, /must be "flash" for the community catalog section/);
-  assert.match(result.stderr, /source\.path: is required for community firmware/);
 });
 
 test('reports a directory and integration ID mismatch', () => {

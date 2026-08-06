@@ -4,17 +4,17 @@ Public firmware contribution and review repository for the reTerminal Sticky
 Playground.
 
 The Sticky website repository remains private. Community developers contribute
-complete buildable source, ready-to-flash firmware, metadata, and visual assets
-here. The Sticky website pins a reviewed Registry commit, mirrors its verified
-firmware files, and generates the public catalog cards and browser flashing
-pages.
+ready-to-flash firmware, metadata, visual assets, and either complete buildable
+source or an upstream source reference here. The Sticky website pins a reviewed
+Registry commit, mirrors its verified firmware files, and generates the public
+catalog cards and browser flashing pages.
 
 ## Published community flow
 
 ```text
 Contributor PR
-  -> source + firmware + manifest + assets
-  -> Registry validation and clean rebuild
+  -> source reference + firmware + manifest + assets
+  -> Registry validation and optional clean rebuild
   -> maintainer review and merge
   -> Sticky preview branch pins the Registry commit
   -> local page and physical-device flash test
@@ -33,7 +33,7 @@ integrations/
     integration.json
     README.md
     assets/
-    source/
+    source/  # complete-source contributions
     firmware/
       <version>/
         manifest.json
@@ -70,6 +70,6 @@ manifest used by the Sticky browser flasher.
 - [English contribution guide](CONTRIBUTING.md)
 - [中文贡献指南](CONTRIBUTING.zh-CN.md)
 
-The guides define the required source tree, firmware package, metadata, local
-validation, physical-device test, pull request checks, and post-merge Sticky
-release flow.
+The guides define the complete-source and firmware-only contribution paths,
+firmware package, metadata, local validation, physical-device test, pull request
+checks, and post-merge Sticky release flow.
