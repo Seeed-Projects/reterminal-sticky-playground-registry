@@ -98,3 +98,82 @@ test('packages and verifies an ESP-IDF flash map', () => {
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+test('packages a source-built firmware into an Action output directory', () => {
+  const root = mkdtempSync(join(tmpdir(), 'sticky-source-package-test-'));
+  try {
+    const integrationDir = join(root, 'integrations', 'source-firmware');
+    const buildDir = join(integrationDir, 'source', 'build');
+    const outputDir = join(root, '.firmware-output', 'source-firmware', '2.0.0-rc1');
+    mkdirSync(join(buildDir, 'partition_table'), { recursive: true });
+    writeFileSync(
+      join(integrationDir, 'integration.json'),
+      `${JSON.stringify({
+        id: 'source-firmware',
+        name: 'Source Firmware',
+        build: {
+          system: 'esp-idf',
+          projectPath: 'source',
+        },
+        flash: {
+          versions: [{
+            version: '2.0.0-rc1',
+            sourceBuild: true,
+          }],
+        },
+      }, null, 2)}\n`,
+    );
+
+    const partitionTable = Buffer.from([0xaa, 0xbb, 0xcc]);
+    const application = Buffer.from([0xe9, 0x06, 0x07, 0x08]);
+    writeFileSync(join(buildDir, 'partition_table', 'partition-table.bin'), partitionTable);
+    writeFileSync(join(buildDir, 'source.bin'), application);
+    writeFileSync(
+      join(buildDir, 'flasher_args.json'),
+      `${JSON.stringify({
+        flash_files: {
+          '0x8000': 'partition_table/partition-table.bin',
+          '0x10000': 'source.bin',
+        },
+        flash_settings: {
+          flash_size: '8MB',
+        },
+      }, null, 2)}\n`,
+    );
+
+    const registryCommit = 'c'.repeat(40);
+    const packageResult = spawnSync(
+      process.execPath,
+      [PACKAGE_SCRIPT, 'source-firmware', '2.0.0-rc1'],
+      {
+        encoding: 'utf8',
+        env: {
+          ...process.env,
+          REGISTRY_ROOT: root,
+          FIRMWARE_OUTPUT_DIR: outputDir,
+          REGISTRY_COMMIT: registryCommit,
+        },
+      },
+    );
+    assert.equal(packageResult.status, 0, packageResult.stderr);
+
+    const manifest = JSON.parse(readFileSync(join(outputDir, 'manifest.json'), 'utf8'));
+    assert.equal(manifest.integrationId, 'source-firmware');
+    assert.equal(manifest.registryCommit, registryCommit);
+    assert.equal(manifest.version, '2.0.0-rc1');
+    assert.equal(manifest.flashSize, '8MB');
+    assert.deepEqual(
+      manifest.builds[0].parts.map((part) => [part.path, part.offset]),
+      [
+        ['partition-table.bin', 32768],
+        ['source.bin', 65536],
+      ],
+    );
+    assert.equal(
+      manifest.builds[0].parts[0].sha256,
+      createHash('sha256').update(partitionTable).digest('hex'),
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});

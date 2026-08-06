@@ -5,3 +5,15 @@ npm-debug.log*
 .env.*
 !.env.example
 
+# Contributor source build output
+integrations/*/source/build/
+integrations/*/source/.cache/
+integrations/*/source/.vscode/
+integrations/*/source/.idea/
+integrations/*/source/managed_components/
+integrations/*/source/sdkconfig
+integrations/*/source/sdkconfig.old
+integrations/*/source/compile_commands.json
+integrations/*/source/*.elf
+integrations/*/source/*.map
+firmware-output/

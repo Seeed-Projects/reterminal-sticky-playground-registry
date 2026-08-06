@@ -3,9 +3,10 @@
 Copy this directory to `integrations/<integration-id>/`, then provide:
 
 1. Complete metadata in `integration.json`.
-2. Either a licensed, reproducible project under `source/`, or an upstream
-   source URL and license for a firmware-only contribution.
-3. The packaged firmware and manifest under `firmware/<version>/`.
+2. A licensed, reproducible ESP-IDF project under `source/`. GitHub Actions
+   builds and packages the firmware for this contribution mode.
+3. For a firmware-only contribution, an upstream source URL and license plus
+   the packaged files under `firmware/<version>/`.
 4. A project logo and a real Sticky preview under `assets/`.
 5. The package origin, firmware behavior, and physical-device test result in
    this README.

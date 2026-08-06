@@ -4,11 +4,12 @@ This repository is the public contribution and review layer for the reTerminal
 Sticky firmware catalog. A completed community contribution becomes a card on
 the Sticky Playground website and opens a Seeed-hosted browser flashing page.
 
-Contributors may submit either a complete buildable source project with its
-firmware package, or a verified firmware-only package with an upstream source
-link. Both paths include metadata, visual assets, and a physical-device test
-record. The private Sticky website reads only a reviewed Registry commit and
-generates the public card and flashing page.
+Contributors may submit either a complete buildable source project, or a
+verified firmware-only package with an upstream source link. For source
+contributions, GitHub Actions builds and packages the firmware. Both paths
+include metadata, visual assets, and a physical-device test record. The private
+Sticky website reads only a reviewed Registry commit and generates the public
+card and flashing page.
 
 For the Chinese guide, see [CONTRIBUTING.zh-CN.md](CONTRIBUTING.zh-CN.md).
 
@@ -28,8 +29,10 @@ serial connection, flashing interface, domain, and production deployment.
 
 ## Required pull request contents
 
-Create one directory under `integrations/`. The `source/` directory is included
-for a complete-source contribution and omitted for a firmware-only contribution:
+Create one directory under `integrations/`. Choose one of the following package
+layouts.
+
+Source contribution:
 
 ```text
 integrations/
@@ -45,6 +48,18 @@ integrations/
       main/
       components/
       LICENSE
+```
+
+Firmware-only contribution:
+
+```text
+integrations/
+  my-firmware/
+    integration.json
+    README.md
+    assets/
+      logo.svg
+      preview.jpg
     firmware/
       1.0.0/
         manifest.json
@@ -59,10 +74,10 @@ integrations/
 | `README.md` | Firmware behavior, controls, setup, and hardware test record |
 | `assets/logo.*` | Project identity shown by the catalog |
 | `assets/preview.*` | A real screenshot or photo of the firmware running on Sticky |
-| `source/` | Complete source for a complete-source contribution |
+| `source/` | Complete source for a source contribution |
 | `source/LICENSE` | License covering the locally submitted source |
-| `firmware/<version>/manifest.json` | Flash layout, sizes, and SHA-256 values |
-| `firmware/<version>/*.bin` | Ready-to-install firmware files |
+| `firmware/<version>/manifest.json` | Flash layout, sizes, and SHA-256 values for firmware-only contributions |
+| `firmware/<version>/*.bin` | Ready-to-install files for firmware-only contributions |
 
 The directory name and `integration.json.id` use the same lowercase kebab-case
 identifier, such as `weather-dashboard` or `sticky-2048`.
@@ -75,13 +90,13 @@ From the repository root:
 cp -R integrations/_template integrations/my-firmware
 ```
 
-Complete the shared files in this order:
+Complete the files in this order:
 
 1. Rename the directory and update `integration.json.id`.
 2. Add the project README, upstream source URL, and source license name.
 3. Add a logo and an actual device preview under `assets/`.
-4. Place the tested flash package under `firmware/<version>/`.
-5. Add `source/` and `build` metadata when choosing the complete-source path.
+4. For a source contribution, add `source/`, `build` metadata, and `sourceBuild: true`.
+5. For a firmware-only contribution, add the tested package under `firmware/<version>/`.
 6. Run the Registry tests and validator.
 7. Flash the packaged firmware to a physical reTerminal Sticky.
 8. Open a pull request with the test result.
@@ -136,7 +151,7 @@ Normal third-party submissions use `"group": "community"`,
       {
         "version": "1.0.0",
         "channel": "experimental",
-        "manifestPath": "firmware/1.0.0/manifest.json"
+        "sourceBuild": true
       }
     ],
     "notes": [
@@ -159,9 +174,10 @@ Normal third-party submissions use `"group": "community"`,
 | `status` | `experimental`, `beta`, or `stable` according to project maturity |
 | `source.url` | Upstream source repository for both contribution paths |
 | `source.license` | Source license identifier, required for firmware-only contributions |
-| `source.path` | Local source directory for the complete-source path, normally `source` |
+| `source.path` | Local source directory for the source path, normally `source` |
 | `build.*` | Build metadata supplied together with `source.path` |
-| `flash.versions[].manifestPath` | Local manifest under the same integration directory |
+| `flash.versions[].sourceBuild` | Set to `true` when GitHub Actions builds the submitted source |
+| `flash.versions[].manifestPath` | Local manifest used by a firmware-only contribution |
 
 `official` and `platform` catalog sections are maintained through coordinated
 Seeed or partner work. Normal community pull requests target the `community`
@@ -171,11 +187,15 @@ to Sticky Playground.
 
 ## Contribution paths
 
-### Complete source and firmware
+### Source contribution
 
-Include `source/`, set `source.path`, and add the matching `build` object. The
-submitted source and firmware package represent the same release. CI rebuilds
-supported projects and compares the generated files with the submitted package.
+Include `source/`, set `source.path`, add the matching `build` object, and set
+the newest firmware version to `"sourceBuild": true`. GitHub Actions compiles
+the source in a clean environment and creates the manifest and `.bin` files.
+The generated files appear as a temporary PR artifact for review. They are
+published as a versioned GitHub Release after the PR is merged.
+Each project version has one immutable Release, so source updates use a new
+`flash.versions[].version` value.
 
 ### Firmware-only package
 
@@ -192,16 +212,15 @@ result in the integration README and pull request.
 }
 ```
 
-## Complete-source requirements
+## Source contribution requirements
 
-For the complete-source path, the `source/` directory must build independently
+For the source path, the `source/` directory must build independently
 from the submitted files. It includes project build files, application code,
 local components, dependency locks or manifests, default configuration, and the
 applicable license.
 
 Use placeholders or runtime setup for user-specific Wi-Fi credentials, API
-keys, tokens, and passwords. The contributed source and firmware package must
-represent the same release.
+keys, tokens, and passwords.
 
 The first automated build path supports ESP-IDF projects. A typical source tree
 contains:
@@ -209,7 +228,7 @@ contains:
 ```text
 source/
   CMakeLists.txt
-  sdkconfig.defaults  # includes CONFIG_APP_REPRODUCIBLE_BUILD=y
+  sdkconfig.defaults
   main/
     CMakeLists.txt
     main.cpp
@@ -220,32 +239,23 @@ source/
 Projects that need another build system should open an issue first so the
 maintainers can add a reproducible CI build adapter before the firmware PR.
 
-ESP-IDF community projects must enable `CONFIG_APP_REPRODUCIBLE_BUILD=y` in
-`source/sdkconfig.defaults`. This removes build-time and local-path differences,
-allowing CI to confirm that the submitted source produces the packaged firmware.
+The `build.version` field selects the ESP-IDF version used by GitHub Actions.
+Declare the version already used by the project, for example `v5.0.5`, `v5.3.2`,
+or `latest`.
 
-## Build and package ESP-IDF firmware
+## Optional local ESP-IDF build
 
-Install the ESP-IDF version declared in `integration.json`, then run from the
-integration source directory:
+Authors may build locally before opening the PR. Install the ESP-IDF version
+declared in `integration.json`, then run from the integration source directory:
 
 ```bash
 idf.py set-target esp32s3
-idf.py build
+idf.py -D PROJECT_VER=1.0.0 build
 ```
 
-Return to the Registry root and package the exact ESP-IDF flash map:
-
-```bash
-npm run package:esp-idf -- my-firmware 1.0.0
-```
-
-The packaging command reads `source/build/flasher_args.json`, copies every
-required `.bin` file, and creates `firmware/1.0.0/manifest.json` with the flash
-offset, byte size, and SHA-256 for each file.
-
-Commit the generated manifest and `.bin` files together with the source. This
-gives reviewers one reproducible source release and one ready-to-flash package.
+This local build verifies the project before submission. The Registry ignores
+the local `build/`, generated `sdkconfig`, dependency cache, and editor settings.
+GitHub Actions performs the official build and packaging after the PR is opened.
 
 ## Local validation
 
@@ -265,9 +275,12 @@ The validator checks:
 - image file signatures and static SVG safety;
 - local manifest structure;
 - firmware file existence, byte size, and SHA-256;
-- every file and offset from the ESP-IDF flash map;
 - non-overlapping flash address ranges;
 - the direct-flash requirements for community catalog entries.
+
+For source contributions, manifest and firmware-file checks run after GitHub
+Actions builds the project. For firmware-only contributions, they run directly
+against the files committed in the PR.
 
 ## Physical device test
 
@@ -286,12 +299,13 @@ the submitted preview and behavior.
 
 ## Pull request review and automation
 
-The pull request contains the selected contribution path, package, metadata,
-assets, and hardware test result. GitHub Actions performs these checks:
+The pull request contains the selected contribution path, metadata, assets, and
+hardware test result. GitHub Actions performs these checks:
 
-1. Validate the Registry structure and every local firmware package.
-2. Rebuild complete-source ESP-IDF projects in a clean environment.
-3. Compare rebuilt output with every committed `.bin` and SHA-256 for those projects.
+1. Validate the Registry structure and every firmware-only package.
+2. Build source-contribution ESP-IDF projects with each project-declared IDF version.
+3. Generate the flash manifest and firmware package from ESP-IDF's flash map.
+4. Upload the generated package as a temporary PR artifact for maintainer review.
 
 The pull request remains under review until these checks pass and the maintainer
 can verify the project purpose, license, compatibility, and hardware test.
@@ -302,11 +316,12 @@ Merging the Registry pull request does not immediately publish production. The
 maintainer uses the reviewed release flow:
 
 1. Merge the complete Registry pull request.
-2. Update the pinned Registry commit on the Sticky preview branch.
-3. Build Sticky locally and confirm the new card and flashing page.
-4. Flash the firmware from the local Sticky page to a physical device.
-5. Merge the tested Sticky preview branch into Sticky `main`.
-6. Deploy the Sticky website through the company server and Kubernetes.
+2. Wait for the Registry `main` workflow to publish the source-built firmware Release.
+3. Update the pinned Registry commit on the Sticky preview branch.
+4. Build Sticky locally and confirm the new card and flashing page.
+5. Flash the firmware from the local Sticky page to a physical device.
+6. Merge the tested Sticky preview branch into Sticky `main`.
+7. Deploy the Sticky website through the company server and Kubernetes.
 
 This separates contributor review, real-device acceptance, and production
 release while keeping the private website repository closed.
@@ -316,8 +331,8 @@ release while keeping the private website repository closed.
 For a new version:
 
 1. Add the new version to `flash.versions` with the newest version first.
-2. Add the tested package under `firmware/<version>/`.
-3. Update `source/` and run `npm run package:esp-idf -- <id> <version>` when using the complete-source path.
+2. For a source contribution, update `source/` and set the new version to `sourceBuild: true`.
+3. For a firmware-only contribution, add the tested package under `firmware/<version>/`.
 4. Keep older firmware directories referenced by `integration.json`.
 5. Run validation and repeat the physical device test.
 6. Describe user-visible changes and upgrade behavior in the pull request.
@@ -326,8 +341,8 @@ For a new version:
 
 - [ ] One integration directory contains the complete contribution.
 - [ ] `integration.json` uses `community` + `community` + `flash`.
-- [ ] The contribution uses either complete source plus build metadata, or firmware-only plus an upstream source URL and license.
-- [ ] `firmware/<version>/` contains the manifest and every required `.bin`.
+- [ ] The contribution uses either source plus build metadata, or firmware-only plus an upstream source URL and license.
+- [ ] The source path uses `sourceBuild: true`, or the firmware-only path includes the manifest and every required `.bin`.
 - [ ] The README and PR identify the tested package origin and firmware version.
 - [ ] `npm test` and `npm run validate` pass.
 - [ ] The packaged firmware was tested on a physical reTerminal Sticky.

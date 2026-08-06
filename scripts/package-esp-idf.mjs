@@ -27,14 +27,23 @@ if (integration.id !== integrationId || integration.build?.system !== 'esp-idf')
 }
 
 const version = integration.flash?.versions?.find((entry) => entry.version === versionLabel);
-if (!version?.manifestPath) {
-  throw new Error(`${integrationId} ${versionLabel} must define flash.versions[].manifestPath`);
+if (!version) {
+  throw new Error(`${integrationId} does not define firmware version ${versionLabel}`);
+}
+if (!version.manifestPath && version.sourceBuild !== true) {
+  throw new Error(`${integrationId} ${versionLabel} does not define a package destination`);
 }
 
 const projectDir = join(integrationDir, integration.build.projectPath);
 const buildDir = join(projectDir, 'build');
 const flashArgs = JSON.parse(readFileSync(join(buildDir, 'flasher_args.json'), 'utf8'));
-const outputDir = join(integrationDir, dirname(version.manifestPath));
+const configuredOutputDir = process.env.FIRMWARE_OUTPUT_DIR;
+if (version.sourceBuild === true && !configuredOutputDir) {
+  throw new Error('FIRMWARE_OUTPUT_DIR is required for a source-built firmware package');
+}
+const outputDir = configuredOutputDir
+  ? resolve(configuredOutputDir)
+  : join(integrationDir, dirname(version.manifestPath));
 mkdirSync(outputDir, { recursive: true });
 const packagedNames = new Set();
 
@@ -65,6 +74,7 @@ if (parts.length === 0) {
 }
 
 const manifest = {
+  integrationId: integration.id,
   name: integration.name,
   version: versionLabel,
   flashSize: flashArgs.flash_settings?.flash_size,
@@ -76,8 +86,15 @@ const manifest = {
   ],
 };
 
+if (process.env.REGISTRY_COMMIT) {
+  if (!/^[a-f0-9]{40}$/.test(process.env.REGISTRY_COMMIT)) {
+    throw new Error('REGISTRY_COMMIT must be a full lowercase commit SHA');
+  }
+  manifest.registryCommit = process.env.REGISTRY_COMMIT;
+}
+
 writeFileSync(
-  join(integrationDir, version.manifestPath),
+  join(outputDir, 'manifest.json'),
   `${JSON.stringify(manifest, null, 2)}\n`,
   'utf8',
 );
