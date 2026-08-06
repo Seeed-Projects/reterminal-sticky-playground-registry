@@ -1,0 +1,10 @@
+menu "Application Debug Logging"
+
+    config APP_DEBUG_EPAPER_TOUCH_LOG_ENABLED
+        bool "Enable e-paper/touch debug logs"
+        default n
+        help
+            Enable extra debug logs for tracing e-paper and touch stalls.
+            Leave disabled for normal builds.
+
+endmenu

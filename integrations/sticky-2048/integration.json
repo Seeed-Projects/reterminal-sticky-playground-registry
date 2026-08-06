@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-2048",
+  "name": "Sticky 2048",
+  "group": "community",
+  "catalogSection": "community",
+  "mode": "flash",
+  "status": "experimental",
+  "summary": "A 2048 puzzle game running on reTerminal Sticky with E-Ink display and touch control.",
+  "description": "Sticky 2048 is a native ESP-IDF game application for reTerminal Sticky. It brings the classic 2048 puzzle game to the E-Ink display with touch swipe control, hardware integration, and local score saving.",
+  "author": {
+    "name": "Lukilyy",
+    "url": "https://github.com/Lukilyy"
+  },
+  "source": {
+    "url": "https://github.com/Lukilyy/reterminal-sticky-2048-eink-game",
+    "license": "MIT",
+    "path": "source"
+  },
+  "support": {
+    "url": "https://github.com/Lukilyy/reterminal-sticky-2048-eink-game/issues"
+  },
+  "documentationUrl": "https://github.com/Lukilyy/reterminal-sticky-2048-eink-game#readme",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Tested on Seeed Studio reTerminal Sticky with ESP32-S3 and 3.97-inch E-Ink display."
+  },
+  "assets": {
+    "logo": "assets/logo.svg",
+    "preview": "assets/preview.jpg",
+    "previewAlt": "Sticky 2048 running on reTerminal Sticky"
+  },
+  "tags": [
+    "game",
+    "2048",
+    "eink",
+    "esp-idf"
+  ],
+  "build": {
+    "system": "esp-idf",
+    "version": "v5.4",
+    "target": "esp32s3",
+    "projectPath": "source"
+  },
+  "flash": {
+    "versions": [
+      {
+        "version": "1.0.1",
+        "channel": "experimental",
+        "sourceBuild": true
+      }
+    ]
+  }
+}
