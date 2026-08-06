@@ -349,19 +349,21 @@ function validateAssetContent(filePath, scope) {
 
 function validateAssets(value, integrationDir, scope) {
   const allowedKeys = new Set(['logo', 'preview', 'previewAlt']);
-  if (!validateObjectKeys(value, ['logo', 'preview', 'previewAlt'], allowedKeys, scope)) {
+  if (!validateObjectKeys(value, ['preview', 'previewAlt'], allowedKeys, scope)) {
     return;
   }
 
-  const logoPath = validateLocalFilePath(value.logo, integrationDir, `${scope}.logo`, {
-    extensions: ALLOWED_ASSET_EXTENSIONS,
-    maxBytes: 1024 * 1024,
-  });
+  if (value.logo !== undefined) {
+    const logoPath = validateLocalFilePath(value.logo, integrationDir, `${scope}.logo`, {
+      extensions: ALLOWED_ASSET_EXTENSIONS,
+      maxBytes: 1024 * 1024,
+    });
+    validateAssetContent(logoPath, `${scope}.logo`);
+  }
   const previewPath = validateLocalFilePath(value.preview, integrationDir, `${scope}.preview`, {
     extensions: ALLOWED_ASSET_EXTENSIONS,
     maxBytes: 5 * 1024 * 1024,
   });
-  validateAssetContent(logoPath, `${scope}.logo`);
   validateAssetContent(previewPath, `${scope}.preview`);
   validateString(value.previewAlt, `${scope}.previewAlt`, { max: 180 });
 }

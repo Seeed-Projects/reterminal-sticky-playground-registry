@@ -144,7 +144,6 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "logo",
         "preview",
         "previewAlt"
       ],

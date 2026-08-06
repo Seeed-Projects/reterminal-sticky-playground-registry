@@ -107,6 +107,23 @@ test('accepts an empty production registry', () => {
   assert.match(result.stdout, /Registry validation passed \(0 integration\(s\)\)\./);
 });
 
+test('accepts an integration without an optional logo', () => {
+  const root = createRegistry();
+  const integration = validBase('preview-only', 'external');
+  delete integration.assets.logo;
+  integration.external = {
+    label: 'Open official tool',
+    url: 'https://example.com/tool',
+    description: 'Continue in the maintained upstream tool.',
+  };
+  writeIntegration(root, integration);
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 0);
+  assert.match(result.stdout, /Registry validation passed \(1 integration\(s\)\)\./);
+});
+
 test('accepts a valid external integration', () => {
   const root = createRegistry();
   const integration = validBase('external-platform', 'external');

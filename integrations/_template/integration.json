@@ -28,7 +28,6 @@
     "notes": "Describe the tested hardware revision or any required accessory."
   },
   "assets": {
-    "logo": "assets/logo.svg",
     "preview": "assets/preview.webp",
     "previewAlt": "Example Platform running on reTerminal Sticky"
   },

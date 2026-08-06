@@ -30,7 +30,7 @@ List the commands and manual checks completed for this contribution.
 - [ ] The integration directory and `id` use the same lowercase kebab-case name.
 - [ ] The integration README identifies the package origin and firmware version.
 - [ ] The author, source, support, and documentation links are current.
-- [ ] The logo and preview image are included, or the existing approved assets are reused unchanged.
+- [ ] The required preview image is included; an optional logo is included when the integration needs one.
 - [ ] The submitted files contain no user-specific credentials, API keys, tokens, passwords, or private keys.
 - [ ] The selected package type has all required source or firmware files.
 

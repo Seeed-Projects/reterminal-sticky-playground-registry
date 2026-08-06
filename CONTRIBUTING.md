@@ -40,8 +40,8 @@ integrations/
     integration.json
     README.md
     assets/
-      logo.svg
       preview.jpg
+      logo.svg  # optional
     source/
       CMakeLists.txt
       sdkconfig.defaults
@@ -58,8 +58,8 @@ integrations/
     integration.json
     README.md
     assets/
-      logo.svg
       preview.jpg
+      logo.svg  # optional
     firmware/
       1.0.0/
         manifest.json
@@ -72,7 +72,7 @@ integrations/
 |---|---|
 | `integration.json` | Card text, author, compatibility, build settings, and firmware versions |
 | `README.md` | Firmware behavior, controls, setup, and hardware test record |
-| `assets/logo.*` | Project identity shown by the catalog |
+| `assets/logo.*` | Optional project identity asset |
 | `assets/preview.*` | A real screenshot or photo of the firmware running on Sticky |
 | `source/` | Complete source for a source contribution |
 | `source/LICENSE` | License covering the locally submitted source |
@@ -81,6 +81,10 @@ integrations/
 
 The directory name and `integration.json.id` use the same lowercase kebab-case
 identifier, such as `weather-dashboard` or `sticky-2048`.
+
+Images under `integrations/<integration-id>/assets/` may use `.png`, `.jpg`,
+`.jpeg`, `.webp`, or static `.svg` files. The preview image is required; the
+project logo is optional.
 
 ## Create a contribution
 
@@ -94,7 +98,7 @@ Complete the files in this order:
 
 1. Rename the directory and update `integration.json.id`.
 2. Add the project README, upstream source URL, and source license name.
-3. Add a logo and an actual device preview under `assets/`.
+3. Add an actual device preview under `assets/`, plus a project logo when needed.
 4. For a source contribution, add `source/`, `build` metadata, and `sourceBuild: true`.
 5. For a firmware-only contribution, add the tested package under `firmware/<version>/`.
 6. Run the Registry tests and validator.
@@ -135,7 +139,6 @@ Normal third-party submissions use `"group": "community"`,
     "notes": "Tested on reTerminal Sticky production hardware."
   },
   "assets": {
-    "logo": "assets/logo.svg",
     "preview": "assets/preview.jpg",
     "previewAlt": "My Firmware running on reTerminal Sticky"
   },

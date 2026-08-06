@@ -38,8 +38,8 @@ integrations/
     integration.json
     README.md
     assets/
-      logo.svg
       preview.jpg
+      logo.svg  # 可选
     source/
       CMakeLists.txt
       sdkconfig.defaults
@@ -56,8 +56,8 @@ integrations/
     integration.json
     README.md
     assets/
-      logo.svg
       preview.jpg
+      logo.svg  # 可选
     firmware/
       1.0.0/
         manifest.json
@@ -70,7 +70,7 @@ integrations/
 |---|---|
 | `integration.json` | 保存卡片文案、作者、兼容性、编译方式和固件版本 |
 | `README.md` | 说明固件功能、操作方式、环境要求和实机测试结果 |
-| `assets/logo.*` | 在固件合集里显示项目标识 |
+| `assets/logo.*` | 可选的项目标识图片 |
 | `assets/preview.*` | 展示固件在 Sticky 上真实运行的照片或截图 |
 | `source/` | 源码模式使用的可编译工程 |
 | `source/LICENSE` | 本地提交源码对应的许可证 |
@@ -79,6 +79,10 @@ integrations/
 
 目录名和 `integration.json` 中的 `id` 必须使用相同的小写连字符格式，例如
 `weather-dashboard` 或 `sticky-2048`。
+
+`integrations/<integration-id>/assets/` 下的图片支持 `.png`、`.jpg`、
+`.jpeg`、`.webp` 和静态 `.svg` 格式。真实设备效果图为必需项，项目 Logo
+为可选项。
 
 一句话总结：源码模式交源码给 Action 生成固件；仅固件模式直接提交可烧录文件。
 
@@ -94,7 +98,7 @@ cp -R integrations/_template integrations/my-firmware
 
 1. 修改目录名和 `integration.json.id`。
 2. 在项目 README 和 `integration.json` 中提供上游源码地址与许可证名称。
-3. 在 `assets/` 中加入 Logo 和真实设备效果图。
+3. 在 `assets/` 中加入真实设备效果图；项目需要 Logo 时一并加入。
 4. 选择源码模式时，加入 `source/`、`build` 配置和 `sourceBuild: true`。
 5. 选择仅固件包模式时，把经过测试的固件包放入 `firmware/<version>/`。
 6. 运行 Registry 测试和校验。
@@ -137,7 +141,6 @@ cp -R integrations/_template integrations/my-firmware
     "notes": "Tested on reTerminal Sticky production hardware."
   },
   "assets": {
-    "logo": "assets/logo.svg",
     "preview": "assets/preview.jpg",
     "previewAlt": "My Firmware running on reTerminal Sticky"
   },
