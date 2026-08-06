@@ -1,0 +1,30 @@
+{
+  "name": "Sticky 2048",
+  "version": "1.0.1",
+  "flashSize": "32MB",
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "bootloader.bin",
+          "offset": 0,
+          "size": 20944,
+          "sha256": "27d38284cd98f4d0b9711d96d8e7d6e419810191ee7841083065a5973f8e3a58"
+        },
+        {
+          "path": "partition-table.bin",
+          "offset": 32768,
+          "size": 3072,
+          "sha256": "5295e8c42d6fb5f95e4e8a185932c6191d27cfc5078322475347e40e71af815a"
+        },
+        {
+          "path": "sticky_2048.bin",
+          "offset": 65536,
+          "size": 339376,
+          "sha256": "19821a857ad87d6716f846e139892485ef261513e1e3f15eeae954c4cce88a97"
+        }
+      ]
+    }
+  ]
+}
