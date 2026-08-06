@@ -13,7 +13,8 @@
     "url": "https://github.com/crosspoint-reader"
   },
   "source": {
-    "url": "https://github.com/crosspoint-reader/crosspoint-reader"
+    "url": "https://github.com/crosspoint-reader/crosspoint-reader",
+    "license": "MIT"
   },
   "support": {
     "url": "https://github.com/crosspoint-reader/crosspoint-reader/issues"
