@@ -586,6 +586,11 @@
         },
         "manifestPath": {
           "$ref": "#/$defs/localPath"
+        },
+        "sourceBuild": {
+          "type": "boolean",
+          "const": true,
+          "description": "Build and publish this version from the submitted source with GitHub Actions."
         }
       },
       "oneOf": [
@@ -599,6 +604,11 @@
             "manifestUrl",
             "manifestSha256",
             "releaseUrl"
+          ]
+        },
+        {
+          "required": [
+            "sourceBuild"
           ]
         }
       ]

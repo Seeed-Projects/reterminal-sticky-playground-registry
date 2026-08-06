@@ -204,29 +204,6 @@ function validateBuild(value, integrationDir, source, scope) {
   }
 }
 
-function validateReproducibleEspIdfBuild(projectPath, integrationDir, scope) {
-  if (!projectPath) {
-    return;
-  }
-
-  const defaultsPath = validateLocalFilePath(
-    join(projectPath, 'sdkconfig.defaults'),
-    integrationDir,
-    `${scope}.sdkconfig.defaults`,
-  );
-  if (!defaultsPath) {
-    return;
-  }
-
-  const defaults = readFileSync(defaultsPath, 'utf8');
-  if (!/^CONFIG_APP_REPRODUCIBLE_BUILD=y\s*$/m.test(defaults)) {
-    addError(
-      `${scope}.sdkconfig.defaults`,
-      'must enable CONFIG_APP_REPRODUCIBLE_BUILD=y',
-    );
-  }
-}
-
 function validateCommunityProjectFiles(integrationDir, sourcePath, scope) {
   validateLocalFilePath('README.md', integrationDir, `${scope}.README.md`);
   if (sourcePath) {
@@ -612,6 +589,7 @@ function validateFlashMode(value, integrationDir, scope) {
       'manifestSha256',
       'releaseUrl',
       'manifestPath',
+      'sourceBuild',
     ]);
     const requiredVersionKeys = ['version', 'channel'];
     if (!validateObjectKeys(entry, requiredVersionKeys, allowedVersionKeys, versionScope)) {
@@ -626,11 +604,21 @@ function validateFlashMode(value, integrationDir, scope) {
     }
 
     validateEnum(entry.channel, ALLOWED_STATUSES, `${versionScope}.channel`);
+    const deliveryFields = [
+      entry.manifestPath !== undefined,
+      entry.manifestUrl !== undefined || entry.manifestSha256 !== undefined || entry.releaseUrl !== undefined,
+      entry.sourceBuild === true,
+    ].filter(Boolean).length;
+    if (deliveryFields !== 1) {
+      addError(versionScope, 'must use exactly one firmware delivery method');
+      return;
+    }
+
     if (entry.manifestPath !== undefined) {
-      if (entry.manifestUrl !== undefined || entry.manifestSha256 !== undefined || entry.releaseUrl !== undefined) {
-        addError(versionScope, 'must use either manifestPath or remote manifest fields');
-      }
       validateLocalFlashManifest(entry.manifestPath, integrationDir, entry.version, `${versionScope}.manifestPath`);
+    } else if (entry.sourceBuild === true) {
+      // GitHub Actions creates the manifest and firmware release from source.
+      // GitHub Actions 会根据源码生成 manifest 和固件 Release。
     } else {
       validateHttpsUrl(entry.manifestUrl, `${versionScope}.manifestUrl`);
       validateString(entry.manifestSha256, `${versionScope}.manifestSha256`, {
@@ -759,16 +747,15 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
     if (!hasLocalSource && !integration.source?.license) {
       addError(`${scope}.source.license`, 'is required for firmware-only contributions');
     }
-    if (hasBuildConfig && integration.build.system === 'esp-idf') {
-      validateReproducibleEspIdfBuild(
-        integration.build.projectPath,
-        integrationDir,
-        `${scope}.build`,
-      );
+    const versions = integration.flash?.versions || [];
+    if (hasLocalSource && versions[0]?.sourceBuild !== true) {
+      addError(`${scope}.flash.versions[0].sourceBuild`, 'must be true for a source contribution');
     }
-    for (const [index, version] of (integration.flash?.versions || []).entries()) {
-      if (!version.manifestPath) {
-        addError(`${scope}.flash.versions[${index}].manifestPath`, 'is required for community firmware');
+    if (!hasLocalSource) {
+      for (const [index, version] of versions.entries()) {
+        if (!version.manifestPath) {
+          addError(`${scope}.flash.versions[${index}].manifestPath`, 'is required for a firmware-only contribution');
+        }
       }
     }
   }

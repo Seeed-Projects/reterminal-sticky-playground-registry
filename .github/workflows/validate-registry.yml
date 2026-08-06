@@ -89,7 +89,56 @@ jobs:
           esp_idf_version: ${{ matrix.idfVersion }}
           target: ${{ matrix.target }}
           path: ${{ matrix.path }}
-          command: idf.py build
+          command: idf.py -D PROJECT_VER=${{ matrix.version }} build
 
-      - name: Verify packaged firmware
-        run: node scripts/verify-esp-idf-build.mjs "${{ matrix.id }}"
+      - name: Package firmware
+        env:
+          FIRMWARE_OUTPUT_DIR: firmware-output/${{ matrix.id }}/${{ matrix.versionSlug }}
+          REGISTRY_COMMIT: ${{ github.sha }}
+        run: npm run package:esp-idf -- "${{ matrix.id }}" "${{ matrix.version }}"
+
+      - name: Upload firmware artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-${{ matrix.id }}-${{ matrix.versionSlug }}
+          path: firmware-output/${{ matrix.id }}/${{ matrix.versionSlug }}
+          if-no-files-found: error
+          retention-days: 7
+
+  publish-firmware:
+    name: Publish ${{ matrix.id }} ${{ matrix.version }}
+    needs:
+      - discover-firmware
+      - build-firmware
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.discover-firmware.outputs.matrix != '{"include":[]}' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.discover-firmware.outputs.matrix) }}
+
+    steps:
+      - name: Download firmware artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: firmware-${{ matrix.id }}-${{ matrix.versionSlug }}
+          path: firmware-output/${{ matrix.id }}/${{ matrix.versionSlug }}
+
+      - name: Publish firmware release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: registry-${{ matrix.id }}-${{ matrix.versionSlug }}
+          RELEASE_TITLE: ${{ matrix.name }} ${{ matrix.version }}
+          OUTPUT_DIR: firmware-output/${{ matrix.id }}/${{ matrix.versionSlug }}
+        run: |
+          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $RELEASE_TAG already exists."
+          else
+            gh release create "$RELEASE_TAG" "$OUTPUT_DIR"/* \
+              --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "$RELEASE_TITLE" \
+              --notes "Source-built firmware generated from Registry commit $GITHUB_SHA."
+          fi

@@ -1,10 +1,7 @@
 # Firmware packages
 
-Create one directory per version. After building the source project, run:
+This directory is used by firmware-only contributions. Create one directory per
+version and include `manifest.json` plus every `.bin` file referenced by it.
 
-```bash
-npm run package:esp-idf -- <integration-id> <version>
-```
-
-Commit the generated `manifest.json` and every `.bin` file required by the
-manifest.
+For source contributions, set `sourceBuild: true` in `integration.json` and
+place the project under `source/`. GitHub Actions produces the firmware package.

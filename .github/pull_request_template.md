@@ -13,7 +13,7 @@
 
 ### Package type
 
-- [ ] Complete source and firmware
+- [ ] Source contribution built by GitHub Actions
 - [ ] Firmware-only package
 
 ## What this contribution provides
@@ -32,26 +32,27 @@ List the commands and manual checks completed for this contribution.
 - [ ] The author, source, support, and documentation links are current.
 - [ ] The logo and preview image are included, or the existing approved assets are reused unchanged.
 - [ ] The submitted files contain no user-specific credentials, API keys, tokens, passwords, or private keys.
-- [ ] The local manifest records every firmware file, flash offset, byte size, and SHA-256.
+- [ ] The selected package type has all required source or firmware files.
 
-## Complete-source verification
+## Source contribution verification
 
-Complete this section when **Complete source and firmware** is selected.
+Complete this section when **Source contribution built by GitHub Actions** is selected.
 
 - [ ] Not applicable because **Firmware-only package** is selected.
 - [ ] `source.path` and `build` are both present and identify the tested source tree, build system, version, and target.
 - [ ] The local source includes its license and every dependency needed for a clean build.
-- [ ] Supported ESP-IDF projects enable `CONFIG_APP_REPRODUCIBLE_BUILD=y`.
-- [ ] A clean build reproduces the submitted firmware package.
+- [ ] The newest firmware version sets `sourceBuild: true`.
+- [ ] The GitHub Actions source build passes and provides the firmware artifact.
 
 ## Firmware-only verification
 
 Complete this section when **Firmware-only package** is selected.
 
-- [ ] Not applicable because **Complete source and firmware** is selected.
+- [ ] Not applicable because **Source contribution built by GitHub Actions** is selected.
 - [ ] `source.url` points to the upstream source and `source.license` identifies its license.
 - [ ] The README identifies the exact package origin, firmware version, and tested hardware.
 - [ ] Every required `.bin` file is committed under `firmware/<version>/`.
+- [ ] The local manifest records every firmware file, flash offset, byte size, and SHA-256.
 
 ## New community integration verification
 
@@ -80,7 +81,7 @@ Complete this section when **Existing integration update** is selected.
 - Reboot and saved-state result:
 - USB reconnection and repeated-install result:
 
-- [ ] The submitted package was installed on a physical reTerminal Sticky.
+- [ ] The submitted firmware-only package or a local build of the submitted source was installed on a physical reTerminal Sticky.
 - [ ] First boot and the main user workflow passed.
 - [ ] Touch and hardware buttons used by the firmware passed.
 - [ ] Reboot, saved state, USB reconnection, and repeated installation were tested where applicable.

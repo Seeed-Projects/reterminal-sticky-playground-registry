@@ -4,9 +4,10 @@
 一份完整的社区贡献通过审核后，会在 Sticky 官网 Playground 中生成一张固件卡片，
 并进入由 Seeed 网站提供的浏览器烧录页面。
 
-贡献者可以选择提交“完整源码 + 固件包”，也可以只提交经过验证的固件包并提供上游
-源码链接。两种方式都需要项目信息、展示图片和实机测试记录。Sticky 私有网站只读取
-经过审核并锁定版本的公开仓库内容，再生成卡片和烧录页。
+贡献者可以选择提交完整可编译源码，也可以只提交经过验证的固件包并提供上游源码
+链接。源码模式由 GitHub Actions 自动编译并整理固件。两种方式都需要项目信息、展示
+图片和实机测试记录。Sticky 私有网站只读取经过审核并锁定版本的公开仓库内容，再生成
+卡片和烧录页。
 
 英文指南请查看 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
@@ -27,8 +28,9 @@
 
 ## PR 必须提供的文件
 
-每个项目在 `integrations/` 下建立一个独立目录。完整源码模式包含 `source/`，仅固件包
-模式可以省略这个目录：
+每个项目在 `integrations/` 下建立一个独立目录，并从下面两种目录结构中选择一种。
+
+源码模式：
 
 ```text
 integrations/
@@ -44,6 +46,18 @@ integrations/
       main/
       components/
       LICENSE
+```
+
+仅固件包模式：
+
+```text
+integrations/
+  my-firmware/
+    integration.json
+    README.md
+    assets/
+      logo.svg
+      preview.jpg
     firmware/
       1.0.0/
         manifest.json
@@ -58,15 +72,15 @@ integrations/
 | `README.md` | 说明固件功能、操作方式、环境要求和实机测试结果 |
 | `assets/logo.*` | 在固件合集里显示项目标识 |
 | `assets/preview.*` | 展示固件在 Sticky 上真实运行的照片或截图 |
-| `source/` | 完整源码模式使用的可编译工程 |
+| `source/` | 源码模式使用的可编译工程 |
 | `source/LICENSE` | 本地提交源码对应的许可证 |
-| `firmware/<version>/manifest.json` | 记录烧录地址、文件大小和 SHA-256 |
-| `firmware/<version>/*.bin` | 可直接烧录的固件文件 |
+| `firmware/<version>/manifest.json` | 仅固件包模式使用的烧录清单 |
+| `firmware/<version>/*.bin` | 仅固件包模式提交的可烧录文件 |
 
 目录名和 `integration.json` 中的 `id` 必须使用相同的小写连字符格式，例如
 `weather-dashboard` 或 `sticky-2048`。
 
-一句话总结：一个 PR 必须说明“代码在哪里”，并提供用户可以直接烧录的固件包。
+一句话总结：源码模式交源码给 Action 生成固件；仅固件模式直接提交可烧录文件。
 
 ## 创建一份贡献
 
@@ -76,18 +90,18 @@ integrations/
 cp -R integrations/_template integrations/my-firmware
 ```
 
-两种贡献方式都按下面的顺序准备：
+按下面的顺序准备：
 
 1. 修改目录名和 `integration.json.id`。
 2. 在项目 README 和 `integration.json` 中提供上游源码地址与许可证名称。
 3. 在 `assets/` 中加入 Logo 和真实设备效果图。
-4. 把经过测试的固件包放入 `firmware/<version>/`。
-5. 选择完整源码模式时，再加入 `source/` 和对应的 `build` 配置。
+4. 选择源码模式时，加入 `source/`、`build` 配置和 `sourceBuild: true`。
+5. 选择仅固件包模式时，把经过测试的固件包放入 `firmware/<version>/`。
 6. 运行 Registry 测试和校验。
 7. 把这套固件烧录到真实 reTerminal Sticky 上测试。
 8. 提交 Pull Request，并写清测试结果。
 
-一句话总结：源码信息、固件包、页面资料和实机结果齐全后，再进入审核。
+一句话总结：准备项目资料和所选交付方式需要的文件后，再进入审核。
 
 ## integration.json
 
@@ -139,7 +153,7 @@ cp -R integrations/_template integrations/my-firmware
       {
         "version": "1.0.0",
         "channel": "experimental",
-        "manifestPath": "firmware/1.0.0/manifest.json"
+        "sourceBuild": true
       }
     ],
     "notes": [
@@ -162,22 +176,27 @@ cp -R integrations/_template integrations/my-firmware
 | `status` | 按成熟度填写 `experimental`、`beta` 或 `stable` |
 | `source.url` | 两种贡献方式都填写上游源码仓库地址 |
 | `source.license` | 源码许可证名称；仅固件包模式必须填写 |
-| `source.path` | 完整源码模式填写本地源码目录，通常为 `source` |
-| `build.*` | 完整源码模式与 `source.path` 一起提供的构建配置 |
-| `flash.versions[].manifestPath` | 当前项目目录内的 manifest 路径 |
+| `source.path` | 源码模式填写本地源码目录，通常为 `source` |
+| `build.*` | 源码模式与 `source.path` 一起提供的构建配置 |
+| `flash.versions[].sourceBuild` | 源码由 GitHub Actions 编译时设置为 `true` |
+| `flash.versions[].manifestPath` | 仅固件包模式填写项目内的 manifest 路径 |
 
 `official` 和 `platform` 区域由 Seeed 或合作平台共同维护。普通外部 PR 统一进入
 `community` 区域。维护者可以把历史迁移但资料尚未齐全的条目标记为 `draft`；
 草稿不会出现在 Sticky Playground。
 
-一句话总结：社区条目需要有明确源码地址、有本地固件包，并且可以直接烧录。
+一句话总结：社区条目需要有明确源码地址，并通过源码或固件包形成可烧录版本。
 
 ## 两种贡献方式
 
-### 完整源码和固件包
+### 源码模式
 
-提交 `source/`，设置 `source.path`，并加入配套的 `build` 配置。源码和固件包属于同一
-版本。对于已支持的构建系统，CI 会重新编译并把结果与提交的固件逐一比较。
+提交 `source/`，设置 `source.path`，加入配套的 `build` 配置，并把最新版本设置为
+`"sourceBuild": true`。GitHub Actions 会在干净环境中编译源码，自动生成 manifest 和
+全部 `.bin`。PR 阶段会生成临时构建产物供审核；PR 合并后会发布成固定版本的 GitHub
+Release，供 Sticky 测试分支读取。
+每个项目版本只对应一个固定 Release，因此源码更新时需要使用新的
+`flash.versions[].version` 版本号。
 
 ### 仅固件包
 
@@ -192,22 +211,21 @@ cp -R integrations/_template integrations/my-firmware
 }
 ```
 
-一句话总结：有条件时可以提交完整工程，也可以直接提交经过验证的 bin 固件包。
+一句话总结：提交源码时由 Action 产出固件；直接提交固件时由作者提供完整烧录包。
 
-## 完整源码模式要求
+## 源码模式要求
 
-完整源码模式的 `source/` 必须能够仅依靠本次提交的文件完成编译。它应包含工程构建
+源码模式的 `source/` 必须能够仅依靠本次提交的文件完成编译。它应包含工程构建
 文件、应用代码、本地组件、依赖清单或锁定文件、默认配置和许可证。
 
 Wi-Fi 密码、API Key、Token 和密码等用户私密信息使用占位符或首次运行配置方式。
-PR 中的源码和固件包必须属于同一个版本。
 
 第一阶段的自动编译流程支持 ESP-IDF，常见目录如下：
 
 ```text
 source/
   CMakeLists.txt
-  sdkconfig.defaults  # 包含 CONFIG_APP_REPRODUCIBLE_BUILD=y
+  sdkconfig.defaults
   main/
     CMakeLists.txt
     main.cpp
@@ -218,35 +236,26 @@ source/
 需要其他编译系统的项目，先提交 Issue，让维护者先为该编译系统加入可重复执行的 CI
 构建适配，再提交正式固件 PR。
 
-ESP-IDF 社区项目必须在 `source/sdkconfig.defaults` 中启用
-`CONFIG_APP_REPRODUCIBLE_BUILD=y`。这个设置会移除编译时间和本机路径差异，让 CI
-能够确认 PR 中的源码确实可以生成同一套固件包。
+`build.version` 决定 GitHub Actions 使用哪个 ESP-IDF 版本。贡献者填写项目实际使用
+的版本，例如 `v5.0.5`、`v5.3.2` 或 `latest`，流程不会统一锁定到某个固定版本。
 
 一句话总结：源码必须让审核机器能够从零重新编译，而不是只留一个外部链接。
 
-## 编译并整理 ESP-IDF 固件
+## 可选的本地 ESP-IDF 编译
 
-安装 `integration.json` 中声明的 ESP-IDF 版本，然后进入项目的 `source/` 目录执行：
+作者可以在提交 PR 前先做一次本地编译。安装 `integration.json` 中声明的 ESP-IDF
+版本，然后进入项目的 `source/` 目录执行：
 
 ```bash
 idf.py set-target esp32s3
-idf.py build
+idf.py -D PROJECT_VER=1.0.0 build
 ```
 
-编译完成后回到 Registry 仓库根目录，执行：
+这一步用于作者在提交前确认工程能正常编译。Registry 会忽略本地生成的 `build/`、
+`sdkconfig`、依赖缓存和编辑器配置。PR 提交后，正式固件由 GitHub Actions 重新编译
+并整理，无需把本机生成的文件放进 PR。
 
-```bash
-npm run package:esp-idf -- my-firmware 1.0.0
-```
-
-这个命令会读取 `source/build/flasher_args.json`，复制烧录所需的全部 `.bin`，并生成
-`firmware/1.0.0/manifest.json`。manifest 会准确记录每个文件的烧录地址、字节大小和
-SHA-256（通俗解释：用于确认文件没有被替换或损坏的数字指纹）。
-
-生成的 manifest 和 `.bin` 与源码一起提交。审核者因此既能重新编译，也能直接测试
-最终用户将要烧录的同一套文件。
-
-一句话总结：作者负责完成编译，仓库工具负责把编译结果整理成网站能识别的固件包。
+一句话总结：本地编译是可选自测，正式固件统一由 Action 生成。
 
 ## 本地自动检查
 
@@ -265,12 +274,14 @@ npm run validate
 - 设置 `source.path` 时，本地源码目录和 ESP-IDF 工程文件存在；
 - 图片格式正确，SVG 只包含静态内容；
 - manifest 结构正确；
-- 每个固件文件存在，大小和 SHA-256 一致；
-- manifest 包含 ESP-IDF 烧录表中的全部文件和地址；
+- 每个已提交固件文件存在，大小和 SHA-256 一致；
 - 不同固件分区的烧录地址没有重叠；
 - 社区条目满足本站直接烧录的全部要求。
 
 一句话总结：这一步负责提前发现“少文件、固件不匹配、烧录地址错误”等问题。
+
+源码模式的 manifest 和固件文件检查会在 Action 编译后执行；仅固件包模式直接检查
+PR 中提交的文件。
 
 ## 真实设备测试
 
@@ -289,27 +300,29 @@ npm run validate
 
 ## PR 审核和自动编译
 
-PR 需要包含所选贡献方式对应的内容、固件包、项目资料、图片和实机测试结果。
+PR 需要包含所选贡献方式对应的内容、项目资料、图片和实机测试结果。
 GitHub Actions 会依次执行：
 
-1. 检查 Registry 结构和本地固件包。
-2. 在干净环境中重新编译采用完整源码模式的 ESP-IDF 项目。
-3. 对这些项目，把重新编译的结果与 PR 中的每个 `.bin` 和 SHA-256 逐一比较。
+1. 检查 Registry 结构和仅固件包模式提交的文件。
+2. 按每个源码项目声明的 ESP-IDF 版本进行编译。
+3. 根据 ESP-IDF 烧录表自动生成 manifest 和完整固件包。
+4. 把生成的固件作为 PR 临时构建产物，供维护者下载审核。
 
 当这些检查通过，并且维护者确认项目用途、许可证、兼容性和实机结果后，PR 才进入合并。
 
-一句话总结：作者提供成品，自动流程证明“源码确实能生成这套成品”。
+一句话总结：作者提交源码，自动流程负责生成可审核的固件成品。
 
 ## 合并后如何进入 Sticky 官网
 
 Registry PR 合并后不会立刻进入正式生产站。维护者按照下面的顺序发布：
 
 1. 合并资料完整且检查通过的 Registry PR。
-2. 在 Sticky 固定测试分支更新所锁定的 Registry 提交。
-3. 本地构建 Sticky，确认新卡片和烧录页面正确生成。
-4. 从本地 Sticky 页面把固件烧录到真实设备并验收。
-5. 把测试通过的 Sticky 分支合并到 Sticky `main`。
-6. 由公司服务器构建网站，并通过 Kubernetes 发布。
+2. 等待 Registry `main` 的 Action 发布源码编译固件 Release。
+3. 在 Sticky 固定测试分支更新所锁定的 Registry 提交。
+4. 本地构建 Sticky，确认新卡片和烧录页面正确生成。
+5. 从本地 Sticky 页面把固件烧录到真实设备并验收。
+6. 把测试通过的 Sticky 分支合并到 Sticky `main`。
+7. 由公司服务器构建网站，并通过 Kubernetes 发布。
 
 这条流程把“外部贡献审核”“实机验收”和“正式上线”分成三个明确阶段，同时保持
 Sticky 网站仓库闭源。
@@ -321,20 +334,20 @@ Sticky 网站仓库闭源。
 发布新版本时：
 
 1. 在 `flash.versions` 最前面加入新版本。
-2. 把经过测试的固件包放入 `firmware/<version>/`。
-3. 完整源码模式同时更新 `source/`，并执行 `npm run package:esp-idf -- <id> <version>`。
+2. 源码模式更新 `source/`，并把新版本设置为 `sourceBuild: true`。
+3. 仅固件包模式把经过测试的固件包放入 `firmware/<version>/`。
 4. 保留仍被 `integration.json` 引用的旧版本目录。
 5. 重新运行自动检查和真实设备测试。
 6. 在 PR 中说明用户能看到的变化和升级后的行为。
 
-一句话总结：每个版本都保留固件包和测试结果；完整源码模式同时保留对应源码。
+一句话总结：每个版本保留测试结果；源码模式的历史固件保存在对应 GitHub Release。
 
 ## PR 提交前清单
 
 - [ ] 一个项目目录包含本次完整贡献。
 - [ ] `integration.json` 使用 `community` + `community` + `flash`。
-- [ ] 已选择“完整源码 + 构建配置”或“仅固件包 + 上游源码地址与许可证”。
-- [ ] `firmware/<version>/` 包含 manifest 和全部必需 `.bin`。
+- [ ] 已选择“源码 + 构建配置”或“仅固件包 + 上游源码地址与许可证”。
+- [ ] 源码模式使用 `sourceBuild: true`，或仅固件包模式包含 manifest 和全部必需 `.bin`。
 - [ ] README 和 PR 写明经过测试的固件来源和固件版本。
 - [ ] `npm test` 和 `npm run validate` 全部通过。
 - [ ] 这套固件已在真实 reTerminal Sticky 上完成测试。
