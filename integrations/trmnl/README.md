@@ -13,8 +13,8 @@ The firmware directory contains one merged ESP32-S3 binary written at offset
 filesystem image produced by the official project build flow.
 
 The 1.8.10 build and USB upload were tested on reTerminal Sticky production
-hardware. The included preview records the firmware running on physical
-devices after installation.
+hardware. The official TRMNL logo is used across the catalog and installation
+views.
 
 Project source, documentation, and support are provided by the official
 [TRMNL firmware repository](https://github.com/usetrmnl/trmnl-firmware).

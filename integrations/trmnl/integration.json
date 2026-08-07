@@ -24,8 +24,8 @@
   },
   "assets": {
     "logo": "assets/logo.svg",
-    "preview": "assets/preview.jpeg",
-    "previewAlt": "TRMNL firmware running on reTerminal Sticky devices"
+    "preview": "assets/logo.svg",
+    "previewAlt": "TRMNL logo"
   },
   "tags": [
     "ambient-dashboard",
