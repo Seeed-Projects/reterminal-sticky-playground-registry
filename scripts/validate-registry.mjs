@@ -740,6 +740,15 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
   validateSupport(integration.support, `${scope}.support`);
   validateCompatibility(integration.compatibility, `${scope}.compatibility`);
   validateAssets(integration.assets, integrationDir, `${scope}.assets`);
+  if (
+    integration.id === 'trmnl'
+    && (
+      integration.assets?.logo === undefined
+      || integration.assets.preview !== integration.assets.logo
+    )
+  ) {
+    addError(`${scope}.assets`, 'must use the same official TRMNL logo path for logo and preview');
+  }
 
   if (integration.documentationUrl !== undefined) {
     validateHttpsUrl(integration.documentationUrl, `${scope}.documentationUrl`);

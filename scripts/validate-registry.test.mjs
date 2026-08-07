@@ -124,6 +124,22 @@ test('accepts an integration without an optional logo', () => {
   assert.match(result.stdout, /Registry validation passed \(1 integration\(s\)\)\./);
 });
 
+test('requires TRMNL preview artwork to use the official logo asset', () => {
+  const root = createRegistry();
+  const integration = validBase('trmnl', 'external');
+  integration.external = {
+    label: 'Open official tool',
+    url: 'https://example.com/tool',
+    description: 'Continue in the maintained upstream tool.',
+  };
+  writeIntegration(root, integration);
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /must use the same official TRMNL logo path for logo and preview/);
+});
+
 test('accepts plain-text author and optional source attribution', () => {
   const root = createRegistry();
   const integration = validBase('plain-attribution', 'external');
