@@ -196,10 +196,14 @@ the technical source repository, license, and local build path used during
 review and packaging.
 
 `official` and `platform` catalog sections are maintained through coordinated
-Seeed or partner work. Normal community pull requests target the `community`
-section. Maintainers may temporarily use `draft` for migrated entries that are
-still waiting for a complete firmware package; draft entries are not published
-to Sticky Playground.
+Seeed or partner work. Partner entries use `"group": "partner"`,
+`"catalogSection": "platform"`, and official project links. Author attribution
+is optional for partner and official cards because their platform identity is
+already represented by the integration name and official links. Normal
+community pull requests target the `community` section. Maintainers may
+temporarily use `draft` for migrated entries that are still waiting for a
+complete firmware package; draft entries are not published to Sticky
+Playground.
 
 ## Contribution paths
 
