@@ -1,7 +1,7 @@
 # reTerminal Sticky Playground Registry
 
-Public firmware contribution and review repository for the reTerminal Sticky
-Playground.
+Public firmware contribution and review repository for official, partner, and
+community integrations in the reTerminal Sticky Playground.
 
 The Sticky website repository remains private. Community developers contribute
 metadata, visual assets, and either complete buildable source or a verified
@@ -9,6 +9,11 @@ firmware package here. GitHub Actions builds source contributions and publishes
 their installable files. The Sticky website pins a reviewed Registry commit,
 mirrors its verified firmware files, and generates the public catalog cards and
 browser flashing pages.
+
+Partner integrations are coordinated with the platform owner and use official
+project, documentation, and support links. Their cards can omit author
+attribution because the platform identity is already represented by the
+integration name and official links.
 
 ## Published community flow
 

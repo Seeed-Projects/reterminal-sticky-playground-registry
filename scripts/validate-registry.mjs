@@ -21,7 +21,7 @@ const REPOSITORY_ROOT = process.env.REGISTRY_ROOT
 const INTEGRATIONS_DIR = join(REPOSITORY_ROOT, 'integrations');
 const SCHEMA_PATH = join(REPOSITORY_ROOT, 'schemas', 'integration.schema.json');
 
-const ALLOWED_GROUPS = new Set(['official', 'community']);
+const ALLOWED_GROUPS = new Set(['official', 'partner', 'community']);
 const ALLOWED_MODES = new Set(['external', 'template', 'download', 'flash']);
 const ALLOWED_STATUSES = new Set(['experimental', 'beta', 'stable']);
 const ALLOWED_CATALOG_SECTIONS = new Set(['official', 'platform', 'community', 'draft']);
@@ -207,7 +207,7 @@ function validateBuild(value, integrationDir, source, scope) {
   }
 }
 
-function validateCommunityProjectFiles(integrationDir, sourcePath, scope) {
+function validatePackagedProjectFiles(integrationDir, sourcePath, scope) {
   validateLocalFilePath('README.md', integrationDir, `${scope}.README.md`);
   if (sourcePath) {
     validateLocalFilePath(
@@ -215,6 +215,34 @@ function validateCommunityProjectFiles(integrationDir, sourcePath, scope) {
       integrationDir,
       `${scope}.source.LICENSE`,
     );
+  }
+}
+
+// Validates source-built or firmware-only packages used by direct-flash catalog entries.
+// 校验直接烧录目录条目的源码构建包或仅固件包。
+function validateDirectFlashPackage(integration, integrationDir, scope) {
+  validatePackagedProjectFiles(integrationDir, integration.source?.path, scope);
+  const hasLocalSource = Boolean(integration.source?.path);
+  const hasBuildConfig = integration.build !== undefined;
+  if (hasBuildConfig && !hasLocalSource) {
+    addError(`${scope}.source.path`, 'is required when build is provided');
+  }
+  if (hasLocalSource && !hasBuildConfig) {
+    addError(`${scope}.build`, 'is required when source.path is provided');
+  }
+  if (!hasLocalSource && !integration.source?.license) {
+    addError(`${scope}.source.license`, 'is required for firmware-only packages');
+  }
+  const versions = integration.flash?.versions || [];
+  if (hasLocalSource && versions[0]?.sourceBuild !== true) {
+    addError(`${scope}.flash.versions[0].sourceBuild`, 'must be true for a source contribution');
+  }
+  if (!hasLocalSource) {
+    for (const [index, version] of versions.entries()) {
+      if (!version.manifestPath) {
+        addError(`${scope}.flash.versions[${index}].manifestPath`, 'is required for a firmware-only package');
+      }
+    }
   }
 }
 
@@ -669,7 +697,6 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
     'status',
     'summary',
     'description',
-    'author',
     'source',
     'support',
     'compatibility',
@@ -700,7 +727,9 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
   validateEnum(integration.status, ALLOWED_STATUSES, `${scope}.status`);
   validateString(integration.summary, `${scope}.summary`, { max: 140 });
   validateString(integration.description, `${scope}.description`, { max: 800 });
-  validateAttribution(integration.author, `${scope}.author`);
+  if (integration.author !== undefined) {
+    validateAttribution(integration.author, `${scope}.author`);
+  }
   if (integration.origin !== undefined) {
     validateAttribution(integration.origin, `${scope}.origin`);
   }
@@ -736,36 +765,28 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
     validateBuild(integration.build, integrationDir, integration.source, `${scope}.build`);
   }
 
+  if (integration.group === 'community' && integration.author === undefined) {
+    addError(`${scope}.author`, 'is required for community integrations');
+  }
+
   if (integration.catalogSection === 'community') {
-    validateCommunityProjectFiles(integrationDir, integration.source?.path, scope);
-    const hasLocalSource = Boolean(integration.source?.path);
-    const hasBuildConfig = integration.build !== undefined;
     if (integration.group !== 'community') {
       addError(`${scope}.group`, 'must be "community" for the community catalog section');
     }
     if (integration.mode !== 'flash') {
       addError(`${scope}.mode`, 'must be "flash" for the community catalog section');
     }
-    if (hasBuildConfig && !hasLocalSource) {
-      addError(`${scope}.source.path`, 'is required when build is provided');
+    validateDirectFlashPackage(integration, integrationDir, scope);
+  }
+
+  if (integration.group === 'partner') {
+    if (integration.catalogSection !== 'platform') {
+      addError(`${scope}.catalogSection`, 'must be "platform" for partner integrations');
     }
-    if (hasLocalSource && !hasBuildConfig) {
-      addError(`${scope}.build`, 'is required when source.path is provided');
+    if (integration.mode !== 'flash') {
+      addError(`${scope}.mode`, 'must be "flash" for partner integrations');
     }
-    if (!hasLocalSource && !integration.source?.license) {
-      addError(`${scope}.source.license`, 'is required for firmware-only contributions');
-    }
-    const versions = integration.flash?.versions || [];
-    if (hasLocalSource && versions[0]?.sourceBuild !== true) {
-      addError(`${scope}.flash.versions[0].sourceBuild`, 'must be true for a source contribution');
-    }
-    if (!hasLocalSource) {
-      for (const [index, version] of versions.entries()) {
-        if (!version.manifestPath) {
-          addError(`${scope}.flash.versions[${index}].manifestPath`, 'is required for a firmware-only contribution');
-        }
-      }
-    }
+    validateDirectFlashPackage(integration, integrationDir, scope);
   }
 
   for (const modeField of MODE_FIELDS) {

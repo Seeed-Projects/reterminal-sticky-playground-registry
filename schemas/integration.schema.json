@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/Seeed-Projects/reterminal-sticky-playground-registry/blob/main/schemas/integration.schema.json",
   "title": "reTerminal Sticky Playground integration",
-  "description": "Declarative metadata for one platform or community project in the reTerminal Sticky Playground registry.",
+  "description": "Declarative metadata for one official, partner, or community project in the reTerminal Sticky Playground registry.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -15,7 +15,6 @@
     "status",
     "summary",
     "description",
-    "author",
     "source",
     "support",
     "compatibility",
@@ -41,6 +40,7 @@
       "type": "string",
       "enum": [
         "official",
+        "partner",
         "community"
       ]
     },
@@ -317,6 +317,39 @@
     }
   },
   "allOf": [
+    {
+      "if": {
+        "properties": {
+          "group": {
+            "const": "community"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "author"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "group": {
+            "const": "partner"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "catalogSection": {
+            "const": "platform"
+          },
+          "mode": {
+            "const": "flash"
+          }
+        }
+      }
+    },
     {
       "if": {
         "properties": {

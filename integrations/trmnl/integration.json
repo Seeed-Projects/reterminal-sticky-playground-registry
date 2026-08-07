@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "id": "trmnl",
+  "name": "TRMNL",
+  "group": "partner",
+  "catalogSection": "platform",
+  "mode": "flash",
+  "status": "beta",
+  "summary": "Personal dashboard workflows for calm ambient information.",
+  "description": "Install the official TRMNL firmware package prepared for reTerminal Sticky and connect the device to TRMNL dashboard services.",
+  "source": {
+    "url": "https://github.com/usetrmnl/trmnl-firmware",
+    "license": "GPL-3.0"
+  },
+  "support": {
+    "url": "https://github.com/usetrmnl/trmnl-firmware/issues"
+  },
+  "documentationUrl": "https://github.com/usetrmnl/trmnl-firmware#readme",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Version 1.8.10 is tested on reTerminal Sticky production hardware."
+  },
+  "assets": {
+    "logo": "assets/logo.svg",
+    "preview": "assets/preview.jpeg",
+    "previewAlt": "TRMNL firmware running on reTerminal Sticky devices"
+  },
+  "tags": [
+    "ambient-dashboard",
+    "productivity",
+    "cloud"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "1.8.10",
+        "channel": "beta",
+        "manifestPath": "firmware/1.8.10/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "The package writes the complete TRMNL image prepared for reTerminal Sticky from flash offset 0."
+      },
+      {
+        "title": "TRMNL setup",
+        "description": "After installation, follow the device prompts and the official TRMNL documentation to connect the dashboard service."
+      }
+    ]
+  }
+}

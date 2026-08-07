@@ -144,6 +144,59 @@ test('accepts plain-text author and optional source attribution', () => {
   assert.match(result.stdout, /Registry validation passed \(1 integration\(s\)\)\./);
 });
 
+test('accepts a firmware-only partner integration without author attribution', () => {
+  const root = createRegistry();
+  const integration = validBase('partner-firmware', 'flash');
+  integration.group = 'partner';
+  delete integration.author;
+  integration.flash = {
+    versions: [{
+      version: '1.0.0',
+      channel: 'stable',
+      manifestPath: 'firmware/1.0.0/manifest.json',
+    }],
+  };
+  const integrationDir = writeIntegration(root, integration);
+  writeFileSync(join(integrationDir, 'README.md'), '# Partner Firmware\n');
+  mkdirSync(join(integrationDir, 'firmware', '1.0.0'), { recursive: true });
+  const binary = Buffer.from([0xe9, 0x01, 0x02, 0x03]);
+  const sha256 = createHash('sha256').update(binary).digest('hex');
+  writeFileSync(join(integrationDir, 'firmware', '1.0.0', 'firmware.bin'), binary);
+  writeFileSync(
+    join(integrationDir, 'firmware', '1.0.0', 'manifest.json'),
+    `${JSON.stringify({
+      name: 'Partner Firmware',
+      version: '1.0.0',
+      flashSize: '16MB',
+      builds: [{
+        chipFamily: 'ESP32-S3',
+        parts: [{ path: 'firmware.bin', offset: 0, size: binary.length, sha256 }],
+      }],
+    }, null, 2)}\n`,
+  );
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 0, result.stderr);
+});
+
+test('requires author attribution for community integrations', () => {
+  const root = createRegistry();
+  const integration = validBase('community-without-author', 'external');
+  delete integration.author;
+  integration.external = {
+    label: 'Open community tool',
+    url: 'https://example.com/tool',
+    description: 'Continue in the community tool.',
+  };
+  writeIntegration(root, integration);
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /author: is required for community integrations/);
+});
+
 test('rejects source attribution without a name', () => {
   const root = createRegistry();
   const integration = validBase('unnamed-origin', 'external');
@@ -357,7 +410,7 @@ test('rejects a firmware-only community contribution without a source license', 
   const result = runValidator(root);
 
   assert.equal(result.status, 1);
-  assert.match(result.stderr, /source\.license: is required for firmware-only contributions/);
+  assert.match(result.stderr, /source\.license: is required for firmware-only packages/);
 });
 
 test('rejects a community contribution with local source but no build config', () => {
