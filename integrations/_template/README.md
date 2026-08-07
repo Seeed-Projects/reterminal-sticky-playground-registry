@@ -8,7 +8,8 @@ Copy this directory to `integrations/<integration-id>/`, then provide:
 3. For a firmware-only contribution, an upstream source URL and license plus
    the packaged files under `firmware/<version>/`.
 4. A real Sticky preview under `assets/`, plus an optional project logo when needed.
-5. The package origin, firmware behavior, and physical-device test result in
+5. The required author credit and optional display source in `integration.json`.
+6. The package origin, firmware behavior, and physical-device test result in
    this README.
 
 Run `npm test` and `npm run validate` from the repository root before opening a

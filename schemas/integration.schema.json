@@ -83,6 +83,9 @@
     "author": {
       "$ref": "#/$defs/attribution"
     },
+    "origin": {
+      "$ref": "#/$defs/attribution"
+    },
     "source": {
       "type": "object",
       "additionalProperties": false,
@@ -473,8 +476,7 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "name",
-        "url"
+        "name"
       ],
       "properties": {
         "name": {

@@ -41,6 +41,7 @@ const COMMON_FIELDS = new Set([
   'summary',
   'description',
   'author',
+  'origin',
   'source',
   'support',
   'documentationUrl',
@@ -136,12 +137,14 @@ function validateOptionalBoolean(value, scope) {
 
 function validateAttribution(value, scope) {
   const allowedKeys = new Set(['name', 'url']);
-  if (!validateObjectKeys(value, ['name', 'url'], allowedKeys, scope)) {
+  if (!validateObjectKeys(value, ['name'], allowedKeys, scope)) {
     return;
   }
 
   validateString(value.name, `${scope}.name`, { max: 80 });
-  validateHttpsUrl(value.url, `${scope}.url`);
+  if (value.url !== undefined) {
+    validateHttpsUrl(value.url, `${scope}.url`);
+  }
 }
 
 function validateSource(value, scope) {
@@ -698,6 +701,9 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
   validateString(integration.summary, `${scope}.summary`, { max: 140 });
   validateString(integration.description, `${scope}.description`, { max: 800 });
   validateAttribution(integration.author, `${scope}.author`);
+  if (integration.origin !== undefined) {
+    validateAttribution(integration.origin, `${scope}.origin`);
+  }
   validateSource(integration.source, `${scope}.source`);
   if (integration.source?.path !== undefined) {
     validateLocalDirectoryPath(integration.source.path, integrationDir, `${scope}.source.path`);

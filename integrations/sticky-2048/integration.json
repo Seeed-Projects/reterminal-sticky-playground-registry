@@ -12,6 +12,10 @@
     "name": "Lukilyy",
     "url": "https://github.com/Lukilyy"
   },
+  "origin": {
+    "name": "Sticky 2048 project",
+    "url": "https://github.com/Lukilyy/reterminal-sticky-2048-eink-game"
+  },
   "source": {
     "url": "https://github.com/Lukilyy/reterminal-sticky-2048-eink-game",
     "license": "MIT",

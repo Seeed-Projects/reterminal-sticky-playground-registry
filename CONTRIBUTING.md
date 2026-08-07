@@ -97,13 +97,14 @@ cp -R integrations/_template integrations/my-firmware
 Complete the files in this order:
 
 1. Rename the directory and update `integration.json.id`.
-2. Add the project README, upstream source URL, and source license name.
-3. Add an actual device preview under `assets/`, plus a project logo when needed.
-4. For a source contribution, add `source/`, `build` metadata, and `sourceBuild: true`.
-5. For a firmware-only contribution, add the tested package under `firmware/<version>/`.
-6. Run the Registry tests and validator.
-7. Flash the packaged firmware to a physical reTerminal Sticky.
-8. Open a pull request with the test result.
+2. Add the required author name, an optional author link, and an optional display source.
+3. Add the project README, upstream source URL, and source license name.
+4. Add an actual device preview under `assets/`, plus a project logo when needed.
+5. For a source contribution, add `source/`, `build` metadata, and `sourceBuild: true`.
+6. For a firmware-only contribution, add the tested package under `firmware/<version>/`.
+7. Run the Registry tests and validator.
+8. Flash the packaged firmware to a physical reTerminal Sticky.
+9. Open a pull request with the test result.
 
 ## integration.json
 
@@ -124,6 +125,10 @@ Normal third-party submissions use `"group": "community"`,
   "author": {
     "name": "Project author or team",
     "url": "https://github.com/example"
+  },
+  "origin": {
+    "name": "Project repository",
+    "url": "https://github.com/example/my-firmware"
   },
   "source": {
     "url": "https://github.com/example/my-firmware",
@@ -175,12 +180,20 @@ Normal third-party submissions use `"group": "community"`,
 | `catalogSection` | `community` |
 | `mode` | `flash` |
 | `status` | `experimental`, `beta`, or `stable` according to project maturity |
+| `author.name` | Required author or team name shown on the website |
+| `author.url` | Optional HTTPS link opened when the author name is selected |
+| `origin.name` | Optional display source shown on the website |
+| `origin.url` | Optional HTTPS link opened when the display source is selected |
 | `source.url` | Upstream source repository for both contribution paths |
 | `source.license` | Source license identifier, required for firmware-only contributions |
 | `source.path` | Local source directory for the source path, normally `source` |
 | `build.*` | Build metadata supplied together with `source.path` |
 | `flash.versions[].sourceBuild` | Set to `true` when GitHub Actions builds the submitted source |
 | `flash.versions[].manifestPath` | Local manifest used by a firmware-only contribution |
+
+`author` and `origin` are website attribution fields. The `source` object keeps
+the technical source repository, license, and local build path used during
+review and packaging.
 
 `official` and `platform` catalog sections are maintained through coordinated
 Seeed or partner work. Normal community pull requests target the `community`

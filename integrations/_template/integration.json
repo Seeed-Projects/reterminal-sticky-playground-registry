@@ -12,6 +12,10 @@
     "name": "Project author or team",
     "url": "https://github.com/example"
   },
+  "origin": {
+    "name": "Project repository",
+    "url": "https://github.com/example/example-platform"
+  },
   "source": {
     "url": "https://github.com/example/example-platform",
     "license": "MIT",

@@ -29,7 +29,7 @@ List the commands and manual checks completed for this contribution.
 - [ ] `npm run validate` passes locally.
 - [ ] The integration directory and `id` use the same lowercase kebab-case name.
 - [ ] The integration README identifies the package origin and firmware version.
-- [ ] The author, source, support, and documentation links are current.
+- [ ] The author name and any provided author, display source, support, and documentation links are current.
 - [ ] The required preview image is included; an optional logo is included when the integration needs one.
 - [ ] The submitted files contain no user-specific credentials, API keys, tokens, passwords, or private keys.
 - [ ] The selected package type has all required source or firmware files.

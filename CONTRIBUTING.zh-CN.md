@@ -97,13 +97,14 @@ cp -R integrations/_template integrations/my-firmware
 按下面的顺序准备：
 
 1. 修改目录名和 `integration.json.id`。
-2. 在项目 README 和 `integration.json` 中提供上游源码地址与许可证名称。
-3. 在 `assets/` 中加入真实设备效果图；项目需要 Logo 时一并加入。
-4. 选择源码模式时，加入 `source/`、`build` 配置和 `sourceBuild: true`。
-5. 选择仅固件包模式时，把经过测试的固件包放入 `firmware/<version>/`。
-6. 运行 Registry 测试和校验。
-7. 把这套固件烧录到真实 reTerminal Sticky 上测试。
-8. 提交 Pull Request，并写清测试结果。
+2. 填写必需的作者名称，并按需填写作者链接和展示来源。
+3. 在项目 README 和 `integration.json` 中提供上游源码地址与许可证名称。
+4. 在 `assets/` 中加入真实设备效果图；项目需要 Logo 时一并加入。
+5. 选择源码模式时，加入 `source/`、`build` 配置和 `sourceBuild: true`。
+6. 选择仅固件包模式时，把经过测试的固件包放入 `firmware/<version>/`。
+7. 运行 Registry 测试和校验。
+8. 把这套固件烧录到真实 reTerminal Sticky 上测试。
+9. 提交 Pull Request，并写清测试结果。
 
 一句话总结：准备项目资料和所选交付方式需要的文件后，再进入审核。
 
@@ -126,6 +127,10 @@ cp -R integrations/_template integrations/my-firmware
   "author": {
     "name": "Project author or team",
     "url": "https://github.com/example"
+  },
+  "origin": {
+    "name": "Project repository",
+    "url": "https://github.com/example/my-firmware"
   },
   "source": {
     "url": "https://github.com/example/my-firmware",
@@ -177,12 +182,19 @@ cp -R integrations/_template integrations/my-firmware
 | `catalogSection` | 固定为 `community` |
 | `mode` | 固定为 `flash` |
 | `status` | 按成熟度填写 `experimental`、`beta` 或 `stable` |
+| `author.name` | 必填，网站显示的作者或团队名称 |
+| `author.url` | 选填，点击作者名称时打开的 HTTPS 链接 |
+| `origin.name` | 选填，网站显示的来源名称 |
+| `origin.url` | 选填，点击来源名称时打开的 HTTPS 链接 |
 | `source.url` | 两种贡献方式都填写上游源码仓库地址 |
 | `source.license` | 源码许可证名称；仅固件包模式必须填写 |
 | `source.path` | 源码模式填写本地源码目录，通常为 `source` |
 | `build.*` | 源码模式与 `source.path` 一起提供的构建配置 |
 | `flash.versions[].sourceBuild` | 源码由 GitHub Actions 编译时设置为 `true` |
 | `flash.versions[].manifestPath` | 仅固件包模式填写项目内的 manifest 路径 |
+
+`author` 和 `origin` 用于网站署名展示；`source` 保存审核与固件打包使用的源码仓库、
+许可证和本地编译路径。
 
 `official` 和 `platform` 区域由 Seeed 或合作平台共同维护。普通外部 PR 统一进入
 `community` 区域。维护者可以把历史迁移但资料尚未齐全的条目标记为 `draft`；

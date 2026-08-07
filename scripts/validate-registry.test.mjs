@@ -124,6 +124,45 @@ test('accepts an integration without an optional logo', () => {
   assert.match(result.stdout, /Registry validation passed \(1 integration\(s\)\)\./);
 });
 
+test('accepts plain-text author and optional source attribution', () => {
+  const root = createRegistry();
+  const integration = validBase('plain-attribution', 'external');
+  delete integration.author.url;
+  integration.origin = {
+    name: 'Example Community',
+  };
+  integration.external = {
+    label: 'Open official tool',
+    url: 'https://example.com/tool',
+    description: 'Continue in the maintained upstream tool.',
+  };
+  writeIntegration(root, integration);
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 0);
+  assert.match(result.stdout, /Registry validation passed \(1 integration\(s\)\)\./);
+});
+
+test('rejects source attribution without a name', () => {
+  const root = createRegistry();
+  const integration = validBase('unnamed-origin', 'external');
+  integration.origin = {
+    url: 'https://example.com/community',
+  };
+  integration.external = {
+    label: 'Open official tool',
+    url: 'https://example.com/tool',
+    description: 'Continue in the maintained upstream tool.',
+  };
+  writeIntegration(root, integration);
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /origin: missing required field "name"/);
+});
+
 test('accepts a valid external integration', () => {
   const root = createRegistry();
   const integration = validBase('external-platform', 'external');
