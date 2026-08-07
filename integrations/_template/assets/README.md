@@ -1,7 +1,6 @@
 # Integration assets
 
-Replace this file with the integration's approved logo and preview image.
+Add the real Sticky preview image referenced by `assets.preview`.
 
-The paths and filenames must match the `assets.logo` and `assets.preview`
-values in the copied `integration.json`.
-
+Asset images may use PNG, JPG/JPEG, WebP, or static SVG files. An optional
+project logo may be added with `assets.logo` when the integration needs one.

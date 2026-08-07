@@ -12,6 +12,10 @@
     "name": "Project author or team",
     "url": "https://github.com/example"
   },
+  "origin": {
+    "name": "Project repository",
+    "url": "https://github.com/example/example-platform"
+  },
   "source": {
     "url": "https://github.com/example/example-platform",
     "license": "MIT",
@@ -28,7 +32,6 @@
     "notes": "Describe the tested hardware revision or any required accessory."
   },
   "assets": {
-    "logo": "assets/logo.svg",
     "preview": "assets/preview.webp",
     "previewAlt": "Example Platform running on reTerminal Sticky"
   },
