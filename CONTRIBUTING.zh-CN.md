@@ -196,9 +196,11 @@ cp -R integrations/_template integrations/my-firmware
 `author` 和 `origin` 用于网站署名展示；`source` 保存审核与固件打包使用的源码仓库、
 许可证和本地编译路径。
 
-`official` 和 `platform` 区域由 Seeed 或合作平台共同维护。普通外部 PR 统一进入
-`community` 区域。维护者可以把历史迁移但资料尚未齐全的条目标记为 `draft`；
-草稿不会出现在 Sticky Playground。
+`official` 和 `platform` 区域由 Seeed 或合作平台共同维护。合作伙伴条目使用
+`"group": "partner"`、`"catalogSection": "platform"` 和项目官方链接。合作伙伴
+与官方卡片可以省略作者署名，因为平台身份已经由条目名称和官方链接明确表达。
+普通外部 PR 统一进入 `community` 区域。维护者可以把历史迁移但资料尚未齐全的
+条目标记为 `draft`；草稿不会出现在 Sticky Playground。
 
 一句话总结：社区条目需要有明确源码地址，并通过源码或固件包形成可烧录版本。
 

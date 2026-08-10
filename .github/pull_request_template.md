@@ -9,6 +9,7 @@
 ### Contribution type
 
 - [ ] New community integration
+- [ ] New partner integration coordinated with the platform owner
 - [ ] Existing integration update
 
 ### Package type
@@ -29,7 +30,7 @@ List the commands and manual checks completed for this contribution.
 - [ ] `npm run validate` passes locally.
 - [ ] The integration directory and `id` use the same lowercase kebab-case name.
 - [ ] The integration README identifies the package origin and firmware version.
-- [ ] The author name and any provided author, display source, support, and documentation links are current.
+- [ ] Community author attribution and all provided official project, support, and documentation links are current.
 - [ ] The required preview image is included; an optional logo is included when the integration needs one.
 - [ ] The submitted files contain no user-specific credentials, API keys, tokens, passwords, or private keys.
 - [ ] The selected package type has all required source or firmware files.
@@ -61,6 +62,15 @@ Complete this section when **New community integration** is selected.
 - [ ] Not applicable because **Existing integration update** is selected.
 - [ ] `integration.json` uses `"group": "community"`, `"catalogSection": "community"`, and `"mode": "flash"`.
 - [ ] The project metadata, assets, compatibility, installation notes, and support links are complete.
+
+## New partner integration verification
+
+Complete this section when **New partner integration coordinated with the platform owner** is selected.
+
+- [ ] Not applicable because this is a community integration or an existing integration update.
+- [ ] `integration.json` uses `"group": "partner"`, `"catalogSection": "platform"`, and `"mode": "flash"`.
+- [ ] Project, source, documentation, and support links point to official platform resources.
+- [ ] The platform metadata, assets, compatibility, installation notes, and firmware package are complete.
 
 ## Existing integration update verification
 
