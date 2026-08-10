@@ -1,0 +1,23 @@
+{
+  "name": "Followup",
+  "version": "0.1.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "followup-0.1.0-reterminal-sticky.bin",
+          "offset": 0,
+          "size": 2491136,
+          "sha256": "13cabee299943af8031e481737ebefbde6e6f8fb22c6d894a1a42e2a1573318a",
+          "md5": "3dd27226e325ee03a1beeae234302675"
+        }
+      ]
+    }
+  ]
+}
