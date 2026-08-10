@@ -72,8 +72,8 @@ integrations/
 |---|---|
 | `integration.json` | Card text, author, compatibility, build settings, and firmware versions |
 | `README.md` | Firmware behavior, controls, setup, and hardware test record |
-| `assets/logo.*` | Optional project identity asset |
-| `assets/preview.*` | A real screenshot or photo of the firmware running on Sticky |
+| `assets/logo.*` | Official identity asset for partner entries; optional project identity asset for community entries |
+| `assets/preview.*` | A real Sticky screenshot or photo for community entries, or the official logo used by a partner entry |
 | `source/` | Complete source for a source contribution |
 | `source/LICENSE` | License covering the locally submitted source |
 | `firmware/<version>/manifest.json` | Flash layout, sizes, and SHA-256 values for firmware-only contributions |
@@ -83,8 +83,9 @@ The directory name and `integration.json.id` use the same lowercase kebab-case
 identifier, such as `weather-dashboard` or `sticky-2048`.
 
 Images under `integrations/<integration-id>/assets/` may use `.png`, `.jpg`,
-`.jpeg`, `.webp`, or static `.svg` files. The preview image is required; the
-project logo is optional.
+`.jpeg`, `.webp`, or static `.svg` files. Community entries use a real Sticky
+screenshot or photo as the preview. Coordinated partner entries may reference
+the same official logo path from both `assets.logo` and `assets.preview`.
 
 ## Create a contribution
 
@@ -97,9 +98,9 @@ cp -R integrations/_template integrations/my-firmware
 Complete the files in this order:
 
 1. Rename the directory and update `integration.json.id`.
-2. Add the required author name, an optional author link, and an optional display source.
+2. Add community author attribution, or the coordinated partner's official project links.
 3. Add the project README, upstream source URL, and source license name.
-4. Add an actual device preview under `assets/`, plus a project logo when needed.
+4. Add a real Sticky preview for a community entry, or the official logo for a partner entry.
 5. For a source contribution, add `source/`, `build` metadata, and `sourceBuild: true`.
 6. For a firmware-only contribution, add the tested package under `firmware/<version>/`.
 7. Run the Registry tests and validator.
@@ -197,10 +198,11 @@ review and packaging.
 
 `official` and `platform` catalog sections are maintained through coordinated
 Seeed or partner work. Partner entries use `"group": "partner"`,
-`"catalogSection": "platform"`, and official project links. Author attribution
-is optional for partner and official cards because their platform identity is
-already represented by the integration name and official links. Normal
-community pull requests target the `community` section. Maintainers may
+`"catalogSection": "platform"`, `"mode": "flash"`, official project links,
+and official identity assets. Author attribution is optional for partner and
+official cards because their platform identity is represented by the
+integration name and official links. Normal community pull requests target the
+`community` section. Maintainers may
 temporarily use `draft` for migrated entries that are still waiting for a
 complete firmware package; draft entries are not published to Sticky
 Playground.

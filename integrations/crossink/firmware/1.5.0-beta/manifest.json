@@ -1,0 +1,44 @@
+{
+  "name": "CrossInk",
+  "version": "1.5.0-beta",
+  "flashSize": "16MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 921600,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "bootloader.bin",
+          "offset": 0,
+          "size": 18736,
+          "sha256": "09c6a477ac9b33721e9ea455fda1e29dc5b2f35c85d0b858b693defcab6f19fb",
+          "md5": "45e5a782a840c18ba434de186d56e819"
+        },
+        {
+          "path": "partitions.bin",
+          "offset": 32768,
+          "size": 3072,
+          "sha256": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce",
+          "md5": "118cbdbfce82eb12bbdeb7c59af2fce8"
+        },
+        {
+          "path": "boot_app0.bin",
+          "offset": 57344,
+          "size": 8192,
+          "sha256": "f94c5d786a7a8fab06ac5d10e33bf37711a6697636dc037559ea19cc410a17f0",
+          "md5": "e6327541e2dc394ca2c3b3280ac0f39f"
+        },
+        {
+          "path": "firmware.bin",
+          "offset": 65536,
+          "size": 6052176,
+          "sha256": "1d0b7452905521fe25d487bba783eda45159cfdc2404b148db57760df6007332",
+          "md5": "58187833513e15f9719398b7e26fe102"
+        }
+      ]
+    }
+  ]
+}

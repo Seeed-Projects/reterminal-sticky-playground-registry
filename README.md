@@ -11,8 +11,9 @@ mirrors its verified firmware files, and generates the public catalog cards and
 browser flashing pages.
 
 Partner integrations are coordinated with the platform owner and use official
-project, documentation, and support links. Their cards can omit author
-attribution because the platform identity is already represented by the
+project, documentation, support, and identity assets. Their cards can use the
+official logo as the catalog and installation artwork. Author attribution is
+optional because the platform identity is already represented by the
 integration name and official links.
 
 ## Published community flow
