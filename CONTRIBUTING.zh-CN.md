@@ -70,8 +70,8 @@ integrations/
 |---|---|
 | `integration.json` | 保存卡片文案、作者、兼容性、编译方式和固件版本 |
 | `README.md` | 说明固件功能、操作方式、环境要求和实机测试结果 |
-| `assets/logo.*` | 可选的项目标识图片 |
-| `assets/preview.*` | 展示固件在 Sticky 上真实运行的照片或截图 |
+| `assets/logo.*` | 合作伙伴条目使用的官方标识；社区条目可按需提供项目标识 |
+| `assets/preview.*` | 社区条目使用 Sticky 实机照片或截图；合作伙伴条目使用官方 Logo |
 | `source/` | 源码模式使用的可编译工程 |
 | `source/LICENSE` | 本地提交源码对应的许可证 |
 | `firmware/<version>/manifest.json` | 仅固件包模式使用的烧录清单 |
@@ -81,8 +81,9 @@ integrations/
 `weather-dashboard` 或 `sticky-2048`。
 
 `integrations/<integration-id>/assets/` 下的图片支持 `.png`、`.jpg`、
-`.jpeg`、`.webp` 和静态 `.svg` 格式。真实设备效果图为必需项，项目 Logo
-为可选项。
+`.jpeg`、`.webp` 和静态 `.svg` 格式。社区条目使用 Sticky 实机照片或截图作为
+预览图。经过协调的合作伙伴条目可以让 `assets.logo` 与 `assets.preview` 指向同一份
+官方 Logo。
 
 一句话总结：源码模式交源码给 Action 生成固件；仅固件模式直接提交可烧录文件。
 
@@ -97,9 +98,9 @@ cp -R integrations/_template integrations/my-firmware
 按下面的顺序准备：
 
 1. 修改目录名和 `integration.json.id`。
-2. 填写必需的作者名称，并按需填写作者链接和展示来源。
+2. 社区条目填写作者署名；合作伙伴条目填写经过确认的官方项目链接。
 3. 在项目 README 和 `integration.json` 中提供上游源码地址与许可证名称。
-4. 在 `assets/` 中加入真实设备效果图；项目需要 Logo 时一并加入。
+4. 社区条目加入 Sticky 实机效果图；合作伙伴条目加入官方 Logo。
 5. 选择源码模式时，加入 `source/`、`build` 配置和 `sourceBuild: true`。
 6. 选择仅固件包模式时，把经过测试的固件包放入 `firmware/<version>/`。
 7. 运行 Registry 测试和校验。
@@ -197,10 +198,10 @@ cp -R integrations/_template integrations/my-firmware
 许可证和本地编译路径。
 
 `official` 和 `platform` 区域由 Seeed 或合作平台共同维护。合作伙伴条目使用
-`"group": "partner"`、`"catalogSection": "platform"` 和项目官方链接。合作伙伴
-与官方卡片可以省略作者署名，因为平台身份已经由条目名称和官方链接明确表达。
-普通外部 PR 统一进入 `community` 区域。维护者可以把历史迁移但资料尚未齐全的
-条目标记为 `draft`；草稿不会出现在 Sticky Playground。
+`"group": "partner"`、`"catalogSection": "platform"`、`"mode": "flash"`、
+官方项目链接和官方标识。平台身份已经由条目名称和官方链接明确表达，因此作者署名
+为可选项。普通外部 PR 统一进入 `community` 区域。维护者可以把历史迁移但资料尚未
+齐全的条目标记为 `draft`；草稿不会出现在 Sticky Playground。
 
 一句话总结：社区条目需要有明确源码地址，并通过源码或固件包形成可烧录版本。
 

@@ -7,8 +7,8 @@ Copy this directory to `integrations/<integration-id>/`, then provide:
    builds and packages the firmware for this contribution mode.
 3. For a firmware-only contribution, an upstream source URL and license plus
    the packaged files under `firmware/<version>/`.
-4. A real Sticky preview under `assets/`, plus an optional project logo when needed.
-5. The required author credit and optional display source in `integration.json`.
+4. A real Sticky preview for a community entry, or official logo artwork for a partner entry.
+5. Community author credit or coordinated partner identity links in `integration.json`.
 6. The package origin, firmware behavior, and physical-device test result in
    this README.
 

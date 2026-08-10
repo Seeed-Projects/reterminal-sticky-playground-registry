@@ -31,7 +31,7 @@ List the commands and manual checks completed for this contribution.
 - [ ] The integration directory and `id` use the same lowercase kebab-case name.
 - [ ] The integration README identifies the package origin and firmware version.
 - [ ] Community author attribution and all provided official project, support, and documentation links are current.
-- [ ] The required preview image is included; an optional logo is included when the integration needs one.
+- [ ] Community entries include a real Sticky preview; partner entries use the official logo as their identity artwork.
 - [ ] The submitted files contain no user-specific credentials, API keys, tokens, passwords, or private keys.
 - [ ] The selected package type has all required source or firmware files.
 
@@ -70,7 +70,7 @@ Complete this section when **New partner integration coordinated with the platfo
 - [ ] Not applicable because this is a community integration or an existing integration update.
 - [ ] `integration.json` uses `"group": "partner"`, `"catalogSection": "platform"`, and `"mode": "flash"`.
 - [ ] Project, source, documentation, and support links point to official platform resources.
-- [ ] The platform metadata, assets, compatibility, installation notes, and firmware package are complete.
+- [ ] The platform metadata, official logo, compatibility, installation notes, and firmware package are complete.
 
 ## Existing integration update verification
 
