@@ -38,6 +38,11 @@
   "flash": {
     "versions": [
       {
+        "version": "1.1.0",
+        "channel": "stable",
+        "manifestPath": "firmware/1.1.0/manifest.json"
+      },
+      {
         "version": "1.0.1",
         "channel": "stable",
         "manifestUrl": "https://github.com/Seeed-Projects/reterminal-sticky-playground-registry/releases/download/sticky-official-v1.0.1/manifest.json",
