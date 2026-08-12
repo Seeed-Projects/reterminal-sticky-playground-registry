@@ -1,0 +1,23 @@
+{
+  "name": "Sticky Arcade",
+  "version": "2.0.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "firmware-sticky-arcade-reterminal_e1005-full.bin",
+          "offset": 0,
+          "size": 2994592,
+          "sha256": "05ac03faa733061e58dc67428f7c2bbe63d5798f3ec45718f5aaf1a5e9be2ed9",
+          "md5": "7eb7a24321528d4c54cb325ee01ad428"
+        }
+      ]
+    }
+  ]
+}
