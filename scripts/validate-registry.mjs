@@ -246,6 +246,36 @@ function validateDirectFlashPackage(integration, integrationDir, scope) {
   }
 }
 
+// Validates the repository-backed package contract for Sticky official firmware.
+// 校验 Sticky 官方固件在仓库内归档时使用的包规则。
+function validateStickyOfficialFirmwarePackage(integration, integrationDir, scope) {
+  validatePackagedProjectFiles(integrationDir, undefined, scope);
+
+  if (integration.group !== 'official') {
+    addError(`${scope}.group`, 'must be "official" for Sticky official firmware');
+  }
+  if (integration.catalogSection !== 'official') {
+    addError(`${scope}.catalogSection`, 'must be "official" for Sticky official firmware');
+  }
+  if (integration.mode !== 'flash') {
+    addError(`${scope}.mode`, 'must be "flash" for Sticky official firmware');
+    return;
+  }
+
+  const latestVersion = integration.flash?.versions?.[0];
+  if (!latestVersion || typeof latestVersion.version !== 'string') {
+    return;
+  }
+
+  const expectedManifestPath = `firmware/${latestVersion.version}/manifest.json`;
+  if (latestVersion.manifestPath !== expectedManifestPath) {
+    addError(
+      `${scope}.flash.versions[0].manifestPath`,
+      `must be "${expectedManifestPath}" for the newest Sticky official firmware`,
+    );
+  }
+}
+
 function validateSupport(value, scope) {
   const allowedKeys = new Set(['url']);
   if (!validateObjectKeys(value, ['url'], allowedKeys, scope)) {
@@ -796,6 +826,10 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
       addError(`${scope}.mode`, 'must be "flash" for partner integrations');
     }
     validateDirectFlashPackage(integration, integrationDir, scope);
+  }
+
+  if (integration.id === 'sticky-factory') {
+    validateStickyOfficialFirmwarePackage(integration, integrationDir, scope);
   }
 
   for (const modeField of MODE_FIELDS) {

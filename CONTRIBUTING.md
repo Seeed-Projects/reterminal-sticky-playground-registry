@@ -234,6 +234,30 @@ result in the integration README and pull request.
 }
 ```
 
+## Official Sticky firmware updates
+
+Seeed-maintained updates to `sticky-factory` use the firmware-only package path
+with `"group": "official"`, `"catalogSection": "official"`, and
+`"mode": "flash"`. Add each new official version under
+`integrations/sticky-factory/firmware/<version>/` and set the newest
+`flash.versions` entry to the exact local path
+`firmware/<version>/manifest.json`.
+
+The version directory contains the complete tested binary package. Its manifest
+records the firmware version, chip family, flash settings, part offsets, byte
+sizes, SHA-256 values, and optional MD5 values. The integration README and pull
+request record the official artifact origin and the same package metadata.
+
+Official versions that already use Registry GitHub Releases keep their existing
+`manifestUrl`, `manifestSha256`, and `releaseUrl` records. This allows the newest
+version to use repository-backed storage while preserving every historical
+download. The committed version directory is the single delivery record for a
+new repository-backed official version.
+
+Select **Official Sticky firmware update maintained by Seeed** in the pull
+request template and complete its package, provenance, and physical-device
+verification fields.
+
 ## Source contribution requirements
 
 For the source path, the `source/` directory must build independently
@@ -299,6 +323,7 @@ The validator checks:
 - firmware file existence, byte size, and SHA-256;
 - non-overlapping flash address ranges;
 - the direct-flash requirements for community catalog entries.
+- the repository-backed package path for the newest Sticky official firmware.
 
 For source contributions, manifest and firmware-file checks run after GitHub
 Actions builds the project. For firmware-only contributions, they run directly
@@ -362,8 +387,9 @@ For a new version:
 ## Pull request checklist
 
 - [ ] One integration directory contains the complete contribution.
-- [ ] `integration.json` uses `community` + `community` + `flash`.
-- [ ] The contribution uses either source plus build metadata, or firmware-only plus an upstream source URL and license.
+- [ ] `integration.json` uses the group, catalog section, and mode documented for the selected contribution type.
+- [ ] The contribution uses either source plus build metadata, or firmware-only plus the provenance required for its contribution type.
+- [ ] Official firmware updates use the repository-backed version directory and record the official artifact origin.
 - [ ] The source path uses `sourceBuild: true`, or the firmware-only path includes the manifest and every required `.bin`.
 - [ ] The README and PR identify the tested package origin and firmware version.
 - [ ] `npm test` and `npm run validate` pass.

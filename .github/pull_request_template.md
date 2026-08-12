@@ -3,14 +3,17 @@
 - Platform or project name:
 - Integration ID:
 - Firmware version:
+- Firmware artifact origin:
+- Firmware artifact SHA-256:
 - Upstream project:
-- Source license:
+- Source license (community or partner firmware-only contributions):
 
 ### Contribution type
 
 - [ ] New community integration
 - [ ] New partner integration coordinated with the platform owner
-- [ ] Existing integration update
+- [ ] Official Sticky firmware update maintained by Seeed
+- [ ] Existing community or partner integration update
 
 ### Package type
 
@@ -50,7 +53,8 @@ Complete this section when **Source contribution built by GitHub Actions** is se
 Complete this section when **Firmware-only package** is selected.
 
 - [ ] Not applicable because **Source contribution built by GitHub Actions** is selected.
-- [ ] `source.url` points to the upstream source and `source.license` identifies its license.
+- [ ] `source.url` points to the maintained upstream project.
+- [ ] Community and partner packages identify their source license; official updates identify the official artifact origin in the dedicated section.
 - [ ] The README identifies the exact package origin, firmware version, and tested hardware.
 - [ ] Every required `.bin` file is committed under `firmware/<version>/`.
 - [ ] The local manifest records every firmware file, flash offset, byte size, and SHA-256.
@@ -59,7 +63,7 @@ Complete this section when **Firmware-only package** is selected.
 
 Complete this section when **New community integration** is selected.
 
-- [ ] Not applicable because **Existing integration update** is selected.
+- [ ] Not applicable because a new partner, official firmware, or existing integration update is selected.
 - [ ] `integration.json` uses `"group": "community"`, `"catalogSection": "community"`, and `"mode": "flash"`.
 - [ ] The project metadata, assets, compatibility, installation notes, and support links are complete.
 
@@ -67,16 +71,28 @@ Complete this section when **New community integration** is selected.
 
 Complete this section when **New partner integration coordinated with the platform owner** is selected.
 
-- [ ] Not applicable because this is a community integration or an existing integration update.
+- [ ] Not applicable because this is a community, official firmware, or existing integration update.
 - [ ] `integration.json` uses `"group": "partner"`, `"catalogSection": "platform"`, and `"mode": "flash"`.
 - [ ] Project, source, documentation, and support links point to official platform resources.
 - [ ] The platform metadata, official logo, compatibility, installation notes, and firmware package are complete.
 
-## Existing integration update verification
+## Official Sticky firmware update verification
 
-Complete this section when **Existing integration update** is selected.
+Complete this section when **Official Sticky firmware update maintained by Seeed** is selected.
 
-- [ ] Not applicable because **New community integration** is selected.
+- [ ] Not applicable because this is a community or partner contribution.
+- [ ] `sticky-factory` retains `"group": "official"`, `"catalogSection": "official"`, and `"mode": "flash"`.
+- [ ] The newest version appears first and uses `firmware/<version>/manifest.json` through `manifestPath`.
+- [ ] The version directory contains the complete official binary package used for physical-device testing.
+- [ ] The README and pull request record the official artifact origin, byte size, SHA-256, device, chip, and flash offset.
+- [ ] Existing Release-backed versions remain available through their current `manifestUrl`, `manifestSha256`, and `releaseUrl` records.
+- [ ] The committed version directory is the delivery record for the new official version.
+
+## Existing community or partner integration update verification
+
+Complete this section when **Existing community or partner integration update** is selected.
+
+- [ ] Not applicable because a new community, new partner, or official firmware contribution is selected.
 - [ ] The existing `group`, `catalogSection`, and `mode` are retained unless this PR intentionally changes them.
 - [ ] The newest firmware version appears first in `flash.versions`.
 - [ ] Every older version still referenced by `integration.json` remains available.
