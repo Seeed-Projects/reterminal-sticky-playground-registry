@@ -231,6 +231,28 @@ Release，供 Sticky 测试分支读取。
 
 一句话总结：提交源码时由 Action 产出固件；直接提交固件时由作者提供完整烧录包。
 
+## Sticky 官方固件更新
+
+由 Seeed 维护的 `sticky-factory` 更新使用仅固件包方式，并保持
+`"group": "official"`、`"catalogSection": "official"` 和
+`"mode": "flash"`。每个新官方版本存放在
+`integrations/sticky-factory/firmware/<version>/`，同时把
+`flash.versions` 中的最新版本指向准确的本地路径
+`firmware/<version>/manifest.json`。
+
+版本目录保存经过测试的完整固件包。manifest 记录固件版本、芯片型号、烧录参数、
+分区地址、字节大小、SHA-256，以及可选的 MD5。集成 README 和 PR 同步记录官方固件
+产物来源及相同的包信息。
+
+已经使用 Registry GitHub Release 的官方历史版本继续保留原有 `manifestUrl`、
+`manifestSha256` 和 `releaseUrl`。这样，新版本使用仓库内存档，所有历史下载仍然保持
+原来的固定地址。新官方版本提交后，其版本目录就是该版本唯一的交付记录。
+
+提交时在 PR 模板中选择 **Official Sticky firmware update maintained by Seeed**，并完整
+填写固件包来源和实机测试结果。
+
+一句话总结：新官方固件进入版本目录，现有历史版本继续从原来的 Release 提供。
+
 ## 源码模式要求
 
 源码模式的 `source/` 必须能够仅依靠本次提交的文件完成编译。它应包含工程构建
@@ -295,6 +317,7 @@ npm run validate
 - 每个已提交固件文件存在，大小和 SHA-256 一致；
 - 不同固件分区的烧录地址没有重叠；
 - 社区条目满足本站直接烧录的全部要求。
+- Sticky 最新官方固件使用仓库内的标准版本目录。
 
 一句话总结：这一步负责提前发现“少文件、固件不匹配、烧录地址错误”等问题。
 
@@ -363,8 +386,9 @@ Sticky 网站仓库闭源。
 ## PR 提交前清单
 
 - [ ] 一个项目目录包含本次完整贡献。
-- [ ] `integration.json` 使用 `community` + `community` + `flash`。
-- [ ] 已选择“源码 + 构建配置”或“仅固件包 + 上游源码地址与许可证”。
+- [ ] `integration.json` 使用所选贡献类型规定的分组、目录区域和模式。
+- [ ] 已选择“源码 + 构建配置”或“仅固件包 + 对应贡献类型要求的产物来源信息”。
+- [ ] 官方固件更新使用仓库内版本目录，并记录官方固件产物来源。
 - [ ] 源码模式使用 `sourceBuild: true`，或仅固件包模式包含 manifest 和全部必需 `.bin`。
 - [ ] README 和 PR 写明经过测试的固件来源和固件版本。
 - [ ] `npm test` 和 `npm run validate` 全部通过。

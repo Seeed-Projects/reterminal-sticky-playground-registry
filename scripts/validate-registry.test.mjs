@@ -196,6 +196,79 @@ test('accepts a firmware-only partner integration without author attribution', (
   assert.equal(result.status, 0, result.stderr);
 });
 
+test('accepts repository-backed Sticky official firmware with Release-backed history', () => {
+  const root = createRegistry();
+  const integration = validBase('sticky-factory', 'flash');
+  integration.group = 'official';
+  integration.catalogSection = 'official';
+  delete integration.source.license;
+  integration.flash = {
+    versions: [
+      {
+        version: '1.1.0',
+        channel: 'stable',
+        manifestPath: 'firmware/1.1.0/manifest.json',
+      },
+      {
+        version: '1.0.1',
+        channel: 'stable',
+        manifestUrl: 'https://github.com/example/registry/releases/download/v1.0.1/manifest.json',
+        manifestSha256: 'a'.repeat(64),
+        releaseUrl: 'https://github.com/example/registry/releases/tag/v1.0.1',
+      },
+    ],
+  };
+  const integrationDir = writeIntegration(root, integration);
+  writeFileSync(join(integrationDir, 'README.md'), '# Sticky Official Firmware\n');
+  mkdirSync(join(integrationDir, 'firmware', '1.1.0'), { recursive: true });
+  const binary = Buffer.from([0xe9, 0x01, 0x02, 0x03]);
+  const sha256 = createHash('sha256').update(binary).digest('hex');
+  writeFileSync(join(integrationDir, 'firmware', '1.1.0', 'firmware.bin'), binary);
+  writeFileSync(
+    join(integrationDir, 'firmware', '1.1.0', 'manifest.json'),
+    `${JSON.stringify({
+      name: 'Sticky Official Firmware',
+      version: '1.1.0',
+      flashSize: '32MB',
+      builds: [{
+        chipFamily: 'ESP32-S3',
+        parts: [{ path: 'firmware.bin', offset: 0, size: binary.length, sha256 }],
+      }],
+    }, null, 2)}\n`,
+  );
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 0, result.stderr);
+});
+
+test('requires the newest Sticky official firmware to use its version directory', () => {
+  const root = createRegistry();
+  const integration = validBase('sticky-factory', 'flash');
+  integration.group = 'official';
+  integration.catalogSection = 'official';
+  delete integration.source.license;
+  integration.flash = {
+    versions: [{
+      version: '1.1.0',
+      channel: 'stable',
+      manifestUrl: 'https://github.com/example/registry/releases/download/v1.1.0/manifest.json',
+      manifestSha256: 'b'.repeat(64),
+      releaseUrl: 'https://github.com/example/registry/releases/tag/v1.1.0',
+    }],
+  };
+  const integrationDir = writeIntegration(root, integration);
+  writeFileSync(join(integrationDir, 'README.md'), '# Sticky Official Firmware\n');
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(
+    result.stderr,
+    /must be "firmware\/1\.1\.0\/manifest\.json" for the newest Sticky official firmware/,
+  );
+});
+
 test('requires author attribution for community integrations', () => {
   const root = createRegistry();
   const integration = validBase('community-without-author', 'external');
