@@ -1,0 +1,23 @@
+{
+  "name": "Voice Companion",
+  "version": "1.0.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "sticky-voice-companion-1.0.0-reterminal-sticky.bin",
+          "offset": 0,
+          "size": 1245808,
+          "sha256": "0bfcc49cccd256f57f285e94b110b797212408abdaf09d5271dcf6b99c0e5aef",
+          "md5": "335d90f490f415c7dd6d8107d9e24440"
+        }
+      ]
+    }
+  ]
+}
