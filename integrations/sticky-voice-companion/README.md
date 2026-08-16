@@ -11,8 +11,8 @@ Full documentation, source, and per-entity configuration live in the
 
 ## Behavior
 
-- **Voice**: press OK (or use the wake word your Assist pipeline provides)
-  and talk to your assistant. The Sticky has no speaker — the confirmation
+- **Voice**: press OK and talk to your assistant — push-to-talk, no
+  on-device wake word. The Sticky has no speaker — the confirmation
   rides the pipeline and the firmware exposes a `show_followup` Home
   Assistant action so automations or an LLM agent can write the complete
   final reply onto the display, unabridged.
