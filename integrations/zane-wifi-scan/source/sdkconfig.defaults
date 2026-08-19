@@ -1,0 +1,42 @@
+# ------------------------------------------------------------------
+# ESP-IDF equivalents of the Arduino IDE Tools menu.
+# This file is the reason the ESP-IDF path is reproducible: every setting
+# that used to live in a menu on one developer's machine is committed here.
+# ------------------------------------------------------------------
+
+# Target
+CONFIG_IDF_TARGET="esp32s3"
+CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ_240=y
+
+# Run setup() and loop() without an app_main() of our own.
+CONFIG_AUTOSTART_ARDUINO=y
+CONFIG_ARDUINO_LOOP_STACK_SIZE=8192
+CONFIG_FREERTOS_HZ=1000
+
+# Flash: 16 MB, matching the Arduino IDE "Flash Size" setting.
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
+CONFIG_ESPTOOLPY_FLASHFREQ_80M=y
+
+# Partition table, see partitions.csv
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+
+# PSRAM: the ESP32-S3R8 carries 8 MB of octal PSRAM.
+# Equivalent of Tools > PSRAM: OPI PSRAM.
+CONFIG_SPIRAM=y
+CONFIG_SPIRAM_MODE_OCT=y
+CONFIG_SPIRAM_SPEED_80M=y
+
+# Console on UART0.
+#
+# This is the equivalent of Tools > USB CDC On Boot: Disabled. The serial
+# port of the Sticky is exposed through a USB-UART bridge wired to UART0,
+# not through the native USB of the ESP32-S3. Routing the console to the
+# USB peripheral makes the port silent in both directions even though the
+# device still enumerates and still accepts uploads.
+CONFIG_ESP_CONSOLE_UART_DEFAULT=y
+CONFIG_ARDUINO_USB_CDC_ON_BOOT=n
+
+# Keep the build quiet; the firmware prints what it needs itself.
+CONFIG_LOG_DEFAULT_LEVEL_NONE=y
