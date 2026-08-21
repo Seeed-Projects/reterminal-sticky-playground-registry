@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "id": "toybox",
+  "name": "Toybox",
+  "group": "community",
+  "catalogSection": "community",
+  "mode": "flash",
+  "status": "beta",
+  "summary": "An EPUB reader, notes you pin to the e-paper, six games and everyday tools.",
+  "description": "Toybox turns the reTerminal Sticky into a small e-paper playground: an EPUB reader that keeps your place on the card, notes you write from your phone and pin to the screen so they survive the power going off, six games chosen because they suit a display that redraws in a fifth of a second, and the everyday tools -- coin, dice, timer, picker, flashcards, recipes. Reading positions are stored in CrossPoint\u2019s own format, so a card can move between the two firmwares. English, Thai, Chinese, Japanese, Korean and Vietnamese.",
+  "author": {
+    "name": "z4b333",
+    "url": "https://github.com/z4b333"
+  },
+  "origin": {
+    "name": "sticky-toybox",
+    "url": "https://github.com/z4b333/sticky-toybox"
+  },
+  "source": {
+    "url": "https://github.com/z4b333/sticky-toybox",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/z4b333/sticky-toybox/issues"
+  },
+  "documentationUrl": "https://z4b333.github.io/sticky-toybox/",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Tested on reTerminal Sticky production hardware. Needs a FAT32 microSD card for books, pictures and recipes; notes, settings and reading positions work without one."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "Toybox running on a reTerminal Sticky, showing the Utility drawer: coin, dice, random, picker, timer and recipes"
+  },
+  "tags": [
+    "ereader",
+    "notes",
+    "games",
+    "epaper",
+    "offline"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "1.0.0",
+        "channel": "beta",
+        "manifestPath": "firmware/1.0.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB-C data cable and use desktop Chrome or Edge. A charging cable will not do."
+      },
+      {
+        "title": "Installation",
+        "description": "The package writes the bootloader, partition table, OTA data block and application. Leave the erase-device box unchecked: unchecked, notes, settings and saved reading positions survive a reinstall."
+      },
+      {
+        "title": "First boot",
+        "description": "Hold either side button while it powers on to reach the service screen, which reports the buses and can correct the screen or touch orientation."
+      },
+      {
+        "title": "Storage",
+        "description": "On a FAT32 card: books in /books, pictures in /wallpapers, recipes in /recipes, and notes and flashcard decks in /notes and /decks."
+      }
+    ]
+  }
+}
