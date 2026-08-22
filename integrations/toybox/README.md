@@ -33,13 +33,13 @@ screen.
 ## Package origin
 
 Built from [sticky-toybox](https://github.com/z4b333/sticky-toybox) at
-`ca568a0819f798bc1f7912b60d0ea6a70682b08b`, tagged `v1.0.0`, dated 19 Aug 2026. The four binaries here are
+`db16fab4d862e894140c62acf137c062a90ade53`, tagged `v1.0.5`, dated 22 Aug 2026. The four binaries here are
 the same files the project's own web installer serves at
 <https://z4b333.github.io/sticky-toybox/> -- produced by `tools/make_image.sh`
 and packaged for this registry by `tools/make_registry.py`, so the two installers
 write identical bytes.
 
-Application: 3959232 bytes, SHA-256 `136ea2cd079e48e7492590fb4bf9b83e3f8cc3480b85707258caea0546657c29`.
+Application: 3964864 bytes, SHA-256 `3891790d687d9d5a2142c8ae82bf09f5e962cacb5975a7bc15b3ac345c7cc712`.
 
 Built with PlatformIO and the Arduino ESP32 framework rather than ESP-IDF, which
 is why this is a firmware-only contribution rather than a source build.
