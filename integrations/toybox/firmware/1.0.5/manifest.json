@@ -1,6 +1,6 @@
 {
   "name": "Toybox",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "flashSize": "16MB",
   "flashMode": "dio",
   "flashFreq": "80m",
@@ -34,9 +34,9 @@
         {
           "path": "toybox.bin",
           "offset": 65536,
-          "size": 3959232,
-          "sha256": "136ea2cd079e48e7492590fb4bf9b83e3f8cc3480b85707258caea0546657c29",
-          "md5": "59974535d7430c3e5ec6e17426d9e330"
+          "size": 3964864,
+          "sha256": "3891790d687d9d5a2142c8ae82bf09f5e962cacb5975a7bc15b3ac345c7cc712",
+          "md5": "9f0369b2718dc4f05dc525c893d3dbcd"
         }
       ]
     }
