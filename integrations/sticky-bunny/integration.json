@@ -28,7 +28,7 @@
     "devices": [
       "reterminal-sticky"
     ],
-    "notes": "Version 0.1.1 uses the release profile tested on reTerminal Sticky production hardware and includes the verified GT911 touch recovery update."
+    "notes": "Version 0.1.2 uses the release profile tested on reTerminal Sticky production hardware with GT911 diagnostics enabled."
   },
   "assets": {
     "preview": "assets/preview-launcher.jpg",
@@ -45,9 +45,9 @@
   "flash": {
     "versions": [
       {
-        "version": "0.1.1",
+        "version": "0.1.2",
         "channel": "beta",
-        "manifestPath": "firmware/0.1.1/manifest.json"
+        "manifestPath": "firmware/0.1.2/manifest.json"
       },
       {
         "version": "0.1.0",
