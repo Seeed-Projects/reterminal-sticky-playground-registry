@@ -31,8 +31,8 @@
     "notes": "Version 0.1.0 uses the release profile tested throughout development on reTerminal Sticky production hardware."
   },
   "assets": {
-    "preview": "assets/preview.jpg",
-    "previewAlt": "reTerminal Sticky showing the Sticky Bunny Pomodoro setup page"
+    "preview": "assets/preview-launcher.jpg",
+    "previewAlt": "Sticky Bunny app launcher running on reTerminal Sticky"
   },
   "tags": [
     "virtual-pet",
