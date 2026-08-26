@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-bunny",
+  "name": "Sticky Bunny",
+  "group": "community",
+  "catalogSection": "community",
+  "mode": "flash",
+  "status": "beta",
+  "summary": "Raise a persistent rabbit, focus with Pomodoro, share your status, and ask the Book of Answers.",
+  "description": "Sticky Bunny turns reTerminal Sticky into a living virtual pet and an offline ePaper app collection. Raise a rabbit that grows through five stages and develops its own personality, run Pomodoro sessions, show a full-screen status, or shake the device to ask the Book of Answers. Touch, side buttons, swipe gestures, rotation, RTC scheduling, battery display, and deep sleep are integrated into one firmware experience.",
+  "author": {
+    "name": "limengdu",
+    "url": "https://github.com/limengdu"
+  },
+  "origin": {
+    "name": "reTerminal Sticky Bunny",
+    "url": "https://github.com/limengdu/reTerminal_Sticky_Bunny"
+  },
+  "source": {
+    "url": "https://github.com/limengdu/reTerminal_Sticky_Bunny",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/limengdu/reTerminal_Sticky_Bunny/issues"
+  },
+  "documentationUrl": "https://github.com/limengdu/reTerminal_Sticky_Bunny#readme",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Version 0.1.0 uses the release profile tested throughout development on reTerminal Sticky production hardware."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "reTerminal Sticky showing the Sticky Bunny Pomodoro setup page"
+  },
+  "tags": [
+    "virtual-pet",
+    "productivity",
+    "pomodoro",
+    "epaper",
+    "offline",
+    "touch"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "0.1.0",
+        "channel": "beta",
+        "manifestPath": "firmware/0.1.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB-C data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Clean installation",
+        "description": "When moving from another firmware, accept the erase prompt to start with a fresh pet save and the first-boot guide."
+      },
+      {
+        "title": "First boot",
+        "description": "Follow the six illustrated pages, hatch the egg with three deliberate taps, and name the new pet on the device."
+      },
+      {
+        "title": "App launcher",
+        "description": "Tap the AI key or swipe up to open the launcher. Choose by touch, rotate for Pomodoro or Status Board, shake for the Book of Answers, and double-tap the AI key to return to the pet."
+      }
+    ]
+  }
+}
