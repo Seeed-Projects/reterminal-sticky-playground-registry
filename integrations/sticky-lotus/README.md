@@ -18,18 +18,24 @@
 **Sticky Lotus** turns the Seeed Studio Sticky into a dedicated tabletop companion
 for Magic: The Gathering.
 
+Video preview: https://lotus.cooppunks.social/sticky-lotus.mp4
+
 The project focuses on the things you actually need during a game:
 
+-Sticky Lotus turns the Seeed Studio Sticky into a dedicated tabletop companion for Magic: The Gathering.
+
+The project focuses on the things you actually need during a game: 
 - Life tracking for 2 or 4 players
+- Roll for first
 - Commander Damage
 - Poison Counters
-- Touch gestures
 - Long-press ±10 life changes
-- Configurable starting life
+- Configurable starting life 
 - Battery status
-- Persistent game state
-- Deep Sleep support
+- Deep sleep support - Persistent game state
 - E-Ink optimized partial refreshes
+
+The goal is a device that feels less like an embedded development board and more like a purpose-built Magic accessory.
 
 The goal is a device that feels less like an embedded development board
 and more like a purpose-built Magic accessory.
@@ -37,6 +43,14 @@ and more like a purpose-built Magic accessory.
 ---
 
 ## Features
+
+
+### Roll to first 
+
+Press the bottom button to randomly determine who goes first.
+
+Alternatively, you can also choose who randomly goes first in the settings.
+
 
 ### Life Counter
 
@@ -78,11 +92,15 @@ updates only the affected regions whenever possible.
 This significantly improves perceived responsiveness and reduces
 unnecessary E-Ink refreshes.
 
+### Reset gamestate
+
+Reset the game by holding the middle button for 3 seconds.
+
 ---
 
 ## Deep Sleep
 
-Pressing the hardware power button puts Sticky Lotus into Deep Sleep.
+Pressing the hardware power button for 1 seconds Sticky Lotus into Deep Sleep.
 
 Before sleeping:
 
