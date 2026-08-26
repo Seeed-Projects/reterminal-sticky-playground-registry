@@ -28,11 +28,11 @@
     "devices": [
       "reterminal-sticky"
     ],
-    "notes": "Version 0.1.0 uses the release profile tested throughout development on reTerminal Sticky production hardware."
+    "notes": "Version 0.1.1 uses the release profile tested on reTerminal Sticky production hardware and includes the verified GT911 touch recovery update."
   },
   "assets": {
-    "preview": "assets/preview.jpg",
-    "previewAlt": "reTerminal Sticky showing the Sticky Bunny Pomodoro setup page"
+    "preview": "assets/preview-launcher.jpg",
+    "previewAlt": "Sticky Bunny app launcher running on reTerminal Sticky"
   },
   "tags": [
     "virtual-pet",
@@ -44,6 +44,11 @@
   ],
   "flash": {
     "versions": [
+      {
+        "version": "0.1.1",
+        "channel": "beta",
+        "manifestPath": "firmware/0.1.1/manifest.json"
+      },
       {
         "version": "0.1.0",
         "channel": "beta",

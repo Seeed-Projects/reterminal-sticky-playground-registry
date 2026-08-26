@@ -33,9 +33,9 @@ of focused offline ePaper apps.
 
 ## Package origin
 
-Version `0.1.0` was built from
+Version `0.1.1` was built from
 [reTerminal Sticky Bunny](https://github.com/limengdu/reTerminal_Sticky_Bunny)
-commit `979bbbc5ef9c599810a327ead0e147b55b2cac7d` with the `sticky-release`
+commit `55b3e67925603b266ba77673cdbb0e6d882925cb` with the `sticky-release`
 PlatformIO environment. The build uses `espressif32@6.11.0`, ESP-IDF 5.4.1,
 the `sticky_esp32s3` board definition, and the project's 32 MB partition table.
 
@@ -63,7 +63,7 @@ hardware throughout development, including:
 - [x] battery display, RTC time, scheduled wake, and deep sleep;
 - [x] reboot with the pet save restored.
 
-The exact files in `firmware/0.1.0/` are ready for the Registry-manifest flash
+The exact files in `firmware/0.1.1/` are ready for the Registry-manifest flash
 and repeated-install acceptance check recorded in the contribution pull request.
 
 ## Links
