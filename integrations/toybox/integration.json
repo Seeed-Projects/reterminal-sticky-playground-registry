@@ -44,9 +44,9 @@
   "flash": {
     "versions": [
       {
-        "version": "1.0.0",
+        "version": "1.0.5",
         "channel": "beta",
-        "manifestPath": "firmware/1.0.0/manifest.json"
+        "manifestPath": "firmware/1.0.5/manifest.json"
       }
     ],
     "notes": [
