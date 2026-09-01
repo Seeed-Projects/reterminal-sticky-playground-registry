@@ -1,0 +1,23 @@
+{
+  "name": "Inx Pro",
+  "version": "1.0.0-beta",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "inx-pro-1.0.0-beta-reterminal-sticky.bin",
+          "offset": 0,
+          "size": 5978624,
+          "sha256": "5a2dab4b0f3c404b968057594c71cbc29dfaf21b19bbdb2bca8cb4476657a466",
+          "md5": "2e5c83e44fc971ed340ab66da77535c8"
+        }
+      ]
+    }
+  ]
+}

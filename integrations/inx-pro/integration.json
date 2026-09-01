@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "id": "inx-pro",
+  "name": "Inx Pro",
+  "group": "community",
+  "catalogSection": "community",
+  "mode": "flash",
+  "status": "beta",
+  "summary": "A focused open-source e-reader experience for reTerminal Sticky.",
+  "description": "Inx Pro is community firmware for reTerminal Sticky with EPUB, TXT, XTC, library, image rendering, reader settings, reading statistics, Wi-Fi, OPDS, Calibre, and KOReader sync support.",
+  "author": {
+    "name": "Inx Pro",
+    "url": "https://github.com/obijuankenobiii"
+  },
+  "origin": {
+    "name": "Inx Pro",
+    "url": "https://github.com/obijuankenobiii/inx-pro"
+  },
+  "source": {
+    "url": "https://github.com/obijuankenobiii/inx-pro",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/obijuankenobiii/inx-pro/issues"
+  },
+  "documentationUrl": "https://github.com/obijuankenobiii/inx-pro#readme",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "For Seeed Studio reTerminal Sticky with ESP32-S3 and 32MB flash. This registry entry provides a complete merged factory image."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "Inx Pro running on reTerminal Sticky"
+  },
+  "tags": [
+    "ereader",
+    "epub",
+    "books",
+    "community"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "1.0.0-beta",
+        "channel": "beta",
+        "manifestPath": "firmware/1.0.0-beta/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "This package is a complete merged Sticky image. Use the erase option when replacing another firmware."
+      },
+      {
+        "title": "Storage",
+        "description": "Insert a compatible microSD card for books, dictionaries, fonts, settings, and generated data."
+      }
+    ]
+  }
+}
