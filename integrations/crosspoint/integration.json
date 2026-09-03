@@ -4,7 +4,6 @@
   "name": "CrossPoint Reader",
   "group": "community",
   "catalogSection": "platform",
-  "category": "reader",
   "mode": "flash",
   "status": "beta",
   "summary": "Transform your Sticky into a portable open-source e-reader.",
