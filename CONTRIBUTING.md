@@ -269,13 +269,15 @@ Complete the files in this order:
 
 1. Rename the directory and update `integration.json.id`.
 2. Add author attribution and the HTTPS download page.
-3. Add a real photo of the printed design on reTerminal Sticky.
-4. Record print settings and assembly notes in the README.
-5. Run the Registry tests and validator.
-6. Open a pull request.
+3. Pick the `category` that best describes the design so it appears under the right filter on the 3D Printables page.
+4. Add a real photo of the printed design on reTerminal Sticky.
+5. Record print settings and assembly notes in the README.
+6. Run the Registry tests and validator.
+7. Open a pull request.
 
 Printable submissions use `"group": "community"`,
-`"catalogSection": "printables"`, and `"mode": "external"`.
+`"catalogSection": "printables"`, `"mode": "external"`, and one `category`
+from `case`, `stand`, `mount`, `accessory`, or `reference`.
 
 ```json
 {
