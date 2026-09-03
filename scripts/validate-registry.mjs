@@ -24,7 +24,8 @@ const SCHEMA_PATH = join(REPOSITORY_ROOT, 'schemas', 'integration.schema.json');
 const ALLOWED_GROUPS = new Set(['official', 'partner', 'community']);
 const ALLOWED_MODES = new Set(['external', 'template', 'download', 'flash']);
 const ALLOWED_STATUSES = new Set(['experimental', 'beta', 'stable']);
-const ALLOWED_CATALOG_SECTIONS = new Set(['official', 'platform', 'community', 'draft']);
+const ALLOWED_CATALOG_SECTIONS = new Set(['official', 'platform', 'community', 'printables', 'draft']);
+const ALLOWED_CATEGORIES = new Set(['reader', 'dashboard', 'productivity', 'games', 'tools', 'other']);
 const ALLOWED_BUILD_SYSTEMS = new Set(['esp-idf']);
 const ALLOWED_ASSET_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.svg']);
 const ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -36,6 +37,7 @@ const COMMON_FIELDS = new Set([
   'name',
   'group',
   'catalogSection',
+  'category',
   'mode',
   'status',
   'summary',
@@ -753,6 +755,9 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
   validateString(integration.name, `${scope}.name`, { max: 80 });
   validateEnum(integration.group, ALLOWED_GROUPS, `${scope}.group`);
   validateEnum(integration.catalogSection, ALLOWED_CATALOG_SECTIONS, `${scope}.catalogSection`);
+  if (integration.category !== undefined) {
+    validateEnum(integration.category, ALLOWED_CATEGORIES, `${scope}.category`);
+  }
   validateEnum(integration.mode, ALLOWED_MODES, `${scope}.mode`);
   validateEnum(integration.status, ALLOWED_STATUSES, `${scope}.status`);
   validateString(integration.summary, `${scope}.summary`, { max: 140 });
@@ -815,7 +820,19 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
     if (integration.mode !== 'flash') {
       addError(`${scope}.mode`, 'must be "flash" for the community catalog section');
     }
+    if (integration.category === undefined) {
+      addError(`${scope}.category`, 'is required for firmware catalog entries');
+    }
     validateDirectFlashPackage(integration, integrationDir, scope);
+  }
+
+  if (integration.catalogSection === 'printables') {
+    if (integration.group !== 'community') {
+      addError(`${scope}.group`, 'must be "community" for the printables catalog section');
+    }
+    if (integration.mode !== 'external') {
+      addError(`${scope}.mode`, 'must be "external" for the printables catalog section');
+    }
   }
 
   if (integration.group === 'partner') {
@@ -824,6 +841,9 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
     }
     if (integration.mode !== 'flash') {
       addError(`${scope}.mode`, 'must be "flash" for partner integrations');
+    }
+    if (integration.category === undefined) {
+      addError(`${scope}.category`, 'is required for firmware catalog entries');
     }
     validateDirectFlashPackage(integration, integrationDir, scope);
   }

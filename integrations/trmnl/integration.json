@@ -4,6 +4,7 @@
   "name": "TRMNL",
   "group": "partner",
   "catalogSection": "platform",
+  "category": "dashboard",
   "mode": "flash",
   "status": "beta",
   "summary": "Personal dashboard workflows for calm ambient information.",

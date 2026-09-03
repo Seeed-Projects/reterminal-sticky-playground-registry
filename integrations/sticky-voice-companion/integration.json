@@ -4,6 +4,7 @@
   "name": "Voice Companion",
   "group": "community",
   "catalogSection": "community",
+  "category": "dashboard",
   "mode": "flash",
   "status": "experimental",
   "summary": "Home Assistant voice satellite with an 8-page touch e-ink UI, household note board, and weeks-long battery life.",

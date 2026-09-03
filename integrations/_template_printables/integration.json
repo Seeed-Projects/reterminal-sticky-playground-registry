@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "id": "example-case",
+  "name": "Example Case",
+  "group": "community",
+  "catalogSection": "printables",
+  "mode": "external",
+  "status": "experimental",
+  "summary": "A short sentence describing this printable case or accessory.",
+  "description": "Explain what this design is for, how it mounts on Sticky, and any print or assembly notes users should know before they open the external page.",
+  "author": {
+    "name": "Project author or team",
+    "url": "https://github.com/example"
+  },
+  "origin": {
+    "name": "Printables",
+    "url": "https://www.printables.com/model/example"
+  },
+  "source": {
+    "url": "https://www.printables.com/model/example",
+    "license": "CC BY-SA 4.0"
+  },
+  "support": {
+    "url": "https://www.printables.com/model/example"
+  },
+  "documentationUrl": "https://www.printables.com/model/example",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Designed for the production reTerminal Sticky enclosure."
+  },
+  "assets": {
+    "preview": "assets/preview.webp",
+    "previewAlt": "Example Case printed and mounted on reTerminal Sticky"
+  },
+  "tags": [
+    "case",
+    "stand"
+  ],
+  "external": {
+    "label": "View on Printables",
+    "url": "https://www.printables.com/model/example",
+    "description": "Download the printable files from the author page."
+  }
+}
