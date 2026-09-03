@@ -4,7 +4,7 @@
   "name": "Sticky 2048",
   "group": "community",
   "catalogSection": "community",
-  "category": "games",
+  "category": "fun",
   "mode": "flash",
   "status": "experimental",
   "summary": "A 2048 puzzle game running on reTerminal Sticky with E-Ink display and touch control.",
