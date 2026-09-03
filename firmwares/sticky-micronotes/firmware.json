@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-micronotes",
+  "name": "Sticky MicroNotes",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "productivity",
+  "mode": "flash",
+  "status": "experimental",
+  "summary": "Distraction-free notes on Sticky with a BLE keyboard and Wi-Fi file transfer.",
+  "description": "Sticky MicroNotes is a writing firmware for the reTerminal Sticky. Pair a Bluetooth LE keyboard, type notes, save them to microSD, manage .txt files from a phone or laptop at http://sticky.local. Touch bar navigation, gyro auto-rotate and a clean sleep page that can keep the current note on screen.",
+  "author": {
+    "name": "LowFlowIO",
+    "url": "https://github.com/LowFlowIO"
+  },
+  "origin": {
+    "name": "microslate-firmware",
+    "url": "https://github.com/Josh-writes/microslate-firmware"
+  },
+  "source": {
+    "url": "https://github.com/LowFlowIO/sticky-micronotes",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/LowFlowIO/sticky-micronotes/issues"
+  },
+  "documentationUrl": "https://github.com/LowFlowIO/sticky-micronotes#readme",
+  "compatibility": {
+    "devices": ["reterminal-sticky"],
+    "notes": "Tested on Seeed reTerminal Sticky (ESP32-S3R8, 800x480 SSD1677, GT911 touch). Requires a microSD + BLE keyboard."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "Sticky MicroNotes home menu on reTerminal Sticky"
+  },
+  "tags": ["notes", "writing", "ble-keyboard", "eink", "wifi"],
+  "flash": {
+    "versions": [
+      {
+        "version": "1.0.0",
+        "channel": "experimental",
+        "manifestPath": "firmware/1.0.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device flashing",
+        "description": "Connect your reTerminal Sticky with a USB data cable and use desktop Chrome, Firefox or Edge +your preferred esp32 flasher"
+      },
+      {
+        "title": "Installation",
+        "description": "This package writes a full Sticky image from flash offset 0 (bootloader, partition table, and app). Use DIO 40 MHz."
+      },
+      {
+        "title": "After flashing",
+        "description": "Insert a microSD card, pair a BLE keyboard, join a 2.4GHz Wi-Fi network, write some notes, manage notes at http://sticky.local (on the same network)"
+      }
+    ]
+  }
+}
