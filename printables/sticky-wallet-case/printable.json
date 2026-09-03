@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-wallet-case",
+  "name": "Sticky Wallet Case",
+  "category": "case",
+  "summary": "A slim printed wallet-style case designed around the Sticky card form factor.",
+  "description": "A slim wallet-style case that wraps around reTerminal Sticky so it can be carried like a card. Files are published on Thingiverse.",
+  "author": {
+    "name": "Dropthetenors",
+    "url": "https://www.thingiverse.com/thing:7396154"
+  },
+  "download": {
+    "platform": "Thingiverse",
+    "url": "https://www.thingiverse.com/thing:7396154/files"
+  },
+  "preview": {
+    "image": "assets/preview.jpg",
+    "alt": "Sticky Wallet Case printed and fitted on reTerminal Sticky"
+  },
+  "tags": [
+    "case"
+  ]
+}

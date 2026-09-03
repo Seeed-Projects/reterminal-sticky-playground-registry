@@ -6,7 +6,7 @@ import { join, resolve } from 'node:path';
 const ROOT_DIR = process.env.REGISTRY_ROOT
   ? resolve(process.env.REGISTRY_ROOT)
   : resolve(import.meta.dirname, '..');
-const INTEGRATIONS_DIR = join(ROOT_DIR, 'integrations');
+const INTEGRATIONS_DIR = join(ROOT_DIR, 'firmwares');
 
 function slugifyVersion(value) {
   const slug = String(value)
@@ -24,7 +24,7 @@ const targets = readdirSync(INTEGRATIONS_DIR, { withFileTypes: true })
   .filter((entry) => entry.isDirectory() && !entry.name.startsWith('_'))
   .map((entry) => {
     const integration = JSON.parse(readFileSync(
-      join(INTEGRATIONS_DIR, entry.name, 'integration.json'),
+      join(INTEGRATIONS_DIR, entry.name, 'firmware.json'),
       'utf8',
     ));
     const version = integration.flash?.versions?.[0];
@@ -36,7 +36,7 @@ const targets = readdirSync(INTEGRATIONS_DIR, { withFileTypes: true })
     return {
       id: integration.id,
       name: integration.name,
-      path: `integrations/${integration.id}/${integration.build.projectPath}`,
+      path: `firmwares/${integration.id}/${integration.build.projectPath}`,
       idfVersion: integration.build.version,
       target: integration.build.target,
       version: version.version,

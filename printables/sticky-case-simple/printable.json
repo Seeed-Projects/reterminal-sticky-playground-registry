@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-case-simple",
+  "name": "Sticky Case Simple",
+  "category": "case",
+  "summary": "A compact bumper case with side-button and USB-C cutouts for everyday carry.",
+  "description": "A compact bumper case that wraps the edges of reTerminal Sticky and leaves the screen, side button, and USB-C port open. Print it in a flexible or rigid filament depending on the fit you prefer. The STL file is hosted by Seeed Studio on behalf of the author.",
+  "author": {
+    "name": "Faulince Huang",
+    "url": "https://www.facebook.com/groups/2141790083310058/user/1030037078/"
+  },
+  "download": {
+    "platform": "Seeed Studio Wiki",
+    "url": "https://files.seeedstudio.com/wiki/reterminal_sticky/res/sticky_case_simple.stl"
+  },
+  "preview": {
+    "image": "assets/preview.jpg",
+    "alt": "Sticky Case Simple printed and fitted on reTerminal Sticky"
+  },
+  "tags": [
+    "case"
+  ]
+}
