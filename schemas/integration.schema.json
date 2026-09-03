@@ -56,14 +56,19 @@
       },
       "category": {
         "type": "string",
-        "description": "Fixed category used by the Sticky Playground community firmware filter.",
+        "description": "Fixed category used by the Sticky Playground filters. Community firmware uses reader, dashboard, productivity, games, tools, or other. Printables use case, stand, mount, accessory, or reference.",
         "enum": [
           "reader",
           "dashboard",
           "productivity",
           "games",
           "tools",
-          "other"
+          "other",
+          "case",
+          "stand",
+          "mount",
+          "accessory",
+          "reference"
         ]
       },
     "mode": {
@@ -372,12 +377,24 @@
         }
       },
       "then": {
+        "required": [
+          "category"
+        ],
         "properties": {
           "group": {
             "const": "community"
           },
           "mode": {
             "const": "external"
+          },
+          "category": {
+            "enum": [
+              "case",
+              "stand",
+              "mount",
+              "accessory",
+              "reference"
+            ]
           }
         }
       }
@@ -400,7 +417,19 @@
       "then": {
         "required": [
           "category"
-        ]
+        ],
+        "properties": {
+          "category": {
+            "enum": [
+              "reader",
+              "dashboard",
+              "productivity",
+              "games",
+              "tools",
+              "other"
+            ]
+          }
+        }
       }
     },
     {
