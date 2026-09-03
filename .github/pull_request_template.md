@@ -74,7 +74,7 @@ Complete this section when **New community integration** is selected.
 Complete this section when **New 3D printable design** is selected.
 
 - [ ] Not applicable because this is a firmware contribution or an existing integration update.
-- [ ] `integration.json` uses `"group": "community"`, `"catalogSection": "printables"`, and `"mode": "external"`.
+- [ ] `integration.json` uses `"group": "community"`, `"catalogSection": "printables"`, `"mode": "external"`, and a documented `category`.
 - [ ] `external.url` points to the author's Printables, MakerWorld, Thingiverse, or GitHub page.
 - [ ] The preview is a real photo of the printed design on reTerminal Sticky.
 - [ ] Printable files are not committed to this repository.

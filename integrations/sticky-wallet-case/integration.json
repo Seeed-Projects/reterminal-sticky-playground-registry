@@ -4,6 +4,7 @@
   "name": "Sticky Wallet Case",
   "group": "community",
   "catalogSection": "printables",
+  "category": "case",
   "mode": "external",
   "status": "stable",
   "summary": "A slim printed wallet-style case designed around the Sticky card form factor.",
@@ -30,7 +31,7 @@
     "notes": "Designed for the production reTerminal Sticky enclosure."
   },
   "assets": {
-    "preview": "assets/preview.png",
+    "preview": "assets/preview.jpg",
     "previewAlt": "Sticky Wallet Case printed and fitted on reTerminal Sticky"
   },
   "tags": [

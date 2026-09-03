@@ -4,6 +4,7 @@
   "name": "Sticky Table Stand",
   "group": "community",
   "catalogSection": "printables",
+  "category": "stand",
   "mode": "external",
   "status": "stable",
   "summary": "A desktop stand that holds reTerminal Sticky at a comfortable viewing angle.",
@@ -30,7 +31,7 @@
     "notes": "Designed for the production reTerminal Sticky enclosure."
   },
   "assets": {
-    "preview": "assets/preview.png",
+    "preview": "assets/preview.jpg",
     "previewAlt": "Sticky Table Stand holding reTerminal Sticky at an angle"
   },
   "tags": [

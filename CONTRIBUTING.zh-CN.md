@@ -279,6 +279,7 @@ cp -R integrations/_template_printables integrations/my-case
   "name": "My Case",
   "group": "community",
   "catalogSection": "printables",
+  "category": "stand",
   "mode": "external",
   "status": "experimental",
   "summary": "A compact printed stand for reTerminal Sticky.",
@@ -314,6 +315,7 @@ cp -R integrations/_template_printables integrations/my-case
 |---|---|
 | `group` | 固定为 `community` |
 | `catalogSection` | 固定为 `printables` |
+| `category` | 从 `case`、`stand`、`mount`、`accessory`、`reference` 中选一个 |
 | `mode` | 固定为 `external` |
 | `source.url` | 托管打印文件的公开页面 |
 | `source.license` | 该页面标注的许可证 |
@@ -479,7 +481,7 @@ Sticky 网站仓库闭源。
 
 - [ ] 一个项目目录包含本次完整贡献。
 - [ ] `integration.json` 使用所选贡献类型规定的分组、目录区域和模式。
-- [ ] 社区固件条目已填写文档列出的 `category`。
+- [ ] 社区固件与 3D 打印条目已填写文档列出的 `category`。
 - [ ] 已选择“源码 + 构建配置”、“仅固件包 + 对应贡献类型要求的产物来源信息”，或“打印外壳外链 + 预览图”。
 - [ ] 官方固件更新使用仓库内版本目录，并记录官方固件产物来源。
 - [ ] 源码模式使用 `sourceBuild: true`，或仅固件包模式包含 manifest 和全部必需 `.bin`。

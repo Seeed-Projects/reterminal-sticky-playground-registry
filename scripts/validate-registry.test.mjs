@@ -602,7 +602,7 @@ test('accepts a printables catalog entry with an external download link', () => 
   const root = createRegistry();
   const integration = validBase('desk-stand', 'external');
   integration.catalogSection = 'printables';
-  delete integration.category;
+  integration.category = 'stand';
   integration.external = {
     label: 'View on Printables',
     url: 'https://www.printables.com/model/example',
@@ -685,4 +685,42 @@ test('rejects an unsupported firmware category', () => {
 
   assert.equal(result.status, 1);
   assert.match(result.stderr, /category: must be one of: reader, dashboard, productivity, games, tools, other/);
+});
+
+test('rejects a printables entry without a category', () => {
+  const root = createRegistry();
+  const integration = validBase('no-category-stand', 'external');
+  integration.catalogSection = 'printables';
+  delete integration.category;
+  integration.external = {
+    label: 'View on Printables',
+    url: 'https://www.printables.com/model/example',
+    description: 'Download the printable files from the author page.',
+  };
+  const integrationDir = writeIntegration(root, integration);
+  writeFileSync(join(integrationDir, 'README.md'), '# Stand\n');
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /category: is required for printables entries/);
+});
+
+test('rejects a firmware category on a printables entry', () => {
+  const root = createRegistry();
+  const integration = validBase('games-stand', 'external');
+  integration.catalogSection = 'printables';
+  integration.category = 'games';
+  integration.external = {
+    label: 'View on Printables',
+    url: 'https://www.printables.com/model/example',
+    description: 'Download the printable files from the author page.',
+  };
+  const integrationDir = writeIntegration(root, integration);
+  writeFileSync(join(integrationDir, 'README.md'), '# Stand\n');
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /category: must be one of: case, stand, mount, accessory, reference/);
 });

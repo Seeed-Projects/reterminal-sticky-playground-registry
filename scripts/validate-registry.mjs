@@ -25,7 +25,8 @@ const ALLOWED_GROUPS = new Set(['official', 'partner', 'community']);
 const ALLOWED_MODES = new Set(['external', 'template', 'download', 'flash']);
 const ALLOWED_STATUSES = new Set(['experimental', 'beta', 'stable']);
 const ALLOWED_CATALOG_SECTIONS = new Set(['official', 'platform', 'community', 'printables', 'draft']);
-const ALLOWED_CATEGORIES = new Set(['reader', 'dashboard', 'productivity', 'games', 'tools', 'other']);
+const ALLOWED_FIRMWARE_CATEGORIES = new Set(['reader', 'dashboard', 'productivity', 'games', 'tools', 'other']);
+const ALLOWED_PRINTABLE_CATEGORIES = new Set(['case', 'stand', 'mount', 'accessory', 'reference']);
 const ALLOWED_BUILD_SYSTEMS = new Set(['esp-idf']);
 const ALLOWED_ASSET_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.svg']);
 const ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -756,7 +757,10 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
   validateEnum(integration.group, ALLOWED_GROUPS, `${scope}.group`);
   validateEnum(integration.catalogSection, ALLOWED_CATALOG_SECTIONS, `${scope}.catalogSection`);
   if (integration.category !== undefined) {
-    validateEnum(integration.category, ALLOWED_CATEGORIES, `${scope}.category`);
+    const allowedCategories = integration.catalogSection === 'printables'
+      ? ALLOWED_PRINTABLE_CATEGORIES
+      : ALLOWED_FIRMWARE_CATEGORIES;
+    validateEnum(integration.category, allowedCategories, `${scope}.category`);
   }
   validateEnum(integration.mode, ALLOWED_MODES, `${scope}.mode`);
   validateEnum(integration.status, ALLOWED_STATUSES, `${scope}.status`);
@@ -832,6 +836,9 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
     }
     if (integration.mode !== 'external') {
       addError(`${scope}.mode`, 'must be "external" for the printables catalog section');
+    }
+    if (integration.category === undefined) {
+      addError(`${scope}.category`, 'is required for printables entries');
     }
   }
 

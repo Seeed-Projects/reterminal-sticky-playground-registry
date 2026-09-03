@@ -4,6 +4,7 @@
   "name": "reTerminal Sticky 3D Model",
   "group": "community",
   "catalogSection": "printables",
+  "category": "reference",
   "mode": "external",
   "status": "stable",
   "summary": "The reTerminal Sticky enclosure reference model for remixes and accessory design.",
@@ -30,7 +31,7 @@
     "notes": "Reference geometry of the production reTerminal Sticky enclosure."
   },
   "assets": {
-    "preview": "assets/preview.png",
+    "preview": "assets/preview.jpg",
     "previewAlt": "reTerminal Sticky enclosure reference 3D model"
   },
   "tags": [

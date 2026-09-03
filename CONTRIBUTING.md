@@ -284,6 +284,7 @@ Printable submissions use `"group": "community"`,
   "name": "My Case",
   "group": "community",
   "catalogSection": "printables",
+  "category": "stand",
   "mode": "external",
   "status": "experimental",
   "summary": "A compact printed stand for reTerminal Sticky.",
@@ -319,6 +320,7 @@ Printable submissions use `"group": "community"`,
 |---|---|
 | `group` | `community` |
 | `catalogSection` | `printables` |
+| `category` | One value from `case`, `stand`, `mount`, `accessory`, or `reference` |
 | `mode` | `external` |
 | `source.url` | The public page that hosts the printable files |
 | `source.license` | License shown on that page |
@@ -480,7 +482,7 @@ For a new version:
 
 - [ ] One integration directory contains the complete contribution.
 - [ ] `integration.json` uses the group, catalog section, and mode documented for the selected contribution type.
-- [ ] Community firmware entries include a `category` from the documented list.
+- [ ] Community firmware and printables entries include a `category` from the documented list.
 - [ ] The contribution uses source plus build metadata, firmware-only plus the provenance required for its contribution type, or a printables external link plus preview photo.
 - [ ] Official firmware updates use the repository-backed version directory and record the official artifact origin.
 - [ ] The source path uses `sourceBuild: true`, or the firmware-only path includes the manifest and every required `.bin`.

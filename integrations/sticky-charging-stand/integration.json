@@ -4,6 +4,7 @@
   "name": "Sticky Charging Stand",
   "group": "community",
   "catalogSection": "printables",
+  "category": "stand",
   "mode": "external",
   "status": "stable",
   "summary": "A minimalist charging stand that keeps Sticky upright and charging on a desk.",
@@ -30,7 +31,7 @@
     "notes": "Designed for the production reTerminal Sticky enclosure."
   },
   "assets": {
-    "preview": "assets/preview.png",
+    "preview": "assets/preview.jpg",
     "previewAlt": "Sticky Charging Stand holding reTerminal Sticky on a desk"
   },
   "tags": [
