@@ -84,7 +84,7 @@ Complete this section when **New 3D printable design** is selected.
 Complete this section when **New partner integration coordinated with the platform owner** is selected.
 
 - [ ] Not applicable because this is a community, official firmware, or existing integration update.
-- [ ] `integration.json` uses `"group": "partner"`, `"catalogSection": "platform"`, `"mode": "flash"`, and a documented `category`.
+- [ ] `integration.json` uses `"group": "partner"`, `"catalogSection": "platform"`, and `"mode": "flash"`.
 - [ ] Project, source, documentation, and support links point to official platform resources.
 - [ ] The platform metadata, official logo, compatibility, installation notes, and firmware package are complete.
 

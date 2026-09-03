@@ -667,7 +667,7 @@ test('rejects a community firmware entry without a category', () => {
   const result = runValidator(root);
 
   assert.equal(result.status, 1);
-  assert.match(result.stderr, /category: is required for firmware catalog entries/);
+  assert.match(result.stderr, /category: is required for community firmware entries/);
 });
 
 test('rejects an unsupported firmware category', () => {

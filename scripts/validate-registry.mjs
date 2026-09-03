@@ -821,7 +821,7 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
       addError(`${scope}.mode`, 'must be "flash" for the community catalog section');
     }
     if (integration.category === undefined) {
-      addError(`${scope}.category`, 'is required for firmware catalog entries');
+      addError(`${scope}.category`, 'is required for community firmware entries');
     }
     validateDirectFlashPackage(integration, integrationDir, scope);
   }
@@ -841,9 +841,6 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
     }
     if (integration.mode !== 'flash') {
       addError(`${scope}.mode`, 'must be "flash" for partner integrations');
-    }
-    if (integration.category === undefined) {
-      addError(`${scope}.category`, 'is required for firmware catalog entries');
     }
     validateDirectFlashPackage(integration, integrationDir, scope);
   }
