@@ -1,0 +1,23 @@
+{
+  "name": "Sticky MicroNotes",
+  "version": "1.0.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "40m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": false,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "sticky-micronotes-1.0.0-reterminal-sticky.bin",
+          "offset": 0,
+          "size": 1728528,
+          "sha256": "0bd5f4b9cc67239b7cc159c4d24a1ca2a58b2b0ee62723d10e05759c31e857d0",
+          "md5": "17778a1bfb9b5b60ae7f80bb56f8edef"
+        }
+      ]
+    }
+  ]
+}
