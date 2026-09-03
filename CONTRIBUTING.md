@@ -480,7 +480,7 @@ For a new version:
 
 - [ ] One integration directory contains the complete contribution.
 - [ ] `integration.json` uses the group, catalog section, and mode documented for the selected contribution type.
-- [ ] Firmware entries include a `category` from the documented list.
+- [ ] Community firmware entries include a `category` from the documented list.
 - [ ] The contribution uses source plus build metadata, firmware-only plus the provenance required for its contribution type, or a printables external link plus preview photo.
 - [ ] Official firmware updates use the repository-backed version directory and record the official artifact origin.
 - [ ] The source path uses `sourceBuild: true`, or the firmware-only path includes the manifest and every required `.bin`.

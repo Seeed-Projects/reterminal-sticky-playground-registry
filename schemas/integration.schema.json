@@ -56,7 +56,7 @@
       },
       "category": {
         "type": "string",
-        "description": "Fixed firmware catalog category used by the Sticky Playground filter.",
+        "description": "Fixed category used by the Sticky Playground community firmware filter.",
         "enum": [
           "reader",
           "dashboard",
@@ -353,9 +353,6 @@
         }
       },
       "then": {
-        "required": [
-          "category"
-        ],
         "properties": {
           "catalogSection": {
             "const": "platform"
@@ -392,10 +389,7 @@
             "const": "flash"
           },
           "catalogSection": {
-            "enum": [
-              "platform",
-              "community"
-            ]
+            "const": "community"
           }
         },
         "required": [
