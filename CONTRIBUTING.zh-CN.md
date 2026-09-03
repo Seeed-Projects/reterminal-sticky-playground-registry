@@ -264,13 +264,15 @@ cp -R integrations/_template_printables integrations/my-case
 
 1. 重命名目录，并更新 `integration.json.id`。
 2. 填写作者署名和 HTTPS 下载页。
-3. 加入打印完成并安装在 Sticky 上的实拍图。
-4. 在 README 中记录打印参数和组装说明。
-5. 运行仓库测试和校验。
-6. 提交 pull request。
+3. 选择最贴切的 `category`，网站会据此把设计放进 3D Printables 页对应的分类筛选里。
+4. 加入打印完成并安装在 Sticky 上的实拍图。
+5. 在 README 中记录打印参数和组装说明。
+6. 运行仓库测试和校验。
+7. 提交 pull request。
 
 打印外壳贡献使用 `"group": "community"`、
-`"catalogSection": "printables"` 和 `"mode": "external"`。
+`"catalogSection": "printables"`、`"mode": "external"`，并从
+`case`、`stand`、`mount`、`accessory`、`reference` 中选择一个 `category`。
 
 ```json
 {
