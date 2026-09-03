@@ -33,7 +33,7 @@ function validBase(id, mode) {
     name: 'Example Platform',
     group: 'community',
     catalogSection: 'platform',
-    category: 'other',
+    category: 'tools',
     mode,
     status: 'experimental',
     summary: 'A test integration for reTerminal Sticky.',
@@ -673,7 +673,7 @@ test('rejects a community firmware entry without a category', () => {
 test('rejects an unsupported firmware category', () => {
   const root = createRegistry();
   const integration = validBase('bad-category', 'external');
-  integration.category = 'weather';
+  integration.category = 'sports';
   integration.external = {
     label: 'Open official tool',
     url: 'https://example.com/tool',
@@ -684,7 +684,7 @@ test('rejects an unsupported firmware category', () => {
   const result = runValidator(root);
 
   assert.equal(result.status, 1);
-  assert.match(result.stderr, /category: must be one of: reader, dashboard, productivity, games, tools, other/);
+  assert.match(result.stderr, /category: must be one of: ereader, productivity, personal, weather, finance, tools, fun, smart-home/);
 });
 
 test('rejects a printables entry without a category', () => {
@@ -710,7 +710,7 @@ test('rejects a firmware category on a printables entry', () => {
   const root = createRegistry();
   const integration = validBase('games-stand', 'external');
   integration.catalogSection = 'printables';
-  integration.category = 'games';
+  integration.category = 'fun';
   integration.external = {
     label: 'View on Printables',
     url: 'https://www.printables.com/model/example',

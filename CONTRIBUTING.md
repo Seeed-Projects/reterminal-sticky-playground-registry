@@ -121,7 +121,7 @@ Normal third-party submissions use `"group": "community"`,
   "name": "My Firmware",
   "group": "community",
   "catalogSection": "community",
-  "category": "dashboard",
+  "category": "productivity",
   "mode": "flash",
   "status": "experimental",
   "summary": "Turn Sticky into a focused information display.",
@@ -182,7 +182,7 @@ Normal third-party submissions use `"group": "community"`,
 |---|---|
 | `group` | `community` |
 | `catalogSection` | `community` |
-| `category` | One value from `reader`, `dashboard`, `productivity`, `games`, `tools`, or `other` |
+| `category` | One value from `ereader`, `productivity`, `personal`, `weather`, `finance`, `tools`, `fun`, or `smart-home` |
 | `mode` | `flash` |
 | `status` | `experimental`, `beta`, or `stable` according to project maturity |
 | `author.name` | Required author or team name shown on the website |

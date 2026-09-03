@@ -122,7 +122,7 @@ cp -R integrations/_template integrations/my-firmware
   "name": "My Firmware",
   "group": "community",
   "catalogSection": "community",
-  "category": "dashboard",
+  "category": "productivity",
   "mode": "flash",
   "status": "experimental",
   "summary": "Turn Sticky into a focused information display.",
@@ -183,7 +183,7 @@ cp -R integrations/_template integrations/my-firmware
 |---|---|
 | `group` | 固定为 `community` |
 | `catalogSection` | 固定为 `community` |
-| `category` | 从 `reader`、`dashboard`、`productivity`、`games`、`tools`、`other` 中选一个 |
+| `category` | 从 `ereader`、`productivity`、`personal`、`weather`、`finance`、`tools`、`fun`、`smart-home` 中选一个 |
 | `mode` | 固定为 `flash` |
 | `status` | 按成熟度填写 `experimental`、`beta` 或 `stable` |
 | `author.name` | 必填，网站显示的作者或团队名称 |
