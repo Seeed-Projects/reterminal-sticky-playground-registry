@@ -44,15 +44,28 @@
         "community"
       ]
     },
-    "catalogSection": {
-      "type": "string",
-      "enum": [
-        "official",
-        "platform",
-        "community",
-        "draft"
-      ]
-    },
+      "catalogSection": {
+        "type": "string",
+        "enum": [
+          "official",
+          "platform",
+          "community",
+          "printables",
+          "draft"
+        ]
+      },
+      "category": {
+        "type": "string",
+        "description": "Fixed firmware catalog category used by the Sticky Playground filter.",
+        "enum": [
+          "reader",
+          "dashboard",
+          "productivity",
+          "games",
+          "tools",
+          "other"
+        ]
+      },
     "mode": {
       "type": "string",
       "enum": [
@@ -340,6 +353,9 @@
         }
       },
       "then": {
+        "required": [
+          "category"
+        ],
         "properties": {
           "catalogSection": {
             "const": "platform"
@@ -348,6 +364,49 @@
             "const": "flash"
           }
         }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "catalogSection": {
+            "const": "printables"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "group": {
+            "const": "community"
+          },
+          "mode": {
+            "const": "external"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "flash"
+          },
+          "catalogSection": {
+            "enum": [
+              "platform",
+              "community"
+            ]
+          }
+        },
+        "required": [
+          "mode",
+          "catalogSection"
+        ]
+      },
+      "then": {
+        "required": [
+          "category"
+        ]
       }
     },
     {

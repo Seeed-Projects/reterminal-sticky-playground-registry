@@ -4,6 +4,7 @@
   "name": "Followup",
   "group": "community",
   "catalogSection": "community",
+  "category": "productivity",
   "mode": "flash",
   "status": "experimental",
   "summary": "Capture ideas, to-dos, and notes by voice, then transcribe and organize them with Gemini.",

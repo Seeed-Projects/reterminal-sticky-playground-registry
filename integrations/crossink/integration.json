@@ -4,6 +4,7 @@
   "name": "CrossInk",
   "group": "partner",
   "catalogSection": "platform",
+  "category": "reader",
   "mode": "flash",
   "status": "beta",
   "summary": "E-reader firmware with flexible typography and reading statistics.",

@@ -4,6 +4,7 @@
   "name": "InkSalah",
   "group": "community",
   "catalogSection": "community",
+  "category": "productivity",
   "mode": "flash",
   "status": "beta",
   "summary": "Turn reTerminal Sticky into an offline-first prayer-window display with native touch settings.",
