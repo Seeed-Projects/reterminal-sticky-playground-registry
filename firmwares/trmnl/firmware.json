@@ -20,7 +20,7 @@
     "devices": [
       "reterminal-sticky"
     ],
-    "notes": "Version 1.8.11 is prepared for reTerminal Sticky production hardware."
+    "notes": "Version 1.8.16 is prepared for reTerminal Sticky production hardware."
   },
   "assets": {
     "logo": "assets/logo.svg",
@@ -34,6 +34,11 @@
   ],
   "flash": {
     "versions": [
+      {
+        "version": "1.8.16",
+        "channel": "beta",
+        "manifestPath": "firmware/1.8.16/manifest.json"
+      },
       {
         "version": "1.8.11",
         "channel": "beta",
