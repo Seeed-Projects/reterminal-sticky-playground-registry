@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-cad-model",
+  "name": "reTerminal Sticky 3D Model",
+  "group": "community",
+  "catalogSection": "printables",
+  "mode": "external",
+  "status": "stable",
+  "summary": "The reTerminal Sticky enclosure reference model for remixes and accessory design.",
+  "description": "The reference 3D model of the reTerminal Sticky enclosure. Use it to check fit when designing cases, stands, and mounts, or remix it into your own accessory. Published on Printables by Seeed Studio.",
+  "author": {
+    "name": "Seeed Studio",
+    "url": "https://www.printables.com/@SeeedStudio"
+  },
+  "origin": {
+    "name": "Printables",
+    "url": "https://www.printables.com/model/1800955-seeed-studio-reterminal-sticky-3d-model"
+  },
+  "source": {
+    "url": "https://www.printables.com/model/1800955-seeed-studio-reterminal-sticky-3d-model"
+  },
+  "support": {
+    "url": "https://www.printables.com/model/1800955-seeed-studio-reterminal-sticky-3d-model"
+  },
+  "documentationUrl": "https://www.printables.com/model/1800955-seeed-studio-reterminal-sticky-3d-model",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Reference geometry of the production reTerminal Sticky enclosure."
+  },
+  "assets": {
+    "preview": "assets/preview.png",
+    "previewAlt": "reTerminal Sticky enclosure reference 3D model"
+  },
+  "tags": [
+    "cad",
+    "reference"
+  ],
+  "external": {
+    "label": "View on Printables",
+    "url": "https://www.printables.com/model/1800955-seeed-studio-reterminal-sticky-3d-model",
+    "description": "Open the Printables page to download the reference model files."
+  }
+}

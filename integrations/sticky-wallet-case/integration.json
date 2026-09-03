@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-wallet-case",
+  "name": "Sticky Wallet Case",
+  "group": "community",
+  "catalogSection": "printables",
+  "mode": "external",
+  "status": "stable",
+  "summary": "A slim printed wallet-style case designed around the Sticky card form factor.",
+  "description": "A slim wallet-style case that wraps around reTerminal Sticky so it can be carried like a card. Files are published on Thingiverse.",
+  "author": {
+    "name": "Dropthetenors",
+    "url": "https://www.thingiverse.com/thing:7396154"
+  },
+  "origin": {
+    "name": "Thingiverse",
+    "url": "https://www.thingiverse.com/thing:7396154"
+  },
+  "source": {
+    "url": "https://www.thingiverse.com/thing:7396154"
+  },
+  "support": {
+    "url": "https://www.thingiverse.com/thing:7396154"
+  },
+  "documentationUrl": "https://www.thingiverse.com/thing:7396154",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Designed for the production reTerminal Sticky enclosure."
+  },
+  "assets": {
+    "preview": "assets/preview.png",
+    "previewAlt": "Sticky Wallet Case printed and fitted on reTerminal Sticky"
+  },
+  "tags": [
+    "case"
+  ],
+  "external": {
+    "label": "View on Thingiverse",
+    "url": "https://www.thingiverse.com/thing:7396154/files",
+    "description": "Open the Thingiverse files tab to download the STL files."
+  }
+}
