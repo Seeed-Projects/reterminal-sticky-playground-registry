@@ -18,17 +18,32 @@ const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const REPOSITORY_ROOT = process.env.REGISTRY_ROOT
   ? resolve(process.env.REGISTRY_ROOT)
   : resolve(SCRIPT_DIR, '..');
-const INTEGRATIONS_DIR = join(REPOSITORY_ROOT, 'integrations');
-const SCHEMA_PATH = join(REPOSITORY_ROOT, 'schemas', 'integration.schema.json');
+const FIRMWARES_DIR = join(REPOSITORY_ROOT, 'firmwares');
+const PRINTABLES_DIR = join(REPOSITORY_ROOT, 'printables');
+const FIRMWARE_SCHEMA_PATH = join(REPOSITORY_ROOT, 'schemas', 'firmware.schema.json');
+const PRINTABLE_SCHEMA_PATH = join(REPOSITORY_ROOT, 'schemas', 'printable.schema.json');
 
 const ALLOWED_GROUPS = new Set(['official', 'partner', 'community']);
 const ALLOWED_MODES = new Set(['external', 'template', 'download', 'flash']);
 const ALLOWED_STATUSES = new Set(['experimental', 'beta', 'stable']);
-const ALLOWED_CATALOG_SECTIONS = new Set(['official', 'platform', 'community', 'printables', 'draft']);
+const ALLOWED_CATALOG_SECTIONS = new Set(['official', 'platform', 'community', 'draft']);
 const ALLOWED_FIRMWARE_CATEGORIES = new Set(['ereader', 'productivity', 'personal', 'weather', 'finance', 'tools', 'fun', 'smart-home']);
 const ALLOWED_PRINTABLE_CATEGORIES = new Set(['case', 'stand', 'mount', 'accessory', 'reference']);
 const ALLOWED_BUILD_SYSTEMS = new Set(['esp-idf']);
 const ALLOWED_ASSET_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.svg']);
+const ALLOWED_PHOTO_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp']);
+const PRINTABLE_FIELDS = new Set([
+  'schemaVersion',
+  'id',
+  'name',
+  'category',
+  'summary',
+  'description',
+  'author',
+  'download',
+  'preview',
+  'tags',
+]);
 const ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const SHA256_PATTERN = /^[a-f0-9]{64}$/;
 const MODE_FIELDS = ['external', 'template', 'download', 'flash'];
@@ -167,7 +182,7 @@ function validateLocalDirectoryPath(value, integrationDir, scope) {
     return null;
   }
   if (isAbsolute(value) || value.split(/[\\/]/).includes('..')) {
-    addError(scope, 'must stay inside the integration directory');
+    addError(scope, 'must stay inside the entry directory');
     return null;
   }
 
@@ -184,7 +199,7 @@ function validateLocalDirectoryPath(value, integrationDir, scope) {
   const realIntegrationDir = realpathSync(integrationDir);
   const realDirectoryPath = realpathSync(resolvedPath);
   if (!realDirectoryPath.startsWith(`${realIntegrationDir}${sep}`)) {
-    addError(scope, 'must stay inside the integration directory');
+    addError(scope, 'must stay inside the entry directory');
     return null;
   }
   return resolvedPath;
@@ -306,22 +321,22 @@ function validateCompatibility(value, scope) {
   }
 }
 
-// Resolves contributor-provided paths inside one integration directory.
-// 在单个集成目录内解析贡献者提供的相对路径。
+// Resolves contributor-provided paths inside one firmware or printable directory.
+// 在单个固件或打印件目录内解析贡献者提供的相对路径。
 function validateLocalFilePath(value, integrationDir, scope, options = {}) {
   if (!validateString(value, scope, { max: 240 })) {
     return null;
   }
 
   if (isAbsolute(value) || value.split(/[\\/]/).includes('..')) {
-    addError(scope, 'must stay inside the integration directory');
+    addError(scope, 'must stay inside the entry directory');
     return null;
   }
 
   const resolvedPath = resolve(integrationDir, value);
   const relativePath = relative(integrationDir, resolvedPath);
   if (relativePath.startsWith(`..${sep}`) || relativePath === '..') {
-    addError(scope, 'must stay inside the integration directory');
+    addError(scope, 'must stay inside the entry directory');
     return null;
   }
 
@@ -343,7 +358,7 @@ function validateLocalFilePath(value, integrationDir, scope, options = {}) {
   const realIntegrationDir = realpathSync(integrationDir);
   const realFilePath = realpathSync(resolvedPath);
   if (!realFilePath.startsWith(`${realIntegrationDir}${sep}`)) {
-    addError(scope, 'must stay inside the integration directory');
+    addError(scope, 'must stay inside the entry directory');
     return null;
   }
 
@@ -701,14 +716,14 @@ function validateFlashMode(value, integrationDir, scope) {
   }
 }
 
-// Validates one production integration and all local files referenced by it.
-// 校验一个正式集成条目及其引用的全部本地文件。
-function validateIntegration(integrationDir, directoryName, seenIds) {
-  const metadataPath = join(integrationDir, 'integration.json');
-  const scope = `integrations/${directoryName}/integration.json`;
+// Validates one production firmware and all local files referenced by it.
+// 校验一个正式固件条目及其引用的全部本地文件。
+function validateFirmware(integrationDir, directoryName, seenIds) {
+  const metadataPath = join(integrationDir, 'firmware.json');
+  const scope = `firmwares/${directoryName}/firmware.json`;
 
   if (!existsSync(metadataPath)) {
-    addError(`integrations/${directoryName}`, 'is missing integration.json');
+    addError(`firmwares/${directoryName}`, 'is missing firmware.json');
     return;
   }
 
@@ -748,7 +763,7 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
       addError(`${scope}.id`, `must match the directory name "${directoryName}"`);
     }
     if (seenIds.has(integration.id)) {
-      addError(`${scope}.id`, `duplicates integration id "${integration.id}"`);
+      addError(`${scope}.id`, `duplicates firmware id "${integration.id}"`);
     }
     seenIds.add(integration.id);
   }
@@ -757,10 +772,7 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
   validateEnum(integration.group, ALLOWED_GROUPS, `${scope}.group`);
   validateEnum(integration.catalogSection, ALLOWED_CATALOG_SECTIONS, `${scope}.catalogSection`);
   if (integration.category !== undefined) {
-    const allowedCategories = integration.catalogSection === 'printables'
-      ? ALLOWED_PRINTABLE_CATEGORIES
-      : ALLOWED_FIRMWARE_CATEGORIES;
-    validateEnum(integration.category, allowedCategories, `${scope}.category`);
+    validateEnum(integration.category, ALLOWED_FIRMWARE_CATEGORIES, `${scope}.category`);
   }
   validateEnum(integration.mode, ALLOWED_MODES, `${scope}.mode`);
   validateEnum(integration.status, ALLOWED_STATUSES, `${scope}.status`);
@@ -794,19 +806,7 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
   }
 
   if (integration.tags !== undefined) {
-    if (!Array.isArray(integration.tags) || integration.tags.length > 6) {
-      addError(`${scope}.tags`, 'must be an array containing no more than 6 tags');
-    } else {
-      const tags = new Set();
-      integration.tags.forEach((tag, index) => {
-        if (validateString(tag, `${scope}.tags[${index}]`, { max: 32 })) {
-          if (tags.has(tag)) {
-            addError(`${scope}.tags[${index}]`, `duplicates tag "${tag}"`);
-          }
-          tags.add(tag);
-        }
-      });
-    }
+    validateTags(integration.tags, `${scope}.tags`);
   }
 
   if (integration.build !== undefined) {
@@ -814,7 +814,7 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
   }
 
   if (integration.group === 'community' && integration.author === undefined) {
-    addError(`${scope}.author`, 'is required for community integrations');
+    addError(`${scope}.author`, 'is required for community firmware');
   }
 
   if (integration.catalogSection === 'community') {
@@ -830,24 +830,12 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
     validateDirectFlashPackage(integration, integrationDir, scope);
   }
 
-  if (integration.catalogSection === 'printables') {
-    if (integration.group !== 'community') {
-      addError(`${scope}.group`, 'must be "community" for the printables catalog section');
-    }
-    if (integration.mode !== 'external') {
-      addError(`${scope}.mode`, 'must be "external" for the printables catalog section');
-    }
-    if (integration.category === undefined) {
-      addError(`${scope}.category`, 'is required for printables entries');
-    }
-  }
-
   if (integration.group === 'partner') {
     if (integration.catalogSection !== 'platform') {
-      addError(`${scope}.catalogSection`, 'must be "platform" for partner integrations');
+      addError(`${scope}.catalogSection`, 'must be "platform" for partner firmware');
     }
     if (integration.mode !== 'flash') {
-      addError(`${scope}.mode`, 'must be "flash" for partner integrations');
+      addError(`${scope}.mode`, 'must be "flash" for partner firmware');
     }
     validateDirectFlashPackage(integration, integrationDir, scope);
   }
@@ -880,26 +868,143 @@ function validateIntegration(integrationDir, directoryName, seenIds) {
   }
 }
 
-function main() {
+function validateTags(value, scope) {
+  if (!Array.isArray(value) || value.length > 6) {
+    addError(scope, 'must be an array containing no more than 6 tags');
+    return;
+  }
+  const tags = new Set();
+  value.forEach((tag, index) => {
+    if (validateString(tag, `${scope}[${index}]`, { max: 32 })) {
+      if (tags.has(tag)) {
+        addError(`${scope}[${index}]`, `duplicates tag "${tag}"`);
+      }
+      tags.add(tag);
+    }
+  });
+}
+
+// Validates one printable design card and the preview photo it references.
+// 校验一个 3D 打印设计卡片及其引用的预览图。
+function validatePrintable(printableDir, directoryName, seenIds) {
+  const metadataPath = join(printableDir, 'printable.json');
+  const scope = `printables/${directoryName}/printable.json`;
+
+  if (!existsSync(metadataPath)) {
+    addError(`printables/${directoryName}`, 'is missing printable.json');
+    return;
+  }
+
+  let printable;
   try {
-    JSON.parse(readFileSync(SCHEMA_PATH, 'utf8'));
+    printable = JSON.parse(readFileSync(metadataPath, 'utf8'));
   } catch (error) {
-    addError('schemas/integration.schema.json', `contains invalid JSON (${error.message})`);
+    addError(scope, `contains invalid JSON (${error.message})`);
+    return;
   }
 
-  if (!existsSync(INTEGRATIONS_DIR)) {
-    addError('integrations', 'directory is missing');
+  const requiredFields = [
+    'schemaVersion',
+    'id',
+    'name',
+    'category',
+    'summary',
+    'description',
+    'author',
+    'download',
+    'preview',
+  ];
+  if (!validateObjectKeys(printable, requiredFields, PRINTABLE_FIELDS, scope)) {
+    return;
   }
 
-  const integrationDirectories = existsSync(INTEGRATIONS_DIR)
-    ? readdirSync(INTEGRATIONS_DIR, { withFileTypes: true })
+  if (printable.schemaVersion !== 1) {
+    addError(`${scope}.schemaVersion`, 'must be 1');
+  }
+
+  if (validateString(printable.id, `${scope}.id`, { min: 2, max: 64, pattern: ID_PATTERN })) {
+    if (printable.id !== directoryName) {
+      addError(`${scope}.id`, `must match the directory name "${directoryName}"`);
+    }
+    if (seenIds.has(printable.id)) {
+      addError(`${scope}.id`, `duplicates printable id "${printable.id}"`);
+    }
+    seenIds.add(printable.id);
+  }
+
+  validateString(printable.name, `${scope}.name`, { max: 80 });
+  validateEnum(printable.category, ALLOWED_PRINTABLE_CATEGORIES, `${scope}.category`);
+  validateString(printable.summary, `${scope}.summary`, { max: 140 });
+  validateString(printable.description, `${scope}.description`, { max: 800 });
+  validateAttribution(printable.author, `${scope}.author`);
+
+  const downloadScope = `${scope}.download`;
+  if (validateObjectKeys(printable.download, ['platform', 'url'], new Set(['platform', 'url', 'license']), downloadScope)) {
+    validateString(printable.download.platform, `${downloadScope}.platform`, { max: 40 });
+    validateHttpsUrl(printable.download.url, `${downloadScope}.url`);
+    if (printable.download.license !== undefined) {
+      validateString(printable.download.license, `${downloadScope}.license`, { max: 80 });
+    }
+  }
+
+  const previewScope = `${scope}.preview`;
+  if (validateObjectKeys(printable.preview, ['image', 'alt'], new Set(['image', 'alt']), previewScope)) {
+    if (typeof printable.preview.image === 'string' && !printable.preview.image.startsWith('assets/')) {
+      addError(`${previewScope}.image`, 'must be inside the assets/ directory');
+    }
+    const imagePath = validateLocalFilePath(printable.preview.image, printableDir, `${previewScope}.image`, {
+      extensions: ALLOWED_PHOTO_EXTENSIONS,
+      maxBytes: 5 * 1024 * 1024,
+    });
+    validateAssetContent(imagePath, `${previewScope}.image`);
+    validateString(printable.preview.alt, `${previewScope}.alt`, { max: 180 });
+  }
+
+  validateLocalFilePath('README.md', printableDir, `${scope}.README.md`);
+
+  if (printable.tags !== undefined) {
+    validateTags(printable.tags, `${scope}.tags`);
+  }
+}
+
+function listEntryDirectories(rootDir) {
+  return existsSync(rootDir)
+    ? readdirSync(rootDir, { withFileTypes: true })
       .filter((entry) => entry.isDirectory() && !entry.name.startsWith('_') && !entry.name.startsWith('.'))
       .sort((a, b) => a.name.localeCompare(b.name))
     : [];
+}
 
-  const seenIds = new Set();
-  for (const entry of integrationDirectories) {
-    validateIntegration(join(INTEGRATIONS_DIR, entry.name), entry.name, seenIds);
+function main() {
+  for (const [schemaPath, label] of [
+    [FIRMWARE_SCHEMA_PATH, 'schemas/firmware.schema.json'],
+    [PRINTABLE_SCHEMA_PATH, 'schemas/printable.schema.json'],
+  ]) {
+    try {
+      JSON.parse(readFileSync(schemaPath, 'utf8'));
+    } catch (error) {
+      addError(label, `contains invalid JSON (${error.message})`);
+    }
+  }
+
+  if (!existsSync(FIRMWARES_DIR)) {
+    addError('firmwares', 'directory is missing');
+  }
+  if (!existsSync(PRINTABLES_DIR)) {
+    addError('printables', 'directory is missing');
+  }
+
+  const firmwareDirectories = listEntryDirectories(FIRMWARES_DIR);
+  const printableDirectories = listEntryDirectories(PRINTABLES_DIR);
+
+  const seenFirmwareIds = new Set();
+  for (const entry of firmwareDirectories) {
+    validateFirmware(join(FIRMWARES_DIR, entry.name), entry.name, seenFirmwareIds);
+  }
+
+  const seenPrintableIds = new Set();
+  for (const entry of printableDirectories) {
+    validatePrintable(join(PRINTABLES_DIR, entry.name), entry.name, seenPrintableIds);
   }
 
   if (errors.length > 0) {
@@ -909,7 +1014,10 @@ function main() {
     return;
   }
 
-  console.log(`Registry validation passed (${integrationDirectories.length} integration(s)).`);
+  console.log(
+    `Registry validation passed (${firmwareDirectories.length} firmware(s), `
+    + `${printableDirectories.length} printable(s)).`,
+  );
 }
 
 main();

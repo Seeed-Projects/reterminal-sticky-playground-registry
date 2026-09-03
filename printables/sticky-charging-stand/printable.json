@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-charging-stand",
+  "name": "Sticky Charging Stand",
+  "category": "stand",
+  "summary": "A minimalist charging stand that keeps Sticky upright and charging on a desk.",
+  "description": "A compact desk stand that holds reTerminal Sticky upright with a USB-C cable channel underneath, so the device stays charged while it works as a desk display. Print profiles and files are available on MakerWorld.",
+  "author": {
+    "name": "ALXV Labs",
+    "url": "https://makerworld.com/en/models/3094593-seeed-studio-sticky-charging-stand"
+  },
+  "download": {
+    "platform": "MakerWorld",
+    "url": "https://makerworld.com/en/models/3094593-seeed-studio-sticky-charging-stand#profileId-3487354"
+  },
+  "preview": {
+    "image": "assets/preview.jpg",
+    "alt": "Sticky Charging Stand holding reTerminal Sticky on a desk"
+  },
+  "tags": [
+    "stand",
+    "charging"
+  ]
+}

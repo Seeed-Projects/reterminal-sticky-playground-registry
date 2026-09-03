@@ -20,10 +20,40 @@ const TEMP_ROOTS = [];
 function createRegistry() {
   const root = mkdtempSync(join(tmpdir(), 'sticky-registry-test-'));
   TEMP_ROOTS.push(root);
-  mkdirSync(join(root, 'integrations'), { recursive: true });
+  mkdirSync(join(root, 'firmwares'), { recursive: true });
+  mkdirSync(join(root, 'printables'), { recursive: true });
   mkdirSync(join(root, 'schemas'), { recursive: true });
-  writeFileSync(join(root, 'schemas', 'integration.schema.json'), '{}\n');
+  writeFileSync(join(root, 'schemas', 'firmware.schema.json'), '{}\n');
+  writeFileSync(join(root, 'schemas', 'printable.schema.json'), '{}\n');
   return root;
+}
+
+function validPrintable(id) {
+  return {
+    schemaVersion: 1,
+    id,
+    name: 'Desk Stand',
+    category: 'stand',
+    summary: 'A printed desk stand for Sticky.',
+    description: 'Holds reTerminal Sticky upright on a desk.',
+    author: { name: 'Maker', url: 'https://www.printables.com/@maker' },
+    download: {
+      platform: 'Printables',
+      url: 'https://www.printables.com/model/example',
+      license: 'CC BY-SA 4.0',
+    },
+    preview: { image: 'assets/preview.jpg', alt: 'Desk Stand holding reTerminal Sticky' },
+    tags: ['desk'],
+  };
+}
+
+function writePrintable(root, printable) {
+  const printableDir = join(root, 'printables', printable.id);
+  mkdirSync(join(printableDir, 'assets'), { recursive: true });
+  writeFileSync(join(printableDir, 'README.md'), '# Desk Stand\n');
+  writeFileSync(join(printableDir, 'assets', 'preview.jpg'), Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10]));
+  writeFileSync(join(printableDir, 'printable.json'), `${JSON.stringify(printable, null, 2)}\n`);
+  return printableDir;
 }
 
 function validBase(id, mode) {
@@ -63,7 +93,7 @@ function validBase(id, mode) {
 }
 
 function writeIntegration(root, integration) {
-  const integrationDir = join(root, 'integrations', integration.id);
+  const integrationDir = join(root, 'firmwares', integration.id);
   mkdirSync(join(integrationDir, 'assets'), { recursive: true });
   writeFileSync(
     join(integrationDir, 'assets', 'logo.svg'),
@@ -78,7 +108,7 @@ function writeIntegration(root, integration) {
     ]),
   );
   writeFileSync(
-    join(integrationDir, 'integration.json'),
+    join(integrationDir, 'firmware.json'),
     `${JSON.stringify(integration, null, 2)}\n`,
   );
   return integrationDir;
@@ -105,7 +135,7 @@ test('accepts an empty production registry', () => {
   const result = runValidator(root);
 
   assert.equal(result.status, 0);
-  assert.match(result.stdout, /Registry validation passed \(0 integration\(s\)\)\./);
+  assert.match(result.stdout, /Registry validation passed \(0 firmware\(s\), 0 printable\(s\)\)\./);
 });
 
 test('accepts an integration without an optional logo', () => {
@@ -122,7 +152,7 @@ test('accepts an integration without an optional logo', () => {
   const result = runValidator(root);
 
   assert.equal(result.status, 0);
-  assert.match(result.stdout, /Registry validation passed \(1 integration\(s\)\)\./);
+  assert.match(result.stdout, /Registry validation passed \(1 firmware\(s\), 0 printable\(s\)\)\./);
 });
 
 test('requires TRMNL preview artwork to use the official logo asset', () => {
@@ -158,7 +188,7 @@ test('accepts plain-text author and optional source attribution', () => {
   const result = runValidator(root);
 
   assert.equal(result.status, 0);
-  assert.match(result.stdout, /Registry validation passed \(1 integration\(s\)\)\./);
+  assert.match(result.stdout, /Registry validation passed \(1 firmware\(s\), 0 printable\(s\)\)\./);
 });
 
 test('accepts a firmware-only partner integration without author attribution', () => {
@@ -270,7 +300,7 @@ test('requires the newest Sticky official firmware to use its version directory'
   );
 });
 
-test('requires author attribution for community integrations', () => {
+test('requires author attribution for community firmware', () => {
   const root = createRegistry();
   const integration = validBase('community-without-author', 'external');
   delete integration.author;
@@ -284,7 +314,7 @@ test('requires author attribution for community integrations', () => {
   const result = runValidator(root);
 
   assert.equal(result.status, 1);
-  assert.match(result.stderr, /author: is required for community integrations/);
+  assert.match(result.stderr, /author: is required for community firmware/);
 });
 
 test('rejects source attribution without a name', () => {
@@ -319,7 +349,7 @@ test('accepts a valid external integration', () => {
   const result = runValidator(root);
 
   assert.equal(result.status, 0);
-  assert.match(result.stdout, /Registry validation passed \(1 integration\(s\)\)\./);
+  assert.match(result.stdout, /Registry validation passed \(1 firmware\(s\), 0 printable\(s\)\)\./);
 });
 
 test('rejects an unsafe ESP-IDF Docker tag', () => {
@@ -550,7 +580,7 @@ test('reports a directory and integration ID mismatch', () => {
     description: 'Continue in the maintained upstream tool.',
   };
   const integrationDir = writeIntegration(root, integration);
-  const mismatchedDir = join(root, 'integrations', 'directory-id');
+  const mismatchedDir = join(root, 'firmwares', 'directory-id');
   renameSync(integrationDir, mismatchedDir);
 
   const result = runValidator(root);
@@ -598,43 +628,6 @@ test('rejects an invalid flash manifest hash', () => {
   assert.match(result.stderr, /manifestSha256: must contain between 64 and 64 characters/);
 });
 
-test('accepts a printables catalog entry with an external download link', () => {
-  const root = createRegistry();
-  const integration = validBase('desk-stand', 'external');
-  integration.catalogSection = 'printables';
-  integration.category = 'stand';
-  integration.external = {
-    label: 'View on Printables',
-    url: 'https://www.printables.com/model/example',
-    description: 'Download the printable files from the author page.',
-  };
-  const integrationDir = writeIntegration(root, integration);
-  writeFileSync(join(integrationDir, 'README.md'), '# Desk Stand\n');
-
-  const result = runValidator(root);
-
-  assert.equal(result.status, 0, result.stderr);
-});
-
-test('rejects a printables catalog entry that is not external', () => {
-  const root = createRegistry();
-  const integration = validBase('hosted-case', 'flash');
-  integration.catalogSection = 'printables';
-  integration.flash = {
-    versions: [{
-      version: '1.0.0',
-      channel: 'stable',
-      sourceBuild: true,
-    }],
-  };
-  writeIntegration(root, integration);
-
-  const result = runValidator(root);
-
-  assert.equal(result.status, 1);
-  assert.match(result.stderr, /must be "external" for the printables catalog section/);
-});
-
 test('rejects a community firmware entry without a category', () => {
   const root = createRegistry();
   const integration = validBase('missing-category', 'flash');
@@ -660,7 +653,7 @@ test('rejects a community firmware entry without a category', () => {
     projectPath: 'source',
   };
   writeFileSync(
-    join(integrationDir, 'integration.json'),
+    join(integrationDir, 'firmware.json'),
     `${JSON.stringify(integration, null, 2)}\n`,
   );
 
@@ -687,40 +680,87 @@ test('rejects an unsupported firmware category', () => {
   assert.match(result.stderr, /category: must be one of: ereader, productivity, personal, weather, finance, tools, fun, smart-home/);
 });
 
-test('rejects a printables entry without a category', () => {
+test('accepts a printable design card with a preview photo', () => {
   const root = createRegistry();
-  const integration = validBase('no-category-stand', 'external');
-  integration.catalogSection = 'printables';
-  delete integration.category;
-  integration.external = {
-    label: 'View on Printables',
-    url: 'https://www.printables.com/model/example',
-    description: 'Download the printable files from the author page.',
-  };
-  const integrationDir = writeIntegration(root, integration);
-  writeFileSync(join(integrationDir, 'README.md'), '# Stand\n');
+  writePrintable(root, validPrintable('desk-stand'));
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /Registry validation passed \(0 firmware\(s\), 1 printable\(s\)\)\./);
+});
+
+test('rejects a printable design with firmware-only fields', () => {
+  const root = createRegistry();
+  const printable = validPrintable('hosted-case');
+  printable.mode = 'external';
+  printable.catalogSection = 'printables';
+  writePrintable(root, printable);
 
   const result = runValidator(root);
 
   assert.equal(result.status, 1);
-  assert.match(result.stderr, /category: is required for printables entries/);
+  assert.match(result.stderr, /printables\/hosted-case\/printable\.json: contains unsupported field "mode"/);
+  assert.match(result.stderr, /contains unsupported field "catalogSection"/);
 });
 
-test('rejects a firmware category on a printables entry', () => {
+test('rejects a printable design without a category', () => {
   const root = createRegistry();
-  const integration = validBase('games-stand', 'external');
-  integration.catalogSection = 'printables';
-  integration.category = 'fun';
-  integration.external = {
-    label: 'View on Printables',
-    url: 'https://www.printables.com/model/example',
-    description: 'Download the printable files from the author page.',
-  };
-  const integrationDir = writeIntegration(root, integration);
-  writeFileSync(join(integrationDir, 'README.md'), '# Stand\n');
+  const printable = validPrintable('no-category-stand');
+  delete printable.category;
+  writePrintable(root, printable);
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /printable\.json: missing required field "category"/);
+});
+
+test('rejects a firmware category on a printable design', () => {
+  const root = createRegistry();
+  const printable = validPrintable('fun-stand');
+  printable.category = 'fun';
+  writePrintable(root, printable);
 
   const result = runValidator(root);
 
   assert.equal(result.status, 1);
   assert.match(result.stderr, /category: must be one of: case, stand, mount, accessory, reference/);
+});
+
+test('rejects a printable design whose download page is not HTTPS', () => {
+  const root = createRegistry();
+  const printable = validPrintable('http-stand');
+  printable.download.url = 'http://www.printables.com/model/example';
+  writePrintable(root, printable);
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /download\.url: must use HTTPS/);
+});
+
+test('rejects a printable design whose preview photo is missing', () => {
+  const root = createRegistry();
+  const printable = validPrintable('no-photo-stand');
+  printable.preview.image = 'assets/missing.jpg';
+  writePrintable(root, printable);
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /preview\.image: references a missing file: assets\/missing\.jpg/);
+});
+
+test('rejects a printable design whose id does not match its directory', () => {
+  const root = createRegistry();
+  const printable = validPrintable('desk-stand');
+  const printableDir = writePrintable(root, printable);
+  printable.id = 'other-stand';
+  writeFileSync(join(printableDir, 'printable.json'), `${JSON.stringify(printable, null, 2)}\n`);
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /id: must match the directory name "desk-stand"/);
 });

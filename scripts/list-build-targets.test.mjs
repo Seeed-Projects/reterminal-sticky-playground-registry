@@ -15,10 +15,10 @@ const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const LIST_SCRIPT = join(SCRIPT_DIR, 'list-build-targets.mjs');
 
 function writeIntegration(root, integration) {
-  const integrationDir = join(root, 'integrations', integration.id);
+  const integrationDir = join(root, 'firmwares', integration.id);
   mkdirSync(integrationDir, { recursive: true });
   writeFileSync(
-    join(integrationDir, 'integration.json'),
+    join(integrationDir, 'firmware.json'),
     `${JSON.stringify(integration, null, 2)}\n`,
   );
 }
@@ -75,7 +75,7 @@ test('lists only publishable source-built integrations', () => {
       include: [{
         id: 'source-project',
         name: 'Source Project',
-        path: 'integrations/source-project/source',
+        path: 'firmwares/source-project/source',
         idfVersion: 'v5.3.2',
         target: 'esp32s3',
         version: '2.0.0 RC1',

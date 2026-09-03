@@ -10,11 +10,11 @@ const ROOT_DIR = process.env.REGISTRY_ROOT
 const integrationId = process.argv[2];
 
 if (!integrationId || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(integrationId)) {
-  throw new Error('Usage: node scripts/verify-esp-idf-build.mjs <integration-id>');
+  throw new Error('Usage: node scripts/verify-esp-idf-build.mjs <firmware-id>');
 }
 
-const integrationDir = join(ROOT_DIR, 'integrations', integrationId);
-const integration = JSON.parse(readFileSync(join(integrationDir, 'integration.json'), 'utf8'));
+const integrationDir = join(ROOT_DIR, 'firmwares', integrationId);
+const integration = JSON.parse(readFileSync(join(integrationDir, 'firmware.json'), 'utf8'));
 const version = integration.flash?.versions?.[0];
 if (integration.build?.system !== 'esp-idf' || !version?.manifestPath) {
   throw new Error(`${integrationId} is not a locally packaged ESP-IDF firmware`);
