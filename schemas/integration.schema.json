@@ -56,14 +56,16 @@
       },
       "category": {
         "type": "string",
-        "description": "Fixed category used by the Sticky Playground filters. Community firmware uses reader, dashboard, productivity, games, tools, or other. Printables use case, stand, mount, accessory, or reference.",
+        "description": "Fixed category used by the Sticky Playground filters. Community firmware uses ereader, productivity, personal, weather, finance, tools, fun, or smart-home. Printables use case, stand, mount, accessory, or reference.",
         "enum": [
-          "reader",
-          "dashboard",
+          "ereader",
           "productivity",
-          "games",
+          "personal",
+          "weather",
+          "finance",
           "tools",
-          "other",
+          "fun",
+          "smart-home",
           "case",
           "stand",
           "mount",
@@ -421,12 +423,14 @@
         "properties": {
           "category": {
             "enum": [
-              "reader",
-              "dashboard",
+              "ereader",
               "productivity",
-              "games",
+              "personal",
+              "weather",
+              "finance",
               "tools",
-              "other"
+              "fun",
+              "smart-home"
             ]
           }
         }
