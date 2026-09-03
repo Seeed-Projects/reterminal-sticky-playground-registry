@@ -1,8 +1,9 @@
-# 为 reTerminal Sticky Playground 贡献固件
+# 为 reTerminal Sticky Playground 贡献内容
 
-这个仓库是 reTerminal Sticky 固件合集面向外部开发者的公开贡献与审核入口。
-一份完整的社区贡献通过审核后，会在 Sticky 官网 Playground 中生成一张固件卡片，
-并进入由 Seeed 网站提供的浏览器烧录页面。
+这个仓库是 reTerminal Sticky Playground 合集面向外部开发者的公开贡献与审核入口。
+一份完整的社区固件贡献通过审核后，会在 Sticky 官网 Playground 中生成一张固件卡片，
+并进入由 Seeed 网站提供的浏览器烧录页面。一份完整的 3D 打印外壳贡献会进入
+Playground 的 3D Printables 页面，并跳转到作者自己的下载页。
 
 贡献者可以选择提交完整可编译源码，也可以只提交经过验证的固件包并提供上游源码
 链接。源码模式由 GitHub Actions 自动编译并整理固件。两种方式都需要项目信息、展示
@@ -121,6 +122,7 @@ cp -R integrations/_template integrations/my-firmware
   "name": "My Firmware",
   "group": "community",
   "catalogSection": "community",
+  "category": "dashboard",
   "mode": "flash",
   "status": "experimental",
   "summary": "Turn Sticky into a focused information display.",
@@ -181,6 +183,7 @@ cp -R integrations/_template integrations/my-firmware
 |---|---|
 | `group` | 固定为 `community` |
 | `catalogSection` | 固定为 `community` |
+| `category` | 从 `reader`、`dashboard`、`productivity`、`games`、`tools`、`other` 中选一个 |
 | `mode` | 固定为 `flash` |
 | `status` | 按成熟度填写 `experimental`、`beta` 或 `stable` |
 | `author.name` | 必填，网站显示的作者或团队名称 |
@@ -230,6 +233,99 @@ Release，供 Sticky 测试分支读取。
 ```
 
 一句话总结：提交源码时由 Action 产出固件；直接提交固件时由作者提供完整烧录包。
+
+## 贡献 3D 打印外壳
+
+一份已发布的打印设计会形成下面这条用户流程：
+
+1. 用户打开 Sticky Playground，并选择 **3D Printables**。
+2. 用户点击社区设计卡片。
+3. 用户打开作者在 Printables、MakerWorld、Thingiverse 或 GitHub 上的页面。
+4. 用户从该页面下载打印文件。
+
+Registry 只保存项目信息、作者署名和一张预览图。打印文件留在作者自己的页面上。
+
+```text
+integrations/
+  my-case/
+    integration.json
+    README.md
+    assets/
+      preview.jpg
+```
+
+在仓库根目录执行：
+
+```bash
+cp -R integrations/_template_printables integrations/my-case
+```
+
+按这个顺序补全文件：
+
+1. 重命名目录，并更新 `integration.json.id`。
+2. 填写作者署名和 HTTPS 下载页。
+3. 选择最贴切的 `category`，网站会据此把设计放进 3D Printables 页对应的分类筛选里。
+4. 加入打印完成并安装在 Sticky 上的实拍图。
+5. 在 README 中记录打印参数和组装说明。
+6. 运行仓库测试和校验。
+7. 提交 pull request。
+
+打印外壳贡献使用 `"group": "community"`、
+`"catalogSection": "printables"`、`"mode": "external"`，并从
+`case`、`stand`、`mount`、`accessory`、`reference` 中选择一个 `category`。
+
+```json
+{
+  "schemaVersion": 1,
+  "id": "my-case",
+  "name": "My Case",
+  "group": "community",
+  "catalogSection": "printables",
+  "category": "stand",
+  "mode": "external",
+  "status": "experimental",
+  "summary": "A compact printed stand for reTerminal Sticky.",
+  "description": "My Case holds Sticky on a desk and keeps the USB port clear.",
+  "author": {
+    "name": "Project author or team",
+    "url": "https://github.com/example"
+  },
+  "source": {
+    "url": "https://www.printables.com/model/example",
+    "license": "CC BY-SA 4.0"
+  },
+  "support": {
+    "url": "https://www.printables.com/model/example"
+  },
+  "compatibility": {
+    "devices": ["reterminal-sticky"]
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "My Case printed and mounted on reTerminal Sticky"
+  },
+  "tags": ["case", "stand"],
+  "external": {
+    "label": "View on Printables",
+    "url": "https://www.printables.com/model/example",
+    "description": "Download the printable files from the author page."
+  }
+}
+```
+
+| 字段 | 打印外壳贡献填写方式 |
+|---|---|
+| `group` | 固定为 `community` |
+| `catalogSection` | 固定为 `printables` |
+| `category` | 从 `case`、`stand`、`mount`、`accessory`、`reference` 中选一个 |
+| `mode` | 固定为 `external` |
+| `source.url` | 托管打印文件的公开页面 |
+| `source.license` | 该页面标注的许可证 |
+| `external.label` | 网站按钮文案，例如 `View on Printables` |
+| `external.url` | 同一个公开下载页 |
+| `tags` | 可选，例如 `case`、`stand`、`mount` |
+
+一句话总结：提交卡片信息和预览图，打印文件继续放在作者自己的下载页。
 
 ## Sticky 官方固件更新
 
@@ -387,7 +483,8 @@ Sticky 网站仓库闭源。
 
 - [ ] 一个项目目录包含本次完整贡献。
 - [ ] `integration.json` 使用所选贡献类型规定的分组、目录区域和模式。
-- [ ] 已选择“源码 + 构建配置”或“仅固件包 + 对应贡献类型要求的产物来源信息”。
+- [ ] 社区固件与 3D 打印条目已填写文档列出的 `category`。
+- [ ] 已选择“源码 + 构建配置”、“仅固件包 + 对应贡献类型要求的产物来源信息”，或“打印外壳外链 + 预览图”。
 - [ ] 官方固件更新使用仓库内版本目录，并记录官方固件产物来源。
 - [ ] 源码模式使用 `sourceBuild: true`，或仅固件包模式包含 manifest 和全部必需 `.bin`。
 - [ ] README 和 PR 写明经过测试的固件来源和固件版本。

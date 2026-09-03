@@ -11,6 +11,7 @@
 ### Contribution type
 
 - [ ] New community integration
+- [ ] New 3D printable design
 - [ ] New partner integration coordinated with the platform owner
 - [ ] Official Sticky firmware update maintained by Seeed
 - [ ] Existing community or partner integration update
@@ -19,6 +20,7 @@
 
 - [ ] Source contribution built by GitHub Actions
 - [ ] Firmware-only package
+- [ ] 3D printable design with an external download link
 
 ## What this contribution provides
 
@@ -64,8 +66,18 @@ Complete this section when **Firmware-only package** is selected.
 Complete this section when **New community integration** is selected.
 
 - [ ] Not applicable because a new partner, official firmware, or existing integration update is selected.
-- [ ] `integration.json` uses `"group": "community"`, `"catalogSection": "community"`, and `"mode": "flash"`.
+- [ ] `integration.json` uses `"group": "community"`, `"catalogSection": "community"`, `"mode": "flash"`, and a documented `category`.
 - [ ] The project metadata, assets, compatibility, installation notes, and support links are complete.
+
+## New 3D printable design verification
+
+Complete this section when **New 3D printable design** is selected.
+
+- [ ] Not applicable because this is a firmware contribution or an existing integration update.
+- [ ] `integration.json` uses `"group": "community"`, `"catalogSection": "printables"`, `"mode": "external"`, and a documented `category`.
+- [ ] `external.url` points to the author's Printables, MakerWorld, Thingiverse, or GitHub page.
+- [ ] The preview is a real photo of the printed design on reTerminal Sticky.
+- [ ] Printable files are not committed to this repository.
 
 ## New partner integration verification
 

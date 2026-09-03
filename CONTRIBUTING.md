@@ -1,8 +1,10 @@
-# Contributing Firmware to reTerminal Sticky Playground
+# Contributing to reTerminal Sticky Playground
 
 This repository is the public contribution and review layer for the reTerminal
-Sticky firmware catalog. A completed community contribution becomes a card on
-the Sticky Playground website and opens a Seeed-hosted browser flashing page.
+Sticky Playground catalog. A completed community firmware contribution becomes
+a card on the Sticky Playground website and opens a Seeed-hosted browser
+flashing page. A completed 3D printable contribution becomes a card on the
+Playground 3D Printables page and links to the author's download page.
 
 Contributors may submit either a complete buildable source project, or a
 verified firmware-only package with an upstream source link. For source
@@ -30,7 +32,7 @@ serial connection, flashing interface, domain, and production deployment.
 ## Required pull request contents
 
 Create one directory under `integrations/`. Choose one of the following package
-layouts.
+layouts. 3D printable designs use the printables layout later in this guide.
 
 Source contribution:
 
@@ -119,6 +121,7 @@ Normal third-party submissions use `"group": "community"`,
   "name": "My Firmware",
   "group": "community",
   "catalogSection": "community",
+  "category": "dashboard",
   "mode": "flash",
   "status": "experimental",
   "summary": "Turn Sticky into a focused information display.",
@@ -179,6 +182,7 @@ Normal third-party submissions use `"group": "community"`,
 |---|---|
 | `group` | `community` |
 | `catalogSection` | `community` |
+| `category` | One value from `reader`, `dashboard`, `productivity`, `games`, `tools`, or `other` |
 | `mode` | `flash` |
 | `status` | `experimental`, `beta`, or `stable` according to project maturity |
 | `author.name` | Required author or team name shown on the website |
@@ -233,6 +237,98 @@ result in the integration README and pull request.
   "license": "MIT"
 }
 ```
+
+## Contributing a 3D printable design
+
+A published printable design provides this user flow:
+
+1. The user opens Sticky Playground and selects **3D Printables**.
+2. The user selects a community design card.
+3. The user opens the author's Printables, MakerWorld, Thingiverse, or GitHub page.
+4. The user downloads the files from that page.
+
+The Registry stores metadata, author credit, and one preview photo. Printable
+files stay on the author's page.
+
+```text
+integrations/
+  my-case/
+    integration.json
+    README.md
+    assets/
+      preview.jpg
+```
+
+From the repository root:
+
+```bash
+cp -R integrations/_template_printables integrations/my-case
+```
+
+Complete the files in this order:
+
+1. Rename the directory and update `integration.json.id`.
+2. Add author attribution and the HTTPS download page.
+3. Pick the `category` that best describes the design so it appears under the right filter on the 3D Printables page.
+4. Add a real photo of the printed design on reTerminal Sticky.
+5. Record print settings and assembly notes in the README.
+6. Run the Registry tests and validator.
+7. Open a pull request.
+
+Printable submissions use `"group": "community"`,
+`"catalogSection": "printables"`, `"mode": "external"`, and one `category`
+from `case`, `stand`, `mount`, `accessory`, or `reference`.
+
+```json
+{
+  "schemaVersion": 1,
+  "id": "my-case",
+  "name": "My Case",
+  "group": "community",
+  "catalogSection": "printables",
+  "category": "stand",
+  "mode": "external",
+  "status": "experimental",
+  "summary": "A compact printed stand for reTerminal Sticky.",
+  "description": "My Case holds Sticky on a desk and keeps the USB port clear.",
+  "author": {
+    "name": "Project author or team",
+    "url": "https://github.com/example"
+  },
+  "source": {
+    "url": "https://www.printables.com/model/example",
+    "license": "CC BY-SA 4.0"
+  },
+  "support": {
+    "url": "https://www.printables.com/model/example"
+  },
+  "compatibility": {
+    "devices": ["reterminal-sticky"]
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "My Case printed and mounted on reTerminal Sticky"
+  },
+  "tags": ["case", "stand"],
+  "external": {
+    "label": "View on Printables",
+    "url": "https://www.printables.com/model/example",
+    "description": "Download the printable files from the author page."
+  }
+}
+```
+
+| Field | Printable contribution value |
+|---|---|
+| `group` | `community` |
+| `catalogSection` | `printables` |
+| `category` | One value from `case`, `stand`, `mount`, `accessory`, or `reference` |
+| `mode` | `external` |
+| `source.url` | The public page that hosts the printable files |
+| `source.license` | License shown on that page |
+| `external.label` | Button text shown on the website, such as `View on Printables` |
+| `external.url` | The same public download page |
+| `tags` | Optional labels such as `case`, `stand`, or `mount` |
 
 ## Official Sticky firmware updates
 
@@ -388,7 +484,8 @@ For a new version:
 
 - [ ] One integration directory contains the complete contribution.
 - [ ] `integration.json` uses the group, catalog section, and mode documented for the selected contribution type.
-- [ ] The contribution uses either source plus build metadata, or firmware-only plus the provenance required for its contribution type.
+- [ ] Community firmware and printables entries include a `category` from the documented list.
+- [ ] The contribution uses source plus build metadata, firmware-only plus the provenance required for its contribution type, or a printables external link plus preview photo.
 - [ ] Official firmware updates use the repository-backed version directory and record the official artifact origin.
 - [ ] The source path uses `sourceBuild: true`, or the firmware-only path includes the manifest and every required `.bin`.
 - [ ] The README and PR identify the tested package origin and firmware version.

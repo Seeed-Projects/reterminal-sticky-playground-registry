@@ -33,6 +33,7 @@ function validBase(id, mode) {
     name: 'Example Platform',
     group: 'community',
     catalogSection: 'platform',
+    category: 'other',
     mode,
     status: 'experimental',
     summary: 'A test integration for reTerminal Sticky.',
@@ -595,4 +596,131 @@ test('rejects an invalid flash manifest hash', () => {
 
   assert.equal(result.status, 1);
   assert.match(result.stderr, /manifestSha256: must contain between 64 and 64 characters/);
+});
+
+test('accepts a printables catalog entry with an external download link', () => {
+  const root = createRegistry();
+  const integration = validBase('desk-stand', 'external');
+  integration.catalogSection = 'printables';
+  integration.category = 'stand';
+  integration.external = {
+    label: 'View on Printables',
+    url: 'https://www.printables.com/model/example',
+    description: 'Download the printable files from the author page.',
+  };
+  const integrationDir = writeIntegration(root, integration);
+  writeFileSync(join(integrationDir, 'README.md'), '# Desk Stand\n');
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 0, result.stderr);
+});
+
+test('rejects a printables catalog entry that is not external', () => {
+  const root = createRegistry();
+  const integration = validBase('hosted-case', 'flash');
+  integration.catalogSection = 'printables';
+  integration.flash = {
+    versions: [{
+      version: '1.0.0',
+      channel: 'stable',
+      sourceBuild: true,
+    }],
+  };
+  writeIntegration(root, integration);
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /must be "external" for the printables catalog section/);
+});
+
+test('rejects a community firmware entry without a category', () => {
+  const root = createRegistry();
+  const integration = validBase('missing-category', 'flash');
+  integration.catalogSection = 'community';
+  delete integration.category;
+  integration.flash = {
+    versions: [{
+      version: '1.0.0',
+      channel: 'stable',
+      sourceBuild: true,
+    }],
+  };
+  const integrationDir = writeIntegration(root, integration);
+  writeFileSync(join(integrationDir, 'README.md'), '# Missing Category\n');
+  mkdirSync(join(integrationDir, 'source'), { recursive: true });
+  writeFileSync(join(integrationDir, 'source', 'CMakeLists.txt'), 'project(example)\n');
+  writeFileSync(join(integrationDir, 'source', 'LICENSE'), 'MIT License\n');
+  integration.source.path = 'source';
+  integration.build = {
+    system: 'esp-idf',
+    version: 'v5.4',
+    target: 'esp32s3',
+    projectPath: 'source',
+  };
+  writeFileSync(
+    join(integrationDir, 'integration.json'),
+    `${JSON.stringify(integration, null, 2)}\n`,
+  );
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /category: is required for community firmware entries/);
+});
+
+test('rejects an unsupported firmware category', () => {
+  const root = createRegistry();
+  const integration = validBase('bad-category', 'external');
+  integration.category = 'weather';
+  integration.external = {
+    label: 'Open official tool',
+    url: 'https://example.com/tool',
+    description: 'Continue in the maintained upstream tool.',
+  };
+  writeIntegration(root, integration);
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /category: must be one of: reader, dashboard, productivity, games, tools, other/);
+});
+
+test('rejects a printables entry without a category', () => {
+  const root = createRegistry();
+  const integration = validBase('no-category-stand', 'external');
+  integration.catalogSection = 'printables';
+  delete integration.category;
+  integration.external = {
+    label: 'View on Printables',
+    url: 'https://www.printables.com/model/example',
+    description: 'Download the printable files from the author page.',
+  };
+  const integrationDir = writeIntegration(root, integration);
+  writeFileSync(join(integrationDir, 'README.md'), '# Stand\n');
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /category: is required for printables entries/);
+});
+
+test('rejects a firmware category on a printables entry', () => {
+  const root = createRegistry();
+  const integration = validBase('games-stand', 'external');
+  integration.catalogSection = 'printables';
+  integration.category = 'games';
+  integration.external = {
+    label: 'View on Printables',
+    url: 'https://www.printables.com/model/example',
+    description: 'Download the printable files from the author page.',
+  };
+  const integrationDir = writeIntegration(root, integration);
+  writeFileSync(join(integrationDir, 'README.md'), '# Stand\n');
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /category: must be one of: case, stand, mount, accessory, reference/);
 });
