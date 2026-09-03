@@ -3,7 +3,8 @@ name: Validate Registry
 on:
   pull_request:
     paths:
-      - "integrations/**"
+      - "firmwares/**"
+      - "printables/**"
       - "schemas/**"
       - "scripts/**"
       - "package.json"
@@ -12,7 +13,8 @@ on:
     branches:
       - main
     paths:
-      - "integrations/**"
+      - "firmwares/**"
+      - "printables/**"
       - "schemas/**"
       - "scripts/**"
       - "package.json"
@@ -24,7 +26,7 @@ permissions:
 
 jobs:
   validate:
-    name: Validate integration metadata
+    name: Validate firmware and printable metadata
     runs-on: ubuntu-latest
     timeout-minutes: 5
 

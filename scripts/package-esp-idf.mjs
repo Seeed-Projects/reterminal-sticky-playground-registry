@@ -16,11 +16,11 @@ const integrationId = process.argv[2];
 const versionLabel = process.argv[3];
 
 if (!integrationId || !versionLabel) {
-  throw new Error('Usage: npm run package:esp-idf -- <integration-id> <version>');
+  throw new Error('Usage: npm run package:esp-idf -- <firmware-id> <version>');
 }
 
-const integrationDir = join(ROOT_DIR, 'integrations', integrationId);
-const integrationPath = join(integrationDir, 'integration.json');
+const integrationDir = join(ROOT_DIR, 'firmwares', integrationId);
+const integrationPath = join(integrationDir, 'firmware.json');
 const integration = JSON.parse(readFileSync(integrationPath, 'utf8'));
 if (integration.id !== integrationId || integration.build?.system !== 'esp-idf') {
   throw new Error(`${integrationId} is not configured as an ESP-IDF firmware`);

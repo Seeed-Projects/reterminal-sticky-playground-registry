@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Seeed-Projects/reterminal-sticky-playground-registry/blob/main/schemas/printable.schema.json",
+  "title": "reTerminal Sticky Playground printable design",
+  "description": "Card metadata for one community 3D printable design. The model files stay on the author's download page.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "name",
+    "category",
+    "summary",
+    "description",
+    "author",
+    "download",
+    "preview"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "description": "Directory name of the design, lowercase words joined by hyphens.",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "minLength": 2,
+      "maxLength": 64
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "category": {
+      "type": "string",
+      "description": "Category used by the 3D Printables filter on the Sticky Playground.",
+      "enum": [
+        "case",
+        "stand",
+        "mount",
+        "accessory",
+        "reference"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "description": "One sentence shown on the card.",
+      "minLength": 1,
+      "maxLength": 140
+    },
+    "description": {
+      "type": "string",
+      "description": "Short paragraph shown on the card.",
+      "minLength": 1,
+      "maxLength": 800
+    },
+    "author": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "url": {
+          "$ref": "#/$defs/httpsUrl"
+        }
+      }
+    },
+    "download": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "platform",
+        "url"
+      ],
+      "properties": {
+        "platform": {
+          "type": "string",
+          "description": "Name of the site that hosts the files, for example Printables or MakerWorld.",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "url": {
+          "$ref": "#/$defs/httpsUrl"
+        },
+        "license": {
+          "type": "string",
+          "description": "License shown on the download page, for example CC BY-SA 4.0.",
+          "minLength": 1,
+          "maxLength": 80
+        }
+      }
+    },
+    "preview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "image",
+        "alt"
+      ],
+      "properties": {
+        "image": {
+          "type": "string",
+          "description": "Photo inside the design directory, for example assets/preview.jpg.",
+          "pattern": "^assets/[A-Za-z0-9._-]+\\.(png|jpg|jpeg|webp)$"
+        },
+        "alt": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 180
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "maxItems": 6,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 32
+      }
+    }
+  },
+  "$defs": {
+    "httpsUrl": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://",
+      "maxLength": 2048
+    }
+  }
+}

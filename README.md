@@ -1,65 +1,73 @@
 # reTerminal Sticky Playground Registry
 
-Public firmware and 3D printable contribution repository for official, partner,
-and community integrations in the reTerminal Sticky Playground.
+Public contribution repository for the reTerminal Sticky Playground. It holds
+two kinds of content, published on two pages of the Sticky website:
 
-The Sticky website repository remains private. Community developers contribute
-metadata, visual assets, and either complete buildable source or a verified
-firmware package here. GitHub Actions builds source contributions and publishes
-their installable files. The Sticky website pins a reviewed Registry commit,
-mirrors its verified firmware files, and generates the public catalog cards and
-browser flashing pages.
+| Content | Website page | Directory | Guide |
+|---|---|---|---|
+| Firmware users flash from the browser | [Firmware](https://www.seeedstudio.com/sticky/playground/firmware/) | `firmwares/` | [Contributing firmware](docs/contributing-firmware.md) |
+| Community 3D printable cases, stands, mounts, and accessories | [3D Printables](https://www.seeedstudio.com/sticky/playground/3d-printables/) | `printables/` | [Contributing a 3D printable design](docs/contributing-printables.md) |
 
-Partner integrations are coordinated with the platform owner and use official
-project, documentation, support, and identity assets. Their cards can use the
-official logo as the catalog and installation artwork. Author attribution is
-optional because the platform identity is already represented by the
-integration name and official links.
+Start with [CONTRIBUTING.md](CONTRIBUTING.md) ([中文](CONTRIBUTING.zh-CN.md)),
+which explains the shared rules, local checks, review, and release flow, then
+follow the guide for your content type.
 
-## Published community flow
+## How publishing works
+
+The Sticky website repository is private. It pins one reviewed commit of this
+Registry, mirrors the verified firmware files, copies the preview images, and
+generates the public catalog cards and browser flashing pages.
 
 ```text
 Contributor PR
-  -> source project or firmware-only package + metadata + assets
-  -> Registry validation and source build
-  -> PR artifact for review
+  -> firmware package or printable card + metadata + assets
+  -> Registry validation (and source build for firmware)
   -> maintainer review and merge
-  -> versioned firmware Release
-  -> Sticky preview branch pins the Registry commit
-  -> local page and physical-device flash test
-  -> Sticky main and Kubernetes deployment
+  -> versioned firmware Release (source-built firmware)
+  -> Sticky website pins the Registry commit
+  -> local build and physical-device test
+  -> Sticky website deployment
 ```
 
-A normal community firmware contribution is a direct-flash entry. Users stay on
-the Sticky website and install it through the browser. A 3D printable
-contribution stores metadata and a preview photo here, then links users to the
-author's download page.
+Firmware cards are direct-flash entries: users stay on the Sticky website and
+install through the browser. Printable cards store metadata and one preview
+photo here and link users to the author's download page.
+
+Partner firmware is coordinated with the platform owner and uses official
+project, documentation, support, and identity assets. Official Sticky firmware
+is maintained by Seeed.
 
 ## Repository structure
 
 ```text
-integrations/
+firmwares/
   _template/
-  _template_printables/
   <firmware-id>/
-    integration.json
+    firmware.json
     README.md
     assets/
-    source/  # source contributions
-    firmware/  # firmware-only contributions
-      <version>/
-        manifest.json
-        *.bin
-  <printable-id>/
-    integration.json
+    source/                  source contributions
+    firmware/<version>/      firmware-only contributions
+      manifest.json
+      *.bin
+printables/
+  _template/
+  <design-id>/
+    printable.json
     README.md
     assets/
+      preview.jpg
 schemas/
-  integration.schema.json
+  firmware.schema.json
+  printable.schema.json
 scripts/
   validate-registry.mjs
+  list-build-targets.mjs
   package-esp-idf.mjs
   verify-esp-idf-build.mjs
+docs/
+  contributing-firmware.md / .zh-CN.md
+  contributing-printables.md / .zh-CN.md
 ```
 
 ## Commands
@@ -71,16 +79,8 @@ npm test
 npm run validate
 ```
 
-For source contributions, declare the project's ESP-IDF version in
-`integration.json` and set the newest firmware version to `sourceBuild: true`.
-GitHub Actions builds the project, packages ESP-IDF's flash map, and publishes
-the firmware after merge.
-
-## Contribution guides
-
-- [English contribution guide](CONTRIBUTING.md)
-- [中文贡献指南](CONTRIBUTING.zh-CN.md)
-
-The guides define the source, firmware-only, and 3D printable contribution
-paths, firmware package, metadata, local validation, physical-device test, pull
-request checks, and post-merge Sticky release flow.
+`npm run validate` checks every directory under `firmwares/` and `printables/`.
+For source-built firmware, declare the project's ESP-IDF version in
+`firmware.json` and set the newest version to `sourceBuild: true`; GitHub
+Actions builds the project, packages ESP-IDF's flash map, and publishes the
+firmware Release after merge.

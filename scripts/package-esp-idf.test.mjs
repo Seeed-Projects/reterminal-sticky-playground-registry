@@ -20,11 +20,11 @@ const VERIFY_SCRIPT = join(SCRIPT_DIR, 'verify-esp-idf-build.mjs');
 test('packages and verifies an ESP-IDF flash map', () => {
   const root = mkdtempSync(join(tmpdir(), 'sticky-package-test-'));
   try {
-    const integrationDir = join(root, 'integrations', 'example-firmware');
+    const integrationDir = join(root, 'firmwares', 'example-firmware');
     const buildDir = join(integrationDir, 'source', 'build');
     mkdirSync(join(buildDir, 'bootloader'), { recursive: true });
     writeFileSync(
-      join(integrationDir, 'integration.json'),
+      join(integrationDir, 'firmware.json'),
       `${JSON.stringify({
         id: 'example-firmware',
         name: 'Example Firmware',
@@ -102,12 +102,12 @@ test('packages and verifies an ESP-IDF flash map', () => {
 test('packages a source-built firmware into an Action output directory', () => {
   const root = mkdtempSync(join(tmpdir(), 'sticky-source-package-test-'));
   try {
-    const integrationDir = join(root, 'integrations', 'source-firmware');
+    const integrationDir = join(root, 'firmwares', 'source-firmware');
     const buildDir = join(integrationDir, 'source', 'build');
     const outputDir = join(root, '.firmware-output', 'source-firmware', '2.0.0-rc1');
     mkdirSync(join(buildDir, 'partition_table'), { recursive: true });
     writeFileSync(
-      join(integrationDir, 'integration.json'),
+      join(integrationDir, 'firmware.json'),
       `${JSON.stringify({
         id: 'source-firmware',
         name: 'Source Firmware',

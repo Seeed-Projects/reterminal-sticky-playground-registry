@@ -1,493 +1,91 @@
 # 为 reTerminal Sticky Playground 贡献内容
 
-这个仓库是 reTerminal Sticky Playground 合集面向外部开发者的公开贡献与审核入口。
-一份完整的社区固件贡献通过审核后，会在 Sticky 官网 Playground 中生成一张固件卡片，
-并进入由 Seeed 网站提供的浏览器烧录页面。一份完整的 3D 打印外壳贡献会进入
-Playground 的 3D Printables 页面，并跳转到作者自己的下载页。
+这个仓库是 reTerminal Sticky Playground 面向外部开发者和创客的公开贡献与审核入口。
+它接受两类贡献，各有独立的目录、元数据文件和指南。
 
-贡献者可以选择提交完整可编译源码，也可以只提交经过验证的固件包并提供上游源码
-链接。源码模式由 GitHub Actions 自动编译并整理固件。两种方式都需要项目信息、展示
-图片和实机测试记录。Sticky 私有网站只读取经过审核并锁定版本的公开仓库内容，再生成
-卡片和烧录页。
+英文版请查看 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
-英文指南请查看 [CONTRIBUTING.md](CONTRIBUTING.md)。
+## 选择你的指南
 
-## 贡献完成后，用户会得到什么
+| 我想分享… | 目录 | 元数据文件 | 指南 |
+|---|---|---|---|
+| 用户可以在 Sticky 网站直接烧录的固件 | `firmwares/<firmware-id>/` | `firmware.json` | [贡献固件](docs/contributing-firmware.zh-CN.md) |
+| 3D 打印的外壳、支架、安装件或配件 | `printables/<design-id>/` | `printable.json` | [贡献 3D 打印设计](docs/contributing-printables.zh-CN.md) |
 
-一份正式发布的社区固件会形成下面这条用户流程：
+固件贡献包含可编译源码或经过验证的固件包，审核前需要在真机上测试。3D 打印贡献
+只是一张带预览照片的卡片；模型文件留在作者自己的下载页。
 
-1. 用户打开 Sticky Playground。
-2. 用户点击社区固件卡片。
-3. 用户在 Sticky 网站查看固件版本和安装说明。
-4. 用户通过 USB 连接 reTerminal Sticky。
-5. 用户点击 **Flash Now**，直接在浏览器中完成烧录。
+一句话总结：做固件看固件指南，做外壳看打印指南，两条路互不干扰。
 
-公开 Registry 保存可安装固件包，以及完整源码或上游源码地址；Sticky 网站负责页面
-样式、USB 串口连接、烧录界面、域名和正式部署。
-
-一句话总结：贡献者交付完整固件，用户留在 Sticky 网站里直接烧录。
-
-## PR 必须提供的文件
-
-每个项目在 `integrations/` 下建立一个独立目录，并从下面两种目录结构中选择一种。
-
-源码模式：
+## 仓库结构
 
 ```text
-integrations/
-  my-firmware/
-    integration.json
+firmwares/
+  _template/                 新固件从这里复制
+  <firmware-id>/
+    firmware.json
     README.md
     assets/
-      preview.jpg
-      logo.svg  # 可选
-    source/
-      CMakeLists.txt
-      sdkconfig.defaults
-      main/
-      components/
-      LICENSE
-```
-
-仅固件包模式：
-
-```text
-integrations/
-  my-firmware/
-    integration.json
+    source/                  源码模式
+    firmware/<version>/      仅固件包模式
+printables/
+  _template/                 新打印设计从这里复制
+  <design-id>/
+    printable.json
     README.md
-    assets/
-      preview.jpg
-      logo.svg  # 可选
-    firmware/
-      1.0.0/
-        manifest.json
-        bootloader.bin
-        partition-table.bin
-        my-firmware.bin
+    assets/preview.jpg
+schemas/
+  firmware.schema.json
+  printable.schema.json
+scripts/
+  validate-registry.mjs      同时检查两个目录
 ```
 
-| 文件或目录 | 作用 |
-|---|---|
-| `integration.json` | 保存卡片文案、作者、兼容性、编译方式和固件版本 |
-| `README.md` | 说明固件功能、操作方式、环境要求和实机测试结果 |
-| `assets/logo.*` | 合作伙伴条目使用的官方标识；社区条目可按需提供项目标识 |
-| `assets/preview.*` | 社区条目使用 Sticky 实机照片或截图；合作伙伴条目使用官方 Logo |
-| `source/` | 源码模式使用的可编译工程 |
-| `source/LICENSE` | 本地提交源码对应的许可证 |
-| `firmware/<version>/manifest.json` | 仅固件包模式使用的烧录清单 |
-| `firmware/<version>/*.bin` | 仅固件包模式提交的可烧录文件 |
+## 共同规则
 
-目录名和 `integration.json` 中的 `id` 必须使用相同的小写连字符格式，例如
-`weather-dashboard` 或 `sticky-2048`。
+- 每份贡献一个目录。目录名与元数据文件里的 `id` 使用同一个小写连字符标识。
+- 所有链接使用 HTTPS。
+- 图片放在 `assets/` 下，使用 PNG、JPG、WebP，固件条目还可以使用静态 SVG。
+- 提交的文件中不包含个人 Wi-Fi 凭据、API key、token 或密码。
+- 卡片文字使用英文，因为 Sticky 网站面向全球访客。
 
-`integrations/<integration-id>/assets/` 下的图片支持 `.png`、`.jpg`、
-`.jpeg`、`.webp` 和静态 `.svg` 格式。社区条目使用 Sticky 实机照片或截图作为
-预览图。经过协调的合作伙伴条目可以让 `assets.logo` 与 `assets.preview` 指向同一份
-官方 Logo。
+## 本地自检
 
-一句话总结：源码模式交源码给 Action 生成固件；仅固件模式直接提交可烧录文件。
-
-## 创建一份贡献
-
-在仓库根目录执行：
-
-```bash
-cp -R integrations/_template integrations/my-firmware
-```
-
-按下面的顺序准备：
-
-1. 修改目录名和 `integration.json.id`。
-2. 社区条目填写作者署名；合作伙伴条目填写经过确认的官方项目链接。
-3. 在项目 README 和 `integration.json` 中提供上游源码地址与许可证名称。
-4. 社区条目加入 Sticky 实机效果图；合作伙伴条目加入官方 Logo。
-5. 选择源码模式时，加入 `source/`、`build` 配置和 `sourceBuild: true`。
-6. 选择仅固件包模式时，把经过测试的固件包放入 `firmware/<version>/`。
-7. 运行 Registry 测试和校验。
-8. 把这套固件烧录到真实 reTerminal Sticky 上测试。
-9. 提交 Pull Request，并写清测试结果。
-
-一句话总结：准备项目资料和所选交付方式需要的文件后，再进入审核。
-
-## integration.json
-
-普通第三方贡献统一使用：`"group": "community"`、
-`"catalogSection": "community"`、`"mode": "flash"`。
-
-```json
-{
-  "schemaVersion": 1,
-  "id": "my-firmware",
-  "name": "My Firmware",
-  "group": "community",
-  "catalogSection": "community",
-  "category": "productivity",
-  "mode": "flash",
-  "status": "experimental",
-  "summary": "Turn Sticky into a focused information display.",
-  "description": "My Firmware provides a local information display with touch controls and an offline data source.",
-  "author": {
-    "name": "Project author or team",
-    "url": "https://github.com/example"
-  },
-  "origin": {
-    "name": "Project repository",
-    "url": "https://github.com/example/my-firmware"
-  },
-  "source": {
-    "url": "https://github.com/example/my-firmware",
-    "license": "MIT",
-    "path": "source"
-  },
-  "support": {
-    "url": "https://github.com/example/my-firmware/issues"
-  },
-  "documentationUrl": "https://github.com/example/my-firmware#readme",
-  "compatibility": {
-    "devices": ["reterminal-sticky"],
-    "notes": "Tested on reTerminal Sticky production hardware."
-  },
-  "assets": {
-    "preview": "assets/preview.jpg",
-    "previewAlt": "My Firmware running on reTerminal Sticky"
-  },
-  "tags": ["dashboard", "offline"],
-  "build": {
-    "system": "esp-idf",
-    "version": "v5.4",
-    "target": "esp32s3",
-    "projectPath": "source"
-  },
-  "flash": {
-    "versions": [
-      {
-        "version": "1.0.0",
-        "channel": "experimental",
-        "sourceBuild": true
-      }
-    ],
-    "notes": [
-      {
-        "title": "Device connection",
-        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
-      }
-    ]
-  }
-}
-```
-
-### 关键字段
-
-| 字段 | 社区贡献填写方式 |
-|---|---|
-| `group` | 固定为 `community` |
-| `catalogSection` | 固定为 `community` |
-| `category` | 从 `ereader`、`productivity`、`personal`、`weather`、`finance`、`tools`、`fun`、`smart-home` 中选一个 |
-| `mode` | 固定为 `flash` |
-| `status` | 按成熟度填写 `experimental`、`beta` 或 `stable` |
-| `author.name` | 必填，网站显示的作者或团队名称 |
-| `author.url` | 选填，点击作者名称时打开的 HTTPS 链接 |
-| `origin.name` | 选填，网站显示的来源名称 |
-| `origin.url` | 选填，点击来源名称时打开的 HTTPS 链接 |
-| `source.url` | 两种贡献方式都填写上游源码仓库地址 |
-| `source.license` | 源码许可证名称；仅固件包模式必须填写 |
-| `source.path` | 源码模式填写本地源码目录，通常为 `source` |
-| `build.*` | 源码模式与 `source.path` 一起提供的构建配置 |
-| `flash.versions[].sourceBuild` | 源码由 GitHub Actions 编译时设置为 `true` |
-| `flash.versions[].manifestPath` | 仅固件包模式填写项目内的 manifest 路径 |
-
-`author` 和 `origin` 用于网站署名展示；`source` 保存审核与固件打包使用的源码仓库、
-许可证和本地编译路径。
-
-`official` 和 `platform` 区域由 Seeed 或合作平台共同维护。合作伙伴条目使用
-`"group": "partner"`、`"catalogSection": "platform"`、`"mode": "flash"`、
-官方项目链接和官方标识。平台身份已经由条目名称和官方链接明确表达，因此作者署名
-为可选项。普通外部 PR 统一进入 `community` 区域。维护者可以把历史迁移但资料尚未
-齐全的条目标记为 `draft`；草稿不会出现在 Sticky Playground。
-
-一句话总结：社区条目需要有明确源码地址，并通过源码或固件包形成可烧录版本。
-
-## 两种贡献方式
-
-### 源码模式
-
-提交 `source/`，设置 `source.path`，加入配套的 `build` 配置，并把最新版本设置为
-`"sourceBuild": true`。GitHub Actions 会在干净环境中编译源码，自动生成 manifest 和
-全部 `.bin`。PR 阶段会生成临时构建产物供审核；PR 合并后会发布成固定版本的 GitHub
-Release，供 Sticky 测试分支读取。
-每个项目版本只对应一个固定 Release，因此源码更新时需要使用新的
-`flash.versions[].version` 版本号。
-
-### 仅固件包
-
-填写 `source.url` 和 `source.license`，省略 `source.path` 与 `build`，并把完整固件放在
-`firmware/<version>/`。manifest 必须记录每个 bin 的烧录地址、字节大小和 SHA-256。
-项目 README 和 PR 需要记录实机型号、固件版本、固件来源和实机测试结果。
-
-```json
-"source": {
-  "url": "https://github.com/example/my-firmware",
-  "license": "MIT"
-}
-```
-
-一句话总结：提交源码时由 Action 产出固件；直接提交固件时由作者提供完整烧录包。
-
-## 贡献 3D 打印外壳
-
-一份已发布的打印设计会形成下面这条用户流程：
-
-1. 用户打开 Sticky Playground，并选择 **3D Printables**。
-2. 用户点击社区设计卡片。
-3. 用户打开作者在 Printables、MakerWorld、Thingiverse 或 GitHub 上的页面。
-4. 用户从该页面下载打印文件。
-
-Registry 只保存项目信息、作者署名和一张预览图。打印文件留在作者自己的页面上。
-
-```text
-integrations/
-  my-case/
-    integration.json
-    README.md
-    assets/
-      preview.jpg
-```
-
-在仓库根目录执行：
-
-```bash
-cp -R integrations/_template_printables integrations/my-case
-```
-
-按这个顺序补全文件：
-
-1. 重命名目录，并更新 `integration.json.id`。
-2. 填写作者署名和 HTTPS 下载页。
-3. 选择最贴切的 `category`，网站会据此把设计放进 3D Printables 页对应的分类筛选里。
-4. 加入打印完成并安装在 Sticky 上的实拍图。
-5. 在 README 中记录打印参数和组装说明。
-6. 运行仓库测试和校验。
-7. 提交 pull request。
-
-打印外壳贡献使用 `"group": "community"`、
-`"catalogSection": "printables"`、`"mode": "external"`，并从
-`case`、`stand`、`mount`、`accessory`、`reference` 中选择一个 `category`。
-
-```json
-{
-  "schemaVersion": 1,
-  "id": "my-case",
-  "name": "My Case",
-  "group": "community",
-  "catalogSection": "printables",
-  "category": "stand",
-  "mode": "external",
-  "status": "experimental",
-  "summary": "A compact printed stand for reTerminal Sticky.",
-  "description": "My Case holds Sticky on a desk and keeps the USB port clear.",
-  "author": {
-    "name": "Project author or team",
-    "url": "https://github.com/example"
-  },
-  "source": {
-    "url": "https://www.printables.com/model/example",
-    "license": "CC BY-SA 4.0"
-  },
-  "support": {
-    "url": "https://www.printables.com/model/example"
-  },
-  "compatibility": {
-    "devices": ["reterminal-sticky"]
-  },
-  "assets": {
-    "preview": "assets/preview.jpg",
-    "previewAlt": "My Case printed and mounted on reTerminal Sticky"
-  },
-  "tags": ["case", "stand"],
-  "external": {
-    "label": "View on Printables",
-    "url": "https://www.printables.com/model/example",
-    "description": "Download the printable files from the author page."
-  }
-}
-```
-
-| 字段 | 打印外壳贡献填写方式 |
-|---|---|
-| `group` | 固定为 `community` |
-| `catalogSection` | 固定为 `printables` |
-| `category` | 从 `case`、`stand`、`mount`、`accessory`、`reference` 中选一个 |
-| `mode` | 固定为 `external` |
-| `source.url` | 托管打印文件的公开页面 |
-| `source.license` | 该页面标注的许可证 |
-| `external.label` | 网站按钮文案，例如 `View on Printables` |
-| `external.url` | 同一个公开下载页 |
-| `tags` | 可选，例如 `case`、`stand`、`mount` |
-
-一句话总结：提交卡片信息和预览图，打印文件继续放在作者自己的下载页。
-
-## Sticky 官方固件更新
-
-由 Seeed 维护的 `sticky-factory` 更新使用仅固件包方式，并保持
-`"group": "official"`、`"catalogSection": "official"` 和
-`"mode": "flash"`。每个新官方版本存放在
-`integrations/sticky-factory/firmware/<version>/`，同时把
-`flash.versions` 中的最新版本指向准确的本地路径
-`firmware/<version>/manifest.json`。
-
-版本目录保存经过测试的完整固件包。manifest 记录固件版本、芯片型号、烧录参数、
-分区地址、字节大小、SHA-256，以及可选的 MD5。集成 README 和 PR 同步记录官方固件
-产物来源及相同的包信息。
-
-已经使用 Registry GitHub Release 的官方历史版本继续保留原有 `manifestUrl`、
-`manifestSha256` 和 `releaseUrl`。这样，新版本使用仓库内存档，所有历史下载仍然保持
-原来的固定地址。新官方版本提交后，其版本目录就是该版本唯一的交付记录。
-
-提交时在 PR 模板中选择 **Official Sticky firmware update maintained by Seeed**，并完整
-填写固件包来源和实机测试结果。
-
-一句话总结：新官方固件进入版本目录，现有历史版本继续从原来的 Release 提供。
-
-## 源码模式要求
-
-源码模式的 `source/` 必须能够仅依靠本次提交的文件完成编译。它应包含工程构建
-文件、应用代码、本地组件、依赖清单或锁定文件、默认配置和许可证。
-
-Wi-Fi 密码、API Key、Token 和密码等用户私密信息使用占位符或首次运行配置方式。
-
-第一阶段的自动编译流程支持 ESP-IDF，常见目录如下：
-
-```text
-source/
-  CMakeLists.txt
-  sdkconfig.defaults
-  main/
-    CMakeLists.txt
-    main.cpp
-  components/
-  LICENSE
-```
-
-需要其他编译系统的项目，先提交 Issue，让维护者先为该编译系统加入可重复执行的 CI
-构建适配，再提交正式固件 PR。
-
-`build.version` 决定 GitHub Actions 使用哪个 ESP-IDF 版本。贡献者填写项目实际使用
-的版本，例如 `v5.0.5`、`v5.3.2` 或 `latest`，流程不会统一锁定到某个固定版本。
-
-一句话总结：源码必须让审核机器能够从零重新编译，而不是只留一个外部链接。
-
-## 可选的本地 ESP-IDF 编译
-
-作者可以在提交 PR 前先做一次本地编译。安装 `integration.json` 中声明的 ESP-IDF
-版本，然后进入项目的 `source/` 目录执行：
-
-```bash
-idf.py set-target esp32s3
-idf.py -D PROJECT_VER=1.0.0 build
-```
-
-这一步用于作者在提交前确认工程能正常编译。Registry 会忽略本地生成的 `build/`、
-`sdkconfig`、依赖缓存和编辑器配置。PR 提交后，正式固件由 GitHub Actions 重新编译
-并整理，无需把本机生成的文件放进 PR。
-
-一句话总结：本地编译是可选自测，正式固件统一由 Action 生成。
-
-## 本地自动检查
-
-安装 Node.js 20 或更高版本，然后执行：
+安装 Node.js 20 或更高版本，在仓库根目录执行：
 
 ```bash
 npm test
 npm run validate
 ```
 
-自动检查会确认：
+校验脚本会检查全部固件和打印设计目录，仓库一致时打印
+`Registry validation passed (N firmware(s), M printable(s)).`。
+GitHub Actions 会对每个 pull request 运行同样的命令。
 
-- 目录名与项目 ID 一致；
-- 必填资料和 HTTPS 链接完整；
-- 项目 README 和声明的源码许可证存在；
-- 设置 `source.path` 时，本地源码目录和 ESP-IDF 工程文件存在；
-- 图片格式正确，SVG 只包含静态内容；
-- manifest 结构正确；
-- 每个已提交固件文件存在，大小和 SHA-256 一致；
-- 不同固件分区的烧录地址没有重叠；
-- 社区条目满足本站直接烧录的全部要求。
-- Sticky 最新官方固件使用仓库内的标准版本目录。
+## PR 审核
 
-一句话总结：这一步负责提前发现“少文件、固件不匹配、烧录地址错误”等问题。
+1. 提交 pull request，并在模板中勾选贡献类型。
+2. GitHub Actions 校验 Registry；对源码模式固件，还会编译项目并把固件作为 PR 产物附上。
+3. 维护者审核元数据、图片、链接、许可证，固件贡献还会核对真机测试记录。
+4. 检查通过且审核完成后合并。
 
-源码模式的 manifest 和固件文件检查会在 Action 编译后执行；仅固件包模式直接检查
-PR 中提交的文件。
+## PR 合并之后
 
-## 真实设备测试
+合并 Registry 的 pull request 不会直接发布到正式网站。Sticky 网站锁定一个经过审核
+的 Registry 提交，维护者按下面的顺序发布：
 
-按照 `manifest.json` 中相同的地址，把固件烧录到一台 reTerminal Sticky。至少验证：
+1. 合并 Registry pull request。
+2. 源码模式固件需等待 Registry `main` 的工作流发布固件 Release。
+3. 在 Sticky 网站仓库更新锁定的 Registry 提交。
+4. 本地构建网站，确认新卡片（固件还包括烧录页）正确生成。
+5. 固件从本地页面烧录到真机验收。
+6. 合并到 Sticky 网站 `main` 并部署。
 
-- 上电和第一次启动；
-- 项目的主要使用流程；
-- 项目使用到的触摸和硬件按键；
-- 使用存储功能时的重启和数据恢复；
-- USB 重新连接后再次完整安装。
+第 6 步完成后，新卡片出现在 <https://www.seeedstudio.com/sticky/playground/>。
 
-在 PR 中记录测试硬件、ESP-IDF 版本、固件版本和结果。建议附上主流程的照片或短视频，
-方便审核者核对预览图和实际行为。
+一句话总结：合并公开 PR 是进入待发布队列，网站更新锁定版本后才正式上线。
 
-一句话总结：能编译只是第一关，真实 Sticky 能正常运行才具备发布条件。
+## 更新已有贡献
 
-## PR 审核和自动编译
-
-PR 需要包含所选贡献方式对应的内容、项目资料、图片和实机测试结果。
-GitHub Actions 会依次执行：
-
-1. 检查 Registry 结构和仅固件包模式提交的文件。
-2. 按每个源码项目声明的 ESP-IDF 版本进行编译。
-3. 根据 ESP-IDF 烧录表自动生成 manifest 和完整固件包。
-4. 把生成的固件作为 PR 临时构建产物，供维护者下载审核。
-
-当这些检查通过，并且维护者确认项目用途、许可证、兼容性和实机结果后，PR 才进入合并。
-
-一句话总结：作者提交源码，自动流程负责生成可审核的固件成品。
-
-## 合并后如何进入 Sticky 官网
-
-Registry PR 合并后不会立刻进入正式生产站。维护者按照下面的顺序发布：
-
-1. 合并资料完整且检查通过的 Registry PR。
-2. 等待 Registry `main` 的 Action 发布源码编译固件 Release。
-3. 在 Sticky 固定测试分支更新所锁定的 Registry 提交。
-4. 本地构建 Sticky，确认新卡片和烧录页面正确生成。
-5. 从本地 Sticky 页面把固件烧录到真实设备并验收。
-6. 把测试通过的 Sticky 分支合并到 Sticky `main`。
-7. 由公司服务器构建网站，并通过 Kubernetes 发布。
-
-这条流程把“外部贡献审核”“实机验收”和“正式上线”分成三个明确阶段，同时保持
-Sticky 网站仓库闭源。
-
-一句话总结：合并公开 PR 是进入测试，Sticky 实机验收通过后才进入官网。
-
-## 更新已有固件
-
-发布新版本时：
-
-1. 在 `flash.versions` 最前面加入新版本。
-2. 源码模式更新 `source/`，并把新版本设置为 `sourceBuild: true`。
-3. 仅固件包模式把经过测试的固件包放入 `firmware/<version>/`。
-4. 保留仍被 `integration.json` 引用的旧版本目录。
-5. 重新运行自动检查和真实设备测试。
-6. 在 PR 中说明用户能看到的变化和升级后的行为。
-
-一句话总结：每个版本保留测试结果；源码模式的历史固件保存在对应 GitHub Release。
-
-## PR 提交前清单
-
-- [ ] 一个项目目录包含本次完整贡献。
-- [ ] `integration.json` 使用所选贡献类型规定的分组、目录区域和模式。
-- [ ] 社区固件与 3D 打印条目已填写文档列出的 `category`。
-- [ ] 已选择“源码 + 构建配置”、“仅固件包 + 对应贡献类型要求的产物来源信息”，或“打印外壳外链 + 预览图”。
-- [ ] 官方固件更新使用仓库内版本目录，并记录官方固件产物来源。
-- [ ] 源码模式使用 `sourceBuild: true`，或仅固件包模式包含 manifest 和全部必需 `.bin`。
-- [ ] README 和 PR 写明经过测试的固件来源和固件版本。
-- [ ] `npm test` 和 `npm run validate` 全部通过。
-- [ ] 这套固件已在真实 reTerminal Sticky 上完成测试。
-- [ ] PR 写明测试硬件、固件版本、测试结果，以及适用时的编译版本。
+直接修改你目录下的文件，再提交新的 pull request。固件更新把新版本放在
+`flash.versions` 最前面，详见固件指南；打印设计更新可以改卡片文字、照片、分类或下载页。
