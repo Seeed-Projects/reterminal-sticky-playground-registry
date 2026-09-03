@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-voice-companion",
+  "name": "Voice Companion",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "dashboard",
+  "mode": "flash",
+  "status": "experimental",
+  "summary": "Home Assistant voice satellite with an 8-page touch e-ink UI, household note board, and weeks-long battery life.",
+  "description": "Turns reTerminal Sticky into a full Home Assistant Assist satellite: speak to your assistant and read the complete reply as ink. Eight touch pages cover a clock dashboard, notes, a tap-to-check shopping list, today's agenda, a 3-day forecast, room lighting controls, live voice timers with an on-device alarm, and a household board — dictate a note on one Sticky and every unit in the house beeps and shows it. A wake-cause-aware deep-sleep cycle reports battery and climate sensors every 15 minutes while keeping the screen calm, and one base config scales to a whole fleet of named units. Requires Home Assistant with the ESPHome integration and an Assist pipeline; first-boot Wi-Fi setup happens through a captive portal or Improv over USB.",
+  "author": {
+    "name": "sira-fiinikkusu",
+    "url": "https://github.com/sira-fiinikkusu"
+  },
+  "origin": {
+    "name": "reTerminal Sticky Voice Companion",
+    "url": "https://github.com/sira-fiinikkusu/reterminal-sticky-voice-companion"
+  },
+  "source": {
+    "url": "https://github.com/sira-fiinikkusu/reterminal-sticky-voice-companion",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/sira-fiinikkusu/reterminal-sticky-voice-companion/issues"
+  },
+  "documentationUrl": "https://github.com/sira-fiinikkusu/reterminal-sticky-voice-companion#readme",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Tested on three production units running continuously in one household. Built with ESPHome 2026.7.4."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "Voice Companion main page on reTerminal Sticky with clock, weather, and a note over etched watermark art"
+  },
+  "tags": [
+    "home-assistant",
+    "esphome",
+    "voice-assistant",
+    "dashboard",
+    "e-paper"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "1.0.0",
+        "channel": "experimental",
+        "manifestPath": "firmware/1.0.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "The package writes the complete Voice Companion image from flash offset 0."
+      },
+      {
+        "title": "First setup",
+        "description": "After flashing, join the reTerminal-Sticky Wi-Fi hotspot (password ChangeMe123) to enter your network credentials, or provision over USB via Improv. Then adopt the device in Home Assistant's ESPHome integration and merge the small helper configuration from the source repository."
+      },
+      {
+        "title": "Home Assistant required",
+        "description": "Voice, lists, agenda, weather, lights, and the household board all flow through Home Assistant. An Assist pipeline provides the voice assistant; entity names are configurable by compiling your own build from source."
+      }
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-table-stand",
+  "name": "Sticky Table Stand",
+  "group": "community",
+  "catalogSection": "printables",
+  "category": "stand",
+  "mode": "external",
+  "status": "stable",
+  "summary": "A desktop stand that holds reTerminal Sticky at a comfortable viewing angle.",
+  "description": "A simple table stand that props reTerminal Sticky up at a readable angle for desk use. The CAD files are published on GrabCAD and can be exported to STL for printing.",
+  "author": {
+    "name": "Gokul",
+    "url": "https://grabcad.com/library/table-stand-for-seeed-studio-sticky-1"
+  },
+  "origin": {
+    "name": "GrabCAD",
+    "url": "https://grabcad.com/library/table-stand-for-seeed-studio-sticky-1"
+  },
+  "source": {
+    "url": "https://grabcad.com/library/table-stand-for-seeed-studio-sticky-1"
+  },
+  "support": {
+    "url": "https://grabcad.com/library/table-stand-for-seeed-studio-sticky-1"
+  },
+  "documentationUrl": "https://grabcad.com/library/table-stand-for-seeed-studio-sticky-1",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Designed for the production reTerminal Sticky enclosure."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "Sticky Table Stand holding reTerminal Sticky at an angle"
+  },
+  "tags": [
+    "stand"
+  ],
+  "external": {
+    "label": "View on GrabCAD",
+    "url": "https://grabcad.com/library/table-stand-for-seeed-studio-sticky-1",
+    "description": "Open the GrabCAD page to download the CAD and print files."
+  }
+}

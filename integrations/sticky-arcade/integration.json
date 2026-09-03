@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-arcade",
+  "name": "Sticky Arcade",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "games",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "Play 17 touch games and read DRM-free EPUB books offline on reTerminal Sticky.",
+  "description": "Sticky Arcade is a native offline launcher for reTerminal Sticky with 17 touch games and a read-only microSD browser for DRM-free, reflowable EPUB 2/3 books. Games preserve their state across launcher visits and deep sleep, and the interface supports English, Spanish, French, German, and Simplified Chinese.",
+  "author": {
+    "name": "Dan Podeanu",
+    "url": "https://github.com/danpodeanu"
+  },
+  "origin": {
+    "name": "Sticky Arcade v2.0.0 release",
+    "url": "https://github.com/danpodeanu/seeed-reterminal-E100X/releases/tag/v2.0.0"
+  },
+  "source": {
+    "url": "https://github.com/danpodeanu/seeed-reterminal-E100X",
+    "license": "GPL-2.0"
+  },
+  "support": {
+    "url": "https://github.com/danpodeanu/seeed-reterminal-E100X/issues"
+  },
+  "documentationUrl": "https://github.com/danpodeanu/seeed-reterminal-E100X/tree/v2.0.0/sticky-arcade",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "The exact v2.0.0 merged release image was built, flashed, and used successfully on connected reTerminal E1005 hardware."
+  },
+  "assets": {
+    "preview": "assets/preview.png",
+    "previewAlt": "First Sticky Arcade selector page captured from a reTerminal E1005"
+  },
+  "tags": [
+    "games",
+    "epub-reader",
+    "offline",
+    "touch",
+    "microsd",
+    "multilingual"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "2.0.0",
+        "channel": "stable",
+        "manifestPath": "firmware/2.0.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Clean installation",
+        "description": "Erase the device when installing Sticky Arcade over another firmware. The package writes one complete 32 MB ESP32-S3 merged image from flash offset 0."
+      },
+      {
+        "title": "First boot",
+        "description": "Choose English, Spanish, French, German, or Simplified Chinese. The language can be changed later from the selector settings cog."
+      },
+      {
+        "title": "Offline use",
+        "description": "All 17 games run offline. Insert a microSD card only when browsing and reading supported DRM-free EPUB 2/3 books."
+      }
+    ]
+  }
+}

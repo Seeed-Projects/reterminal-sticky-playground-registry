@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-lotus",
+  "name": "An Epaper Magic: The Gathering lifecounter for Seeedstudio reTerminal Sticky ",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "games",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "An Epaper Magic: The Gathering lifecounter for Seeedstudio reTerminal Sticky ",
+  "description": "A lifecounter for long lasting mtg commander matches or gamenights. ",
+  "author": {
+    "name": "ink",
+    "url": "https://github.com/inkOne"
+  },
+  "origin": {
+    "name": "sticky-lotus",
+    "url": "https://github.com/inkOne/sticky-lotus"
+  },
+  "source": {
+    "url": "https://github.com/inkOne/sticky-lotus",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/inkOne/sticky-lotus"
+  },
+  "documentationUrl": "https://github.com/inkOne/sticky-lotus#readme",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge. Use the erase option when restoring a device from a community firmware."
+  },
+  "assets": {
+    "preview": "assets/sticky-lotus.jpeg",
+    "previewAlt": "Sticky lotus running on reTerminal Sticky"
+  },
+  "tags": [
+    "Magic: The Gathering",
+    "livecounter"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "1.1.0",
+        "channel": "stable",
+        "manifestPath": "firmware/1.1.0/manifest.json"
+      },
+      {
+        "version": "1.0.0",
+        "channel": "stable",
+        "manifestPath": "firmware/1.0.0/manifest.json"
+      }
+    ]
+  }
+}

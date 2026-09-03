@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "id": "followup",
+  "name": "Followup",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "productivity",
+  "mode": "flash",
+  "status": "experimental",
+  "summary": "Capture ideas, to-dos, and notes by voice, then transcribe and organize them with Gemini.",
+  "description": "Followup turns reTerminal Sticky into a voice-first thought-capture companion. It records ideas, to-dos, and notes, uses Gemini for transcription and summarization, stores the results on a microSD card, and keeps selected follow-ups visible on the E-Ink display.",
+  "author": {
+    "name": "ALXV Labs",
+    "url": "https://www.facebook.com/profile.php?id=61575196307817"
+  },
+  "origin": {
+    "name": "Followup project",
+    "url": "https://github.com/alxv2016/folloup-sticky"
+  },
+  "source": {
+    "url": "https://github.com/alxv2016/folloup-sticky",
+    "license": "GPL-3.0"
+  },
+  "support": {
+    "url": "https://github.com/alxv2016/folloup-sticky/issues"
+  },
+  "documentationUrl": "https://github.com/alxv2016/folloup-sticky#readme",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Version 0.1.0 was flashed with verification and tested on reTerminal Sticky production hardware."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "Followup notes interface running on reTerminal Sticky"
+  },
+  "tags": [
+    "voice-notes",
+    "productivity",
+    "gemini",
+    "microsd"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "0.1.0",
+        "channel": "experimental",
+        "manifestPath": "firmware/0.1.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "The package writes the complete Followup image from flash offset 0 on the 32 MB device."
+      },
+      {
+        "title": "Followup setup",
+        "description": "Use a microSD card for local data storage. Wi-Fi and a Gemini API key are required for transcription and summarization."
+      }
+    ]
+  }
+}

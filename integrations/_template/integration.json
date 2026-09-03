@@ -4,6 +4,7 @@
   "name": "Example Platform",
   "group": "community",
   "catalogSection": "community",
+  "category": "dashboard",
   "mode": "flash",
   "status": "experimental",
   "summary": "A short sentence describing what this integration gives Sticky users.",

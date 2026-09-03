@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "id": "inksalah",
+  "name": "InkSalah",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "productivity",
+  "mode": "flash",
+  "status": "beta",
+  "summary": "Turn reTerminal Sticky into an offline-first prayer-window display with native touch settings.",
+  "description": "InkSalah is a calm, always-visible Salah companion for reTerminal Sticky. It calculates Fajr, Sunrise, Dhuhr, Asr, Maghrib, Isha, and optional Qiyam locally from the device's saved location and prayer settings, shows the active prayer window and remaining time, and provides touch-based settings, Wi-Fi onboarding, rotation-aware layouts, reminders, and deep sleep.",
+  "author": {
+    "name": "limengdu",
+    "url": "https://github.com/limengdu"
+  },
+  "origin": {
+    "name": "InkSalah for reTerminal Sticky",
+    "url": "https://github.com/limengdu/reTerminal_Sticky_InkSalah"
+  },
+  "source": {
+    "url": "https://github.com/limengdu/reTerminal_Sticky_InkSalah",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/limengdu/reTerminal_Sticky_InkSalah/issues"
+  },
+  "documentationUrl": "https://github.com/limengdu/reTerminal_Sticky_InkSalah#readme",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Version 0.1.0 uses the release profile developed and exercised on reTerminal Sticky production hardware."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "InkSalah portrait prayer-window interface running on reTerminal Sticky"
+  },
+  "tags": [
+    "prayer-times",
+    "salah",
+    "offline",
+    "epaper",
+    "touch",
+    "deep-sleep"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "0.1.0",
+        "channel": "beta",
+        "manifestPath": "firmware/0.1.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB-C data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Clean installation",
+        "description": "Accept the erase prompt when moving from another firmware so InkSalah can create a clean settings store."
+      },
+      {
+        "title": "Wi-Fi onboarding",
+        "description": "On first boot, connect a phone to the Sticky-Salah setup network, choose a nearby Wi-Fi network, and complete the captive setup page."
+      },
+      {
+        "title": "Prayer settings",
+        "description": "Confirm location and time zone on the device, then choose the calculation method, Asr school, per-time adjustments, reminder, and Qiyam display."
+      }
+    ]
+  }
+}

@@ -1,7 +1,7 @@
 # reTerminal Sticky Playground Registry
 
-Public firmware contribution and review repository for official, partner, and
-community integrations in the reTerminal Sticky Playground.
+Public firmware and 3D printable contribution repository for official, partner,
+and community integrations in the reTerminal Sticky Playground.
 
 The Sticky website repository remains private. Community developers contribute
 metadata, visual assets, and either complete buildable source or a verified
@@ -30,14 +30,17 @@ Contributor PR
   -> Sticky main and Kubernetes deployment
 ```
 
-A normal community contribution is a direct-flash firmware entry. Users stay on
-the Sticky website and install it through the browser.
+A normal community firmware contribution is a direct-flash entry. Users stay on
+the Sticky website and install it through the browser. A 3D printable
+contribution stores metadata and a preview photo here, then links users to the
+author's download page.
 
 ## Repository structure
 
 ```text
 integrations/
   _template/
+  _template_printables/
   <firmware-id>/
     integration.json
     README.md
@@ -47,6 +50,10 @@ integrations/
       <version>/
         manifest.json
         *.bin
+  <printable-id>/
+    integration.json
+    README.md
+    assets/
 schemas/
   integration.schema.json
 scripts/
@@ -74,6 +81,6 @@ the firmware after merge.
 - [English contribution guide](CONTRIBUTING.md)
 - [中文贡献指南](CONTRIBUTING.zh-CN.md)
 
-The guides define the source and firmware-only contribution paths,
-firmware package, metadata, local validation, physical-device test, pull request
-checks, and post-merge Sticky release flow.
+The guides define the source, firmware-only, and 3D printable contribution
+paths, firmware package, metadata, local validation, physical-device test, pull
+request checks, and post-merge Sticky release flow.

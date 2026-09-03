@@ -1,0 +1,44 @@
+{
+  "name": "Toybox",
+  "version": "1.0.5",
+  "flashSize": "16MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 921600,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "bootloader.bin",
+          "offset": 0,
+          "size": 18880,
+          "sha256": "84a8e89c7bcc88d766c22a21181d6e64a3800d32bfb2608cc1897ac009cd415d",
+          "md5": "bf7f403ead338f6bc9d99bc0036ac6b8"
+        },
+        {
+          "path": "partitions.bin",
+          "offset": 32768,
+          "size": 3072,
+          "sha256": "4dd8f107b209ebf427435b923aace9475b9129bc4b6c7b07196bcfefeb21bbf9",
+          "md5": "7758010836b4ed13cb4284ae51a16d92"
+        },
+        {
+          "path": "boot_app0.bin",
+          "offset": 57344,
+          "size": 8192,
+          "sha256": "f94c5d786a7a8fab06ac5d10e33bf37711a6697636dc037559ea19cc410a17f0",
+          "md5": "e6327541e2dc394ca2c3b3280ac0f39f"
+        },
+        {
+          "path": "toybox.bin",
+          "offset": 65536,
+          "size": 3964864,
+          "sha256": "3891790d687d9d5a2142c8ae82bf09f5e962cacb5975a7bc15b3ac345c7cc712",
+          "md5": "9f0369b2718dc4f05dc525c893d3dbcd"
+        }
+      ]
+    }
+  ]
+}

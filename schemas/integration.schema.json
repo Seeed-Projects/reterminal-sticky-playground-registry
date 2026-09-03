@@ -44,15 +44,33 @@
         "community"
       ]
     },
-    "catalogSection": {
-      "type": "string",
-      "enum": [
-        "official",
-        "platform",
-        "community",
-        "draft"
-      ]
-    },
+      "catalogSection": {
+        "type": "string",
+        "enum": [
+          "official",
+          "platform",
+          "community",
+          "printables",
+          "draft"
+        ]
+      },
+      "category": {
+        "type": "string",
+        "description": "Fixed category used by the Sticky Playground filters. Community firmware uses reader, dashboard, productivity, games, tools, or other. Printables use case, stand, mount, accessory, or reference.",
+        "enum": [
+          "reader",
+          "dashboard",
+          "productivity",
+          "games",
+          "tools",
+          "other",
+          "case",
+          "stand",
+          "mount",
+          "accessory",
+          "reference"
+        ]
+      },
     "mode": {
       "type": "string",
       "enum": [
@@ -346,6 +364,70 @@
           },
           "mode": {
             "const": "flash"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "catalogSection": {
+            "const": "printables"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "category"
+        ],
+        "properties": {
+          "group": {
+            "const": "community"
+          },
+          "mode": {
+            "const": "external"
+          },
+          "category": {
+            "enum": [
+              "case",
+              "stand",
+              "mount",
+              "accessory",
+              "reference"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "flash"
+          },
+          "catalogSection": {
+            "const": "community"
+          }
+        },
+        "required": [
+          "mode",
+          "catalogSection"
+        ]
+      },
+      "then": {
+        "required": [
+          "category"
+        ],
+        "properties": {
+          "category": {
+            "enum": [
+              "reader",
+              "dashboard",
+              "productivity",
+              "games",
+              "tools",
+              "other"
+            ]
           }
         }
       }
