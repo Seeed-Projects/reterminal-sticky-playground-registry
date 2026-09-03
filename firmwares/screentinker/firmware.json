@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "id": "screentinker",
+  "name": "ScreenTinker",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "productivity",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "Ultra-low-power digital signage & dashboard client with 8MB PSRAM caching, 6-digit pairing, and captive portal.",
+  "description": "ScreenTinker turns your reTerminal Sticky into an ultra-low-power, wireless digital signage display. Features direct 1-bit SSD1677 bitstream streaming, 8MB PSRAM in-memory frame cache for instant button navigation, server-coordinated deep sleep with ETag caching, seamless 6-digit PIN pairing, and a smartphone Captive Portal.",
+  "author": {
+    "name": "René Bohne",
+    "url": "https://github.com/renebohne"
+  },
+  "origin": {
+    "name": "ScreenTinker MCU",
+    "url": "https://github.com/renebohne/screentinker_mcu"
+  },
+  "source": {
+    "url": "https://github.com/renebohne/screentinker_mcu",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/renebohne/screentinker_mcu/issues"
+  },
+  "documentationUrl": "https://github.com/renebohne/screentinker_mcu#readme",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Tested on Seeed Studio reTerminal Sticky production hardware with 3.97-inch E-Paper and ESP32-S3."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "ScreenTinker running on reTerminal Sticky"
+  },
+  "tags": [
+    "signage",
+    "dashboard",
+    "epaper",
+    "wifi",
+    "battery"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "1.0.0",
+        "channel": "stable",
+        "manifestPath": "firmware/1.0.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "USB Connection & Web Flashing",
+        "description": "Connect reTerminal Sticky with a USB-C data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Dual Onboarding Setup",
+        "description": "After flashing, connect your smartphone to the 'ScreenTinker-Setup' Wi-Fi hotspot to configure Wi-Fi and Server URL via the popup setup portal, or use tools/sticky-installer.html via USB."
+      },
+      {
+        "title": "6-Digit Pairing Code",
+        "description": "Once Wi-Fi is connected, the Sticky will display a 6-digit pairing code on screen. In your ScreenTinker dashboard, click '+ Add Display' and enter the code."
+      }
+    ]
+  }
+}
