@@ -1,0 +1,23 @@
+{
+  "name": "TRMNL",
+  "version": "1.8.16",
+  "flashSize": "16MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "trmnl-1.8.16-reterminal-sticky.bin",
+          "offset": 0,
+          "size": 16556032,
+          "sha256": "a7b7af9eae3cca205bc553f594485db2badc5ab7b48b83a4a52d688d9e099ccb",
+          "md5": "cf74a5d39693abdb1bbc5ba39efcaf05"
+        }
+      ]
+    }
+  ]
+}
