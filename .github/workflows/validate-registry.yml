@@ -5,6 +5,7 @@ on:
     paths:
       - "firmwares/**"
       - "printables/**"
+      - "examples/**"
       - "schemas/**"
       - "scripts/**"
       - "package.json"
@@ -15,6 +16,7 @@ on:
     paths:
       - "firmwares/**"
       - "printables/**"
+      - "examples/**"
       - "schemas/**"
       - "scripts/**"
       - "package.json"
@@ -50,6 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.targets.outputs.matrix }}
+      channels: ${{ steps.channels.outputs.run }}
 
     steps:
       - name: Check out repository
@@ -80,6 +83,18 @@ jobs:
           CHANGED_FILES: ${{ steps.changes.outputs.files }}
         run: echo "matrix=$(node scripts/list-build-targets.mjs)" >> "$GITHUB_OUTPUT"
 
+      - name: Decide whether to smoke test the build channels
+        id: channels
+        env:
+          CHANGED_FILES: ${{ steps.changes.outputs.files }}
+        run: |
+          PIPELINE_PATHS='^(scripts/|examples/|package(-lock)?\.json|\.github/workflows/validate-registry\.yml)'
+          if [ -z "$CHANGED_FILES" ] || echo "$CHANGED_FILES" | grep -qE "$PIPELINE_PATHS"; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
   build-firmware:
     name: Build ${{ matrix.id }}
     needs:
@@ -102,6 +117,7 @@ jobs:
           node-version: "20"
 
       - name: Build ESP-IDF project
+        if: ${{ matrix.system == 'esp-idf' }}
         uses: espressif/esp-idf-ci-action@v1
         with:
           esp_idf_version: ${{ matrix.idfVersion }}
@@ -109,11 +125,37 @@ jobs:
           path: ${{ matrix.path }}
           command: idf.py -D PROJECT_VER=${{ matrix.version }} build
 
+      - name: Set up Python
+        if: ${{ matrix.system == 'platformio' }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Build PlatformIO project
+        if: ${{ matrix.system == 'platformio' }}
+        env:
+          PLATFORMIO_EXTRA_SCRIPTS: post:${{ github.workspace }}/scripts/pio-dump-flash-args.py
+        run: |
+          pip install --upgrade platformio
+          pio run -d "${{ matrix.path }}" -e "${{ matrix.environment }}"
+
+      - name: Set up Arduino CLI
+        if: ${{ matrix.system == 'arduino' }}
+        uses: arduino/setup-arduino-cli@v2
+
+      - name: Build Arduino sketch
+        if: ${{ matrix.system == 'arduino' }}
+        run: |
+          arduino-cli compile \
+            --profile "${{ matrix.profile }}" \
+            --build-path "${{ matrix.path }}/build" \
+            "${{ matrix.path }}"
+
       - name: Package firmware
         env:
           FIRMWARE_OUTPUT_DIR: firmware-output/${{ matrix.id }}/${{ matrix.versionSlug }}
           REGISTRY_COMMIT: ${{ github.sha }}
-        run: npm run package:esp-idf -- "${{ matrix.id }}" "${{ matrix.version }}"
+        run: npm run "package:${{ matrix.system }}" -- "${{ matrix.id }}" "${{ matrix.version }}"
 
       - name: Upload firmware artifact
         uses: actions/upload-artifact@v4
@@ -122,6 +164,55 @@ jobs:
           path: firmware-output/${{ matrix.id }}/${{ matrix.versionSlug }}
           if-no-files-found: error
           retention-days: 7
+
+  verify-build-channels:
+    name: Smoke test the ${{ matrix.system }} channel
+    needs:
+      - validate
+      - discover-firmware
+    if: ${{ needs.discover-firmware.outputs.channels == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        system:
+          - platformio
+          - arduino
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Set up Python
+        if: ${{ matrix.system == 'platformio' }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install PlatformIO
+        if: ${{ matrix.system == 'platformio' }}
+        run: pip install --upgrade platformio
+
+      - name: Set up Arduino CLI
+        if: ${{ matrix.system == 'arduino' }}
+        uses: arduino/setup-arduino-cli@v2
+
+      - name: Cache toolchain downloads
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.platformio
+            ~/.arduino15
+          key: build-channel-${{ matrix.system }}-${{ hashFiles('examples/platformio-starter/platformio.ini', 'examples/arduino-starter/sketch.yaml') }}
+
+      - name: Build and package the starter project
+        run: node scripts/verify-build-channel.mjs "${{ matrix.system }}"
 
   publish-firmware:
     name: Publish ${{ matrix.id }} ${{ matrix.version }}

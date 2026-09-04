@@ -30,9 +30,9 @@
 | 用户可以在 Sticky 网站直接烧录的固件 | `firmwares/<firmware-id>/` | `firmware.json` | `firmwares/_template/` | [贡献固件](docs/contributing-firmware.zh-CN.md) |
 | 3D 打印的外壳、支架、安装件或配件 | `printables/<design-id>/` | `printable.json` | `printables/_template/` | [贡献 3D 打印设计](docs/contributing-printables.zh-CN.md) |
 
-- **固件**贡献需要提交可编译的 ESP-IDF 源码（由 GitHub Actions 编译），或者一个
-  带 manifest 的、经过验证的 `.bin` 固件包，并在真机上测试后才能审核。第一次提交
-  预计一到两小时。
+- **固件**贡献需要提交可编译的 ESP-IDF、PlatformIO 或 Arduino 源码（由 GitHub
+  Actions 编译），或者一个带 manifest 的、经过验证的 `.bin` 固件包，并在真机上
+  测试后才能审核。第一次提交预计一到两小时。
 - **打印件**贡献只是一张卡片：一个 JSON 文件、一张照片、一份简短 README。模型文件
   留在你自己的 Printables / MakerWorld / Thingiverse / GrabCAD / GitHub 页面。
   预计 15–30 分钟。
@@ -56,7 +56,7 @@
 | 电脑上安装 Git | 推荐 | 可选 | 打印件可以完全在 GitHub 网页里完成，见[方式 B](#方式-bgithub-网页操作不需要-git) |
 | Node.js 20 或更高 | 推荐 | 可选 | 用来在本地跑和 GitHub Actions 相同的检查 |
 | 一台 reTerminal Sticky | 需要 | 需要 | 固件必须在真机上烧录测试；打印件需要一张装在真机上的照片 |
-| ESP-IDF | 可选 | 不需要 | 只有想在提交前本地编译固件时才需要 |
+| ESP-IDF、PlatformIO 或 Arduino CLI | 可选 | 不需要 | 只有想在提交前本地编译固件时才需要 |
 
 ## 3. 仓库结构
 
@@ -69,7 +69,7 @@ firmwares/                     每个固件一个目录
     assets/
       preview.jpg              真实的 Sticky 截图或照片
       logo.svg                 可选的标识图
-    source/                    源码模式：ESP-IDF 工程
+    source/                    源码模式：可编译的工程
     firmware/<version>/        仅固件包模式：manifest.json + *.bin
 
 printables/                    每个打印设计一个目录
@@ -89,6 +89,8 @@ scripts/
   create-flash-manifest.mjs    生成固件 manifest；通过 npm run create:manifest 运行
   list-build-targets.mjs       为 GitHub Actions 找出需要编译的源码固件
   package-esp-idf.mjs          把 ESP-IDF 编译结果整理成 manifest.json + .bin
+  package-platformio.mjs       同上，用于 PlatformIO 编译结果
+  package-arduino.mjs          同上，用于 Arduino 编译结果
 
 docs/
   contributing-firmware.md     固件详细指南（另有 .zh-CN.md）
@@ -305,7 +307,7 @@ Registry validation failed with 2 error(s):
 元数据文件只接受各自指南里列出的字段。删掉多出来的键，或检查合法键名是否拼错。
 
 **提交前怎么在自己的设备上测试固件？**
-用 ESP-IDF 本地编译并 `idf.py flash`，或者提交 PR 后使用 GitHub Actions 生成的 PR
+用项目自己的工具链在本地编译并烧录，或者提交 PR 后使用 GitHub Actions 生成的 PR
 产物。固件指南对两种方式都有说明。
 
 **有不清楚的地方问谁？**

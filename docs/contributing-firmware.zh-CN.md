@@ -21,7 +21,7 @@
 - [两种贡献方式](#两种贡献方式)：[源码模式](#源码模式) 或 [仅固件包](#仅固件包)（含 [manifest.json 说明](#仅固件包的-manifestjson)）
 - [Sticky 官方固件更新](#sticky-官方固件更新)
 - [源码模式要求](#源码模式要求)
-- [可选的本地 ESP-IDF 编译](#可选的本地-esp-idf-编译)
+- [可选的本地编译](#可选的本地编译)
 - [本地自动检查](#本地自动检查) 及[常见校验报错](#常见校验报错)
 - [提交 pull request](#提交-pull-request)
 - [真实设备测试](#真实设备测试)
@@ -242,7 +242,7 @@ cp -R firmwares/_template firmwares/my-firmware
 | `origin.url` | 字符串 | 否 | HTTPS 网址 | `origin.name` 的链接 |
 | `source.url` | 字符串 | 是 | HTTPS 网址 | 上游源码仓库，两种贡献方式都要填 |
 | `source.license` | 字符串 | 仅固件包必填 | 1–80 字符 | SPDX 风格的许可证标识，如 `MIT`、`GPL-3.0`、`Apache-2.0` |
-| `source.path` | 字符串 | 源码模式必填 | 目录内的相对路径，通常是 `source` | 存放 ESP-IDF 工程的目录 |
+| `source.path` | 字符串 | 源码模式必填 | 目录内的相对路径，通常是 `source` | 存放工程的目录；Arduino 用 sketch 的名字 |
 | `support.url` | 字符串 | 是 | HTTPS 网址 | 用户反馈问题的地方，通常是 issue 页面 |
 | `documentationUrl` | 字符串 | 否 | HTTPS 网址 | 用户文档，通常是上游 README |
 
@@ -260,10 +260,15 @@ cp -R firmwares/_template firmwares/my-firmware
 
 | 字段 | 类型 | 必填 | 限制 | 填什么 |
 |---|---|---|---|---|
-| `build.system` | 字符串 | 是 | 必须是 `esp-idf` | `esp-idf` |
-| `build.version` | 字符串 | 是 | 最长 64 字符，`^[A-Za-z0-9][A-Za-z0-9._-]*$` | 项目使用的 ESP-IDF 版本：`v5.4`、`v5.3.2`、`latest` |
-| `build.target` | 字符串 | 是 | 最长 40 字符 | `esp32s3`（reTerminal Sticky 使用 ESP32-S3） |
+| `build.system` | 字符串 | 是 | `esp-idf`、`platformio` 或 `arduino` | 项目本来在用的编译系统 |
+| `build.version` | 字符串 | 仅 ESP-IDF | 最长 64 字符，`^[A-Za-z0-9][A-Za-z0-9._-]*$` | 项目使用的 ESP-IDF 版本：`v5.4`、`v5.3.2`、`latest` |
+| `build.target` | 字符串 | 仅 ESP-IDF | 最长 40 字符 | `esp32s3`（reTerminal Sticky 使用 ESP32-S3） |
+| `build.environment` | 字符串 | 仅 PlatformIO | 最长 64 字符，`^[A-Za-z0-9][A-Za-z0-9._-]*$` | `platformio.ini` 里的环境名，不带 `env:` 前缀 |
+| `build.profile` | 字符串 | 仅 Arduino | 最长 64 字符，`^[A-Za-z0-9][A-Za-z0-9._-]*$` | `sketch.yaml` 里的配置档名称 |
 | `build.projectPath` | 字符串 | 是 | 相对路径 | 与 `source.path` 相同 |
+
+每种编译系统只接受属于自己的字段：ESP-IDF 写 `version` 和 `target`，PlatformIO 写
+`environment`，Arduino 写 `profile`。
 
 仅固件包模式请整个省略 `build` 对象。
 
@@ -419,7 +424,11 @@ shasum -a 256 *.bin         # sha256（macOS/Linux）；Windows 用 certutil -ha
 
 Wi-Fi 密码、API Key、Token 和密码等用户私密信息使用占位符或首次运行配置方式。
 
-第一阶段的自动编译流程支持 ESP-IDF，常见目录如下：
+自动编译流程支持 ESP-IDF、PlatformIO 和 Arduino 三种编译系统。选择项目本来就在用
+的那一种，写进 `build.system`。PlatformIO 和 Arduino 的起步工程放在
+[examples/](../examples/README.md)。
+
+### ESP-IDF
 
 ```text
 source/
@@ -432,26 +441,105 @@ source/
   LICENSE
 ```
 
-需要其他编译系统的项目，先提交 Issue，让维护者先为该编译系统加入可重复执行的 CI
-构建适配，再提交正式固件 PR。
+```json
+"build": {
+  "system": "esp-idf",
+  "version": "v5.4",
+  "target": "esp32s3",
+  "projectPath": "source"
+}
+```
 
-`build.version` 决定 GitHub Actions 使用哪个 ESP-IDF 版本。贡献者填写项目实际使用
-的版本，例如 `v5.0.5`、`v5.3.2` 或 `latest`，流程不会统一锁定到某个固定版本。
+`build.version` 决定 GitHub Actions 使用哪个 ESP-IDF 镜像版本，例如 `v5.0.5`、
+`v5.3.2` 或 `latest`，流程不会统一锁定到某个固定版本。
+
+### PlatformIO
+
+```text
+source/
+  platformio.ini
+  src/
+    main.cpp
+  LICENSE
+```
+
+```json
+"build": {
+  "system": "platformio",
+  "environment": "sticky",
+  "projectPath": "source"
+}
+```
+
+`build.environment` 指定要编译哪个 `[env:...]` 段落，不带 `env:` 前缀。在
+`platformio.ini` 里锁定平台版本，重新编译才能得到相同的二进制：
+
+```ini
+[env:sticky]
+platform = espressif32@6.13.0
+board = esp32-s3-devkitc-1
+framework = arduino
+```
+
+### Arduino
+
+Arduino CLI 要求 sketch 目录名与 `.ino` 文件名相同，因此工程目录用 sketch 的名字，
+不要叫 `source`：
+
+```text
+my-sketch/
+  my-sketch.ino
+  sketch.yaml
+  LICENSE
+```
+
+```json
+"build": {
+  "system": "arduino",
+  "profile": "sticky",
+  "projectPath": "my-sketch"
+}
+```
+
+`build.profile` 指定 `sketch.yaml` 里的一个配置档。配置档会锁定开发板内核和每一个
+库的版本，这是编译结果可复现的关键：
+
+```yaml
+profiles:
+  sticky:
+    fqbn: esp32:esp32:esp32s3
+    platforms:
+      - platform: esp32:esp32 (3.3.11)
+        platform_index_url: https://espressif.github.io/arduino-esp32/package_esp32_index.json
+default_profile: sticky
+```
+
+固件需要的开发板选项写进 `fqbn`，例如 reTerminal Sticky 的 32 MB Flash 与八线
+PSRAM 对应 `esp32:esp32:esp32s3:PSRAM=opi,FlashSize=32M`。
+
+使用其他编译系统的项目，先提交 Issue，让维护者先为该编译系统加入可重复执行的 CI
+构建适配，再提交正式固件 PR。
 
 一句话总结：源码必须让审核机器能够从零重新编译，而不是只留一个外部链接。
 
-## 可选的本地 ESP-IDF 编译
+## 可选的本地编译
 
-作者可以在提交 PR 前先做一次本地编译。安装 `firmware.json` 中声明的 ESP-IDF
-版本，然后进入项目的 `source/` 目录执行：
+作者可以在提交 PR 前先做一次本地编译。按声明的编译系统，在工程目录里执行对应命令：
 
 ```bash
+# ESP-IDF
 idf.py set-target esp32s3
 idf.py -D PROJECT_VER=1.0.0 build
+
+# PlatformIO
+pio run -e sticky
+
+# Arduino
+arduino-cli compile --profile sticky
 ```
 
-这一步用于作者在提交前确认工程能正常编译。Registry 会忽略本地生成的 `build/`、
-`sdkconfig`、依赖缓存和编辑器配置。PR 提交后，正式固件由 GitHub Actions 重新编译
+这一步用于作者在提交前确认工程能正常编译。Registry 会忽略本地生成的编译产物、
+配置文件、依赖缓存和编辑器配置。PR 提交后，正式固件由 GitHub Actions 重新编译
 并整理，无需把本机生成的文件放进 PR。
 
 一句话总结：本地编译是可选自测，正式固件统一由 Action 生成。
@@ -470,7 +558,7 @@ npm run validate
 - 目录名与项目 ID 一致；
 - 必填资料和 HTTPS 链接完整；
 - 项目 README 和声明的源码许可证存在；
-- 设置 `source.path` 时，本地源码目录和 ESP-IDF 工程文件存在；
+- 设置 `source.path` 时，本地源码目录和该编译系统的工程文件存在；
 - 图片格式正确，SVG 只包含静态内容；
 - manifest 结构正确；
 - 每个已提交固件文件存在，大小和 SHA-256 一致；
@@ -494,7 +582,8 @@ PR 中提交的文件。
 | `...firmware.json.author: is required for community firmware` | 缺 `author` | 补上 `author.name` |
 | `...firmware.json.source.license: is required for firmware-only packages` | 仅固件包没写许可证 | 补上 `source.license` |
 | `...firmware.json.build: is required when source.path is provided` | 源码模式缺 `build` | 补上 `build` 对象 |
-| `...firmware.json.build.projectPath: must contain CMakeLists.txt for an ESP-IDF project` | `source/` 为空或指错目录 | 把 ESP-IDF 工程根目录提交到 `source/` |
+| `...firmware.json.build.projectPath: must contain CMakeLists.txt for the esp-idf build system` | `projectPath` 为空或指错目录 | 把工程根目录提交到该路径。PlatformIO 需要 `platformio.ini`，Arduino 需要 `sketch.yaml` |
+| `...firmware.json.build: contains unsupported field "target"` | 混用了其他编译系统的字段 | 只保留当前 `build.system` 接受的字段 |
 | `...flash.versions[0].sourceBuild: must be true for a source contribution` | 最新版本没有 `sourceBuild` | 第一项加上 `"sourceBuild": true` |
 | `...flash.versions[0]: must use exactly one firmware delivery method` | `sourceBuild` 和 `manifestPath` 同时出现，或都没有 | 只保留一种 |
 | `...manifestPath: must be inside the firmware/ directory` | manifest 放错位置 | 移到 `firmware/<version>/manifest.json` |
@@ -556,8 +645,8 @@ PR 需要包含所选贡献方式对应的内容、项目资料、图片和实�
 GitHub Actions 会依次执行：
 
 1. 检查 Registry 结构和仅固件包模式提交的文件。
-2. 按每个源码项目声明的 ESP-IDF 版本进行编译。
-3. 根据 ESP-IDF 烧录表自动生成 manifest 和完整固件包。
+2. 按每个源码项目声明的工具链版本进行编译。
+3. 根据工具链给出的烧录表自动生成 manifest 和完整固件包。
 4. 把生成的固件作为 PR 临时构建产物，供维护者下载审核。
 
 当这些检查通过，并且维护者确认项目用途、许可证、兼容性和实机结果后，PR 才进入合并。
