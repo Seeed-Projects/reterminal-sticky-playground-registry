@@ -36,6 +36,11 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           path: pr
           persist-credentials: false
+          # The steps below read this tree as data only. Nothing in it is installed or
+          # executed, and the card is built by the base-branch script.
+          # 下面的步骤只把这份代码树当作数据读取：不安装、不执行其中的任何内容，
+          # 审核卡片由基础分支的脚本生成。
+          allow-unsafe-pr-checkout: true
 
       - name: Set up Node.js
         uses: actions/setup-node@v4

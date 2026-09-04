@@ -256,6 +256,14 @@ CC BY-SA 4.0
 
 下面按方式 A 讲；方式 B 需要创建的文件内容完全相同。
 
+用方式 A 时，先把本地 `main` 同步到上游最新，这样设计使用的目录结构与 Registry 当前读取的一致：
+
+```bash
+# 每个克隆只需执行一次
+git remote add upstream https://github.com/Seeed-Projects/reterminal-sticky-playground-registry.git
+git pull --no-ff upstream main
+```
+
 ### 第 4 步 —— 复制模板
 
 在仓库根目录执行：
