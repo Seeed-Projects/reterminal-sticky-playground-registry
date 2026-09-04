@@ -1,0 +1,8 @@
+profiles:
+  sticky:
+    notes: Starting point for an Arduino firmware contribution.
+    fqbn: esp32:esp32:esp32s3
+    platforms:
+      - platform: esp32:esp32 (3.3.11)
+        platform_index_url: https://espressif.github.io/arduino-esp32/package_esp32_index.json
+default_profile: sticky

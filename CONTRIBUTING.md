@@ -33,10 +33,10 @@ file, template, and detailed guide.
 | Firmware that users flash from the Sticky website | `firmwares/<firmware-id>/` | `firmware.json` | `firmwares/_template/` | [Contributing firmware](docs/contributing-firmware.md) |
 | A 3D printable case, stand, mount, or accessory | `printables/<design-id>/` | `printable.json` | `printables/_template/` | [Contributing a 3D printable design](docs/contributing-printables.md) |
 
-- A **firmware** contribution ships either buildable ESP-IDF source that GitHub
-  Actions compiles, or a verified `.bin` package with a manifest. It needs a
-  physical-device test before review. Expect to spend an hour or two on the
-  first submission.
+- A **firmware** contribution ships either buildable ESP-IDF, PlatformIO, or
+  Arduino source that GitHub Actions compiles, or a verified `.bin` package with
+  a manifest. It needs a physical-device test before review. Expect to spend an
+  hour or two on the first submission.
 - A **printable** contribution is a card: one JSON file, one photo, one short
   README. The model files stay on your Printables / MakerWorld / Thingiverse /
   GrabCAD / GitHub page. Expect 15–30 minutes.
@@ -60,7 +60,7 @@ follow the detailed guide for your content type.
 | Git on your computer | Recommended | Optional | Printables can be submitted entirely in the GitHub web interface (see [Method B](#method-b-github-web-interface-no-git)) |
 | Node.js 20 or newer | Recommended | Optional | Runs the same checks locally that GitHub Actions runs on your PR |
 | A reTerminal Sticky | Yes | Yes | Firmware must be flashed and tested on a real device; printables need a photo of the print on a real device |
-| ESP-IDF | Optional | No | Only if you want to build firmware locally before submitting |
+| ESP-IDF, PlatformIO, or Arduino CLI | Optional | No | Only if you want to build firmware locally before submitting |
 
 ## 3. Repository layout
 
@@ -73,7 +73,7 @@ firmwares/                     one directory per firmware
     assets/
       preview.jpg              real Sticky screenshot or photo
       logo.svg                 optional identity image
-    source/                    source contributions: the ESP-IDF project
+    source/                    source contributions: the buildable project
     firmware/<version>/        firmware-only contributions: manifest.json + *.bin
 
 printables/                    one directory per printable design
@@ -93,6 +93,8 @@ scripts/
   create-flash-manifest.mjs    writes a firmware manifest; run with npm run create:manifest
   list-build-targets.mjs       finds source-built firmware for GitHub Actions
   package-esp-idf.mjs          turns an ESP-IDF build into manifest.json + .bin
+  package-platformio.mjs       same, for a PlatformIO build
+  package-arduino.mjs          same, for an Arduino build
 
 docs/
   contributing-firmware.md     detailed firmware guide (+ .zh-CN.md)
@@ -339,9 +341,9 @@ The metadata files only accept the fields listed in their guide. Remove the
 extra key, or check for a typo in a valid key.
 
 **How do I test firmware on my device before submitting?**
-Build locally with ESP-IDF and flash with `idf.py flash`, or use the PR
-artifact that GitHub Actions produces after you open the PR. The firmware guide
-describes both.
+Build locally with your project's toolchain and flash it from there, or use the
+PR artifact that GitHub Actions produces after you open the PR. The firmware
+guide describes both.
 
 **Who do I ask if something is unclear?**
 Open an issue in this repository, or ask in the pull request itself.

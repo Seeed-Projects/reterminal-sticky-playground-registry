@@ -105,12 +105,75 @@ test('lists only publishable source-built integrations', () => {
       include: [{
         id: 'source-project',
         name: 'Source Project',
+        system: 'esp-idf',
         path: 'firmwares/source-project/source',
         idfVersion: 'v5.3.2',
         target: 'esp32s3',
         version: '2.0.0 RC1',
         versionSlug: '2.0.0-rc1',
       }],
+    });
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('passes the toolchain arguments each build system needs', () => {
+  const root = mkdtempSync(join(tmpdir(), 'sticky-target-list-test-'));
+  try {
+    writeIntegration(root, {
+      id: 'pio-project',
+      name: 'PlatformIO Project',
+      catalogSection: 'community',
+      build: {
+        system: 'platformio',
+        environment: 'sticky',
+        projectPath: 'source',
+      },
+      flash: {
+        versions: [{ version: '1.0.0', sourceBuild: true }],
+      },
+    });
+    writeIntegration(root, {
+      id: 'arduino-project',
+      name: 'Arduino Project',
+      catalogSection: 'community',
+      build: {
+        system: 'arduino',
+        profile: 'sticky',
+        projectPath: 'source',
+      },
+      flash: {
+        versions: [{ version: '1.0.0', sourceBuild: true }],
+      },
+    });
+
+    const result = spawnSync(process.execPath, [LIST_SCRIPT], {
+      encoding: 'utf8',
+      env: { ...process.env, REGISTRY_ROOT: root },
+    });
+    assert.equal(result.status, 0, result.stderr);
+    assert.deepEqual(JSON.parse(result.stdout), {
+      include: [
+        {
+          id: 'arduino-project',
+          name: 'Arduino Project',
+          system: 'arduino',
+          path: 'firmwares/arduino-project/source',
+          profile: 'sticky',
+          version: '1.0.0',
+          versionSlug: '1.0.0',
+        },
+        {
+          id: 'pio-project',
+          name: 'PlatformIO Project',
+          system: 'platformio',
+          path: 'firmwares/pio-project/source',
+          environment: 'sticky',
+          version: '1.0.0',
+          versionSlug: '1.0.0',
+        },
+      ],
     });
   } finally {
     rmSync(root, { recursive: true, force: true });

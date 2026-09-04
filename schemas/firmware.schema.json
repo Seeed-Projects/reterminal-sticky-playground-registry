@@ -191,32 +191,90 @@
     },
     "build": {
       "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "system",
-        "version",
-        "target",
-        "projectPath"
-      ],
-      "properties": {
-        "system": {
-          "const": "esp-idf"
+      "description": "Toolchain settings the Registry uses to build this firmware in CI.",
+      "oneOf": [
+        {
+          "title": "ESP-IDF",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "system",
+            "version",
+            "target",
+            "projectPath"
+          ],
+          "properties": {
+            "system": {
+              "const": "esp-idf"
+            },
+            "version": {
+              "type": "string",
+              "description": "ESP-IDF Docker image tag used to build this firmware.",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+              "maxLength": 64
+            },
+            "target": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+              "maxLength": 40
+            },
+            "projectPath": {
+              "description": "Directory that contains CMakeLists.txt.",
+              "$ref": "#/$defs/localPath"
+            }
+          }
         },
-        "version": {
-          "type": "string",
-          "description": "ESP-IDF Docker image tag used to build this firmware.",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
-          "maxLength": 64
+        {
+          "title": "PlatformIO",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "system",
+            "environment",
+            "projectPath"
+          ],
+          "properties": {
+            "system": {
+              "const": "platformio"
+            },
+            "environment": {
+              "type": "string",
+              "description": "platformio.ini environment name to build, without the \"env:\" prefix.",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+              "maxLength": 64
+            },
+            "projectPath": {
+              "description": "Directory that contains platformio.ini.",
+              "$ref": "#/$defs/localPath"
+            }
+          }
         },
-        "target": {
-          "type": "string",
-          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
-          "maxLength": 40
-        },
-        "projectPath": {
-          "$ref": "#/$defs/localPath"
+        {
+          "title": "Arduino",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "system",
+            "profile",
+            "projectPath"
+          ],
+          "properties": {
+            "system": {
+              "const": "arduino"
+            },
+            "profile": {
+              "type": "string",
+              "description": "sketch.yaml profile name that pins the board core and libraries.",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+              "maxLength": 64
+            },
+            "projectPath": {
+              "description": "Sketch directory that contains sketch.yaml.",
+              "$ref": "#/$defs/localPath"
+            }
+          }
         }
-      }
+      ]
     },
     "external": {
       "type": "object",

@@ -377,6 +377,118 @@ test('rejects an unsafe ESP-IDF Docker tag', () => {
   assert.match(result.stderr, /build\.version: has an invalid format/);
 });
 
+// Writes an external entry whose only interesting part is its build block.
+// 写入一个只为验证 build 段落而存在的 external 条目。
+function writeBuildIntegration(root, id, build, markerFile) {
+  const integration = validBase(id, 'external');
+  integration.source.path = 'source';
+  integration.build = build;
+  integration.external = {
+    label: 'Open official tool',
+    url: 'https://example.com/tool',
+    description: 'Continue in the maintained upstream tool.',
+  };
+  const integrationDir = writeIntegration(root, integration);
+  mkdirSync(join(integrationDir, 'source'), { recursive: true });
+  if (markerFile) {
+    writeFileSync(join(integrationDir, 'source', markerFile), 'example\n');
+  }
+  return integrationDir;
+}
+
+test('accepts a PlatformIO build block', () => {
+  const root = createRegistry();
+  writeBuildIntegration(
+    root,
+    'pio-firmware',
+    { system: 'platformio', environment: 'sticky', projectPath: 'source' },
+    'platformio.ini',
+  );
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 0);
+});
+
+test('accepts an Arduino build block', () => {
+  const root = createRegistry();
+  writeBuildIntegration(
+    root,
+    'arduino-firmware',
+    { system: 'arduino', profile: 'sticky', projectPath: 'source' },
+    'sketch.yaml',
+  );
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 0);
+});
+
+test('rejects an unknown build system', () => {
+  const root = createRegistry();
+  writeBuildIntegration(
+    root,
+    'makefile-firmware',
+    { system: 'makefile', projectPath: 'source' },
+    'Makefile',
+  );
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /build\.system: must be one of: esp-idf, platformio, arduino/);
+});
+
+test('rejects a build block that borrows fields from another build system', () => {
+  const root = createRegistry();
+  writeBuildIntegration(
+    root,
+    'pio-with-idf-fields',
+    {
+      system: 'platformio',
+      environment: 'sticky',
+      target: 'esp32s3',
+      projectPath: 'source',
+    },
+    'platformio.ini',
+  );
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /build: contains unsupported field "target"/);
+});
+
+test('rejects a PlatformIO project without platformio.ini', () => {
+  const root = createRegistry();
+  writeBuildIntegration(
+    root,
+    'pio-without-ini',
+    { system: 'platformio', environment: 'sticky', projectPath: 'source' },
+    'CMakeLists.txt',
+  );
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /build\.projectPath: must contain platformio\.ini/);
+});
+
+test('rejects an Arduino sketch without a profile name', () => {
+  const root = createRegistry();
+  writeBuildIntegration(
+    root,
+    'arduino-without-profile',
+    { system: 'arduino', projectPath: 'source' },
+    'sketch.yaml',
+  );
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /build: missing required field "profile"/);
+});
+
 test('accepts a valid template integration with local fragments', () => {
   const root = createRegistry();
   const integration = validBase('template-platform', 'template');
