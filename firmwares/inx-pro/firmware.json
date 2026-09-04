@@ -4,8 +4,9 @@
   "name": "Inx Pro",
   "group": "community",
   "catalogSection": "community",
+  "category": "ereader",
   "mode": "flash",
-  "status": "beta",
+  "status": "stable",
   "summary": "A focused open-source e-reader experience for reTerminal Sticky.",
   "description": "Inx Pro is community firmware for reTerminal Sticky with EPUB, TXT, XTC, library, image rendering, reader settings, reading statistics, Wi-Fi, OPDS, Calibre, and KOReader sync support.",
   "author": {
