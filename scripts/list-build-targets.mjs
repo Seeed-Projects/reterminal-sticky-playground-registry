@@ -31,6 +31,20 @@ function isTouched(id) {
   return buildsEverything || changedFiles.some((file) => file.startsWith(`firmwares/${id}/`));
 }
 
+const BUILD_SYSTEMS = new Set(['esp-idf', 'platformio', 'arduino']);
+
+// Maps a build block to the toolchain arguments its CI step needs.
+// 把 build 段落转换为对应编译步骤所需的工具链参数。
+function buildSettings(build) {
+  if (build.system === 'esp-idf') {
+    return { idfVersion: build.version, target: build.target };
+  }
+  if (build.system === 'platformio') {
+    return { environment: build.environment };
+  }
+  return { profile: build.profile };
+}
+
 function slugifyVersion(value) {
   const slug = String(value)
     .trim()
@@ -52,7 +66,7 @@ const targets = readdirSync(INTEGRATIONS_DIR, { withFileTypes: true })
     ));
     const version = integration.flash?.versions?.[0];
     if (
-      integration.build?.system !== 'esp-idf'
+      !BUILD_SYSTEMS.has(integration.build?.system)
       || integration.catalogSection === 'draft'
       || version?.sourceBuild !== true
       || !isTouched(integration.id)
@@ -60,9 +74,9 @@ const targets = readdirSync(INTEGRATIONS_DIR, { withFileTypes: true })
     return {
       id: integration.id,
       name: integration.name,
+      system: integration.build.system,
       path: `firmwares/${integration.id}/${integration.build.projectPath}`,
-      idfVersion: integration.build.version,
-      target: integration.build.target,
+      ...buildSettings(integration.build),
       version: version.version,
       versionSlug: slugifyVersion(version.version),
     };

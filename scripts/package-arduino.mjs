@@ -3,7 +3,7 @@
 import { join } from 'node:path';
 
 import {
-  readFlasherArgsJson,
+  readArduinoFlashArgs,
   resolveTarget,
   writeFirmwarePackage,
 } from './firmware-package.mjs';
@@ -11,8 +11,8 @@ import {
 const integrationId = process.argv[2];
 const versionLabel = process.argv[3];
 
-const { integration, projectDir, outputDir } = resolveTarget('esp-idf', integrationId, versionLabel);
-const { files, flashSize } = readFlasherArgsJson(join(projectDir, 'build'));
+const { integration, projectDir, outputDir } = resolveTarget('arduino', integrationId, versionLabel);
+const { files, flashSize } = readArduinoFlashArgs(join(projectDir, 'build'));
 const parts = writeFirmwarePackage({
   integration,
   versionLabel,
