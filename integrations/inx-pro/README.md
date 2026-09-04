@@ -7,8 +7,9 @@ OPDS, Calibre, and KOReader sync support.
 
 ## Firmware package
 
-- Registry version: `1.0.0-beta`
+- Registry version: `1.0.0`
 - Source: <https://github.com/obijuankenobiii/inx-pro>
+- Release: <https://github.com/obijuankenobiii/inx-pro/releases/tag/1.0.0>
 - License: MIT
 - Build system: PlatformIO / Arduino-ESP32
 - Target: ESP32-S3
