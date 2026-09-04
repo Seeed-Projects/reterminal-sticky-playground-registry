@@ -271,6 +271,15 @@ Choose one of the three methods in
 The rest of this section assumes Method A; the file contents are identical for
 Method B.
 
+With Method A, start from the current upstream `main` so the design uses the
+directory layout the Registry reads today:
+
+```bash
+# Once per clone
+git remote add upstream https://github.com/Seeed-Projects/reterminal-sticky-playground-registry.git
+git pull --no-ff upstream main
+```
+
 ### Step 4 — Copy the template
 
 From the repository root:
