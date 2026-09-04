@@ -54,14 +54,30 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
+      - name: Collect changed files
+        id: changes
+        if: ${{ github.event_name == 'pull_request' }}
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          {
+            echo "files<<CHANGED_FILES_EOF"
+            git diff --name-only "$BASE_SHA" HEAD
+            echo "CHANGED_FILES_EOF"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Read build targets
         id: targets
+        env:
+          CHANGED_FILES: ${{ steps.changes.outputs.files }}
         run: echo "matrix=$(node scripts/list-build-targets.mjs)" >> "$GITHUB_OUTPUT"
 
   build-firmware:
