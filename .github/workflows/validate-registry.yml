@@ -1,15 +1,10 @@
 name: Validate Registry
 
 on:
+  # Runs for every pull request, including ones that place an entry outside
+  # firmwares/ and printables/.
+  # 对每个 Pull Request 都会运行，包含把条目放在 firmwares/ 与 printables/ 之外的情况。
   pull_request:
-    paths:
-      - "firmwares/**"
-      - "printables/**"
-      - "examples/**"
-      - "schemas/**"
-      - "scripts/**"
-      - "package.json"
-      - ".github/workflows/validate-registry.yml"
   push:
     branches:
       - main
