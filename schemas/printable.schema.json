@@ -11,7 +11,6 @@
     "name",
     "category",
     "summary",
-    "description",
     "author",
     "download",
     "preview"
@@ -41,7 +40,8 @@
         "stand",
         "mount",
         "accessory",
-        "reference"
+        "reference",
+        "other"
       ]
     },
     "summary": {
@@ -52,7 +52,7 @@
     },
     "description": {
       "type": "string",
-      "description": "Short paragraph shown on the card.",
+      "description": "Optional longer explanation kept with the entry. The card shows the summary.",
       "minLength": 1,
       "maxLength": 800
     },
@@ -77,13 +77,12 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "platform",
         "url"
       ],
       "properties": {
         "platform": {
           "type": "string",
-          "description": "Name of the site that hosts the files, for example Printables or MakerWorld.",
+          "description": "Name of the site that hosts the files, for example Printables or MakerWorld. Omit it and the card links to the page with a generic label.",
           "minLength": 1,
           "maxLength": 40
         },

@@ -211,7 +211,7 @@ entries are coordinated with Seeed.
 | `name` | string | Yes | 1–80 chars | Card title shown on the website |
 | `group` | string | Yes | `official`, `partner`, `community` | `community` |
 | `catalogSection` | string | Yes | `official`, `platform`, `community`, `draft` | `community`. Cards in `draft` are not published |
-| `category` | string | Required for `community` | `ereader`, `productivity`, `personal`, `weather`, `finance`, `tools`, `fun`, `smart-home` | The filter that shows your card; see the table below |
+| `category` | string | Required for `community` | `ereader`, `productivity`, `personal`, `weather`, `finance`, `tools`, `fun`, `smart-home`, `other` | The filter that shows your card; see the table below |
 | `mode` | string | Yes | `flash`, `external`, `template`, `download` | `flash` (browser flashing). The other modes are reserved for coordinated entries |
 | `status` | string | Yes | `experimental`, `beta`, `stable` | Project maturity; shown as a badge |
 | `summary` | string | Yes | 1–140 chars | One sentence under the title |
@@ -230,6 +230,7 @@ Community firmware categories:
 | `tools` | Tools | Utilities, calculators, converters, device diagnostics |
 | `fun` | Fun | Games, art, toys, novelty displays |
 | `smart-home` | Smart Home | Home Assistant, sensors, controls, presence |
+| `other` | Others | Firmware that fits none of the categories above |
 
 #### Attribution and links
 
@@ -362,17 +363,42 @@ lists. The website reads this manifest to flash the device in the browser.
 | `builds[].parts[].size` | Yes | Exact byte size of the file |
 | `builds[].parts[].sha256` | Yes | Lowercase SHA-256 of the file |
 
-Parts must not overlap and each `.bin` may not exceed 32 MB. Get the numbers
-with:
+Parts must not overlap and each `.bin` may not exceed 32 MB.
+
+**Let the repository write the manifest.** Copy your `.bin` files into
+`firmwares/my-firmware/firmware/1.0.0/`, then run one command from the
+repository root; it fills in every size and SHA-256 for you and prints the
+`flash.versions` entry to paste into `firmware.json`:
+
+```bash
+npm run create:manifest -- my-firmware 1.0.0 --part bootloader.bin@0x0 --part partitions.bin@0x8000 --part firmware.bin@0x10000
+```
+
+If you built with ESP-IDF, point the command at the build instead of typing
+offsets:
+
+```bash
+npm run create:manifest -- my-firmware 1.0.0 --flasher-args source/build/flasher_args.json
+```
+
+A single merged image needs no offsets at all:
+
+```bash
+npm run create:manifest -- my-firmware 1.0.0
+```
+
+Running the command again after replacing a `.bin` refreshes the sizes and
+hashes and keeps the flasher settings the manifest already had.
+
+Offsets come from ESP-IDF's `build/flasher_args.json` (`flash_files`) or the
+upstream project's release notes. A single merged image starts at offset `0`.
+To read the numbers by hand instead:
 
 ```bash
 cd firmwares/my-firmware/firmware/1.0.0
 wc -c *.bin                 # size
 shasum -a 256 *.bin         # sha256 (macOS/Linux); certutil -hashfile file SHA256 on Windows
 ```
-
-Offsets come from ESP-IDF's `build/flasher_args.json` (`flash_files`) or the
-upstream project's release notes. A single merged image starts at offset `0`.
 
 ## Official Sticky firmware updates
 

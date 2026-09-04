@@ -37,6 +37,13 @@
   留在你自己的 Printables / MakerWorld / Thingiverse / GrabCAD / GitHub 页面。
   预计 15–30 分钟。
 
+**打印件还有一条快速通道。**
+[3D Printables 页面](https://www.seeedstudio.com/sticky/playground/3d-printables/)
+上的 **Share your design** 表单，会用网页表单问一份精简版的同类信息，照片直接上传，然后替你在
+本仓库开好 pull request。不需要 GitHub 账号，不需要 git，也不需要写 JSON，大约五分钟
+就能完成。提交后页面会给出 PR 链接，方便你跟进审核。如果你更习惯用 git，或者要更新
+一个已经上线的设计，就走下面的手动流程。
+
 本页只讲两类贡献共同的部分。读完一遍，再去看你那一类的详细指南。
 
 一句话总结：做固件看固件指南，做外壳看打印指南，本页是两条路共用的入口。
@@ -45,7 +52,7 @@
 
 | 条件 | 固件 | 打印件 | 说明 |
 |---|---|---|---|
-| GitHub 账号 | 需要 | 需要 | 免费账号即可 |
+| GitHub 账号 | 需要 | 只有手动流程需要 | 免费账号即可；走官网表单不需要账号 |
 | 电脑上安装 Git | 推荐 | 可选 | 打印件可以完全在 GitHub 网页里完成，见[方式 B](#方式-bgithub-网页操作不需要-git) |
 | Node.js 20 或更高 | 推荐 | 可选 | 用来在本地跑和 GitHub Actions 相同的检查 |
 | 一台 reTerminal Sticky | 需要 | 需要 | 固件必须在真机上烧录测试；打印件需要一张装在真机上的照片 |
@@ -79,6 +86,7 @@ schemas/
 
 scripts/
   validate-registry.mjs        检查全部目录；通过 npm run validate 运行
+  create-flash-manifest.mjs    生成固件 manifest；通过 npm run create:manifest 运行
   list-build-targets.mjs       为 GitHub Actions 找出需要编译的源码固件
   package-esp-idf.mjs          把 ESP-IDF 编译结果整理成 manifest.json + .bin
 
@@ -242,9 +250,12 @@ Registry validation failed with 2 error(s):
 1. 提交 pull request 并填写模板。**Contribution type** 只勾一项，只需完成对应的那一节。
 2. GitHub Actions 运行 `npm test` 和 `npm run validate`。源码模式固件还会被编译，
    固件作为 PR 产物附在检查结果里。出现红叉说明有失败，点 **Details** 看日志。
-3. 维护者审核元数据、图片、链接、许可证，固件贡献还会核对真机测试记录。审核意见会
+3. 一两分钟后，PR 上会出现一条**审核卡**评论：它把卡片按审核者看到的样子展示出来，
+   包括预览照片、链接是否可以访问，以及需要留意的地方，例如缺少许可证、diff 里残留
+   了密码。每次推送都会重写这条评论，所以它始终反映分支的最新状态。
+4. 维护者审核元数据、图片、链接、许可证，固件贡献还会核对真机测试记录。审核意见会
    以评论形式出现在 PR 上；回复或直接往同一分支推送修改即可。
-4. 检查全绿且审核完成后，维护者合并。
+5. 检查全绿且审核完成后，维护者合并。
 
 一般几个工作日内会有回应。如果 PR 超过两周没有动静，请在 PR 里留言提醒。
 

@@ -8,6 +8,20 @@ GrabCAD 或 GitHub 上发布模型的创客。你不需要了解任何固件或 
 与固件贡献共用的规则、三种提交 PR 的方式以及发布流程，见
 [CONTRIBUTING.zh-CN.md](../CONTRIBUTING.zh-CN.md)。
 
+## 五分钟通道：官网表单
+
+[3D Printables 页面](https://www.seeedstudio.com/sticky/playground/3d-printables/)
+上的 **Share your design** 按钮会打开一个简短表单：设计名称、分类、一句话简介、
+一张照片、下载页面和作者名。提交之后，服务会替你
+写好 `printable.json`、`README.md` 和 `assets/preview.<扩展名>`，并在本仓库开好
+pull request，页面上会直接给出这个 PR 的链接，随时可以查看审核进度。整个过程不需要
+GitHub 账号，不需要 git，也不需要手写 JSON。
+
+如果你更习惯自己准备文件、要更新一个已经上线的设计，或者想弄清楚表单到底生成了什么，
+继续往下读。两条路径的产物完全一样，校验也完全一样。
+
+一句话总结：想快就用官网表单，想自己掌控就照下面的步骤来。
+
 ## 目录
 
 1. [你需要提交什么](#1-你需要提交什么)
@@ -48,10 +62,10 @@ remix、更换许可证都不需要再到这里提 PR。
 3. `name` 作为标题；
 4. `summary` 显示在标题下方一到两行；
 5. 一行 **Author**，显示 `author.name`，如果填了 `author.url` 会带链接；
-6. 一个通栏按钮 **View on `<download.platform>`**，在新标签页打开 `download.url`。
+6. 一个通栏按钮 **View on `<download.platform>`**，在新标签页打开 `download.url`；不填 `download.platform` 时按钮显示 **View download page**。
 
-`description` 会保存下来用于详情和搜索，目前不在网格里显示，所以最关键的信息要写在
-`summary` 里。
+`description` 是选填的，只保存在条目里供 GitHub 上的读者查看，卡片显示的是
+`summary`，所以最关键的信息要写在 `summary` 里。
 
 ## 3. 目录里的文件
 
@@ -87,9 +101,9 @@ printables/
 | `schemaVersion` | 整数 | 是 | 必须是 `1` | 固定写 `1` |
 | `id` | 字符串 | 是 | 2–64 字符，`^[a-z0-9]+(?:-[a-z0-9]+)*$` | 与目录名相同 |
 | `name` | 字符串 | 是 | 1–80 字符 | 卡片标题，例如 `Sticky Wallet Case` |
-| `category` | 字符串 | 是 | `case`、`stand`、`mount`、`accessory`、`reference` 之一 | 决定卡片出现在哪个筛选项下，见[第 5 节](#5-分类) |
+| `category` | 字符串 | 是 | `case`、`stand`、`mount`、`accessory`、`reference`、`other` 之一 | 决定卡片出现在哪个筛选项下，见[第 5 节](#5-分类) |
 | `summary` | 字符串 | 是 | 1–140 字符 | 标题下的一句话：它是什么、最有用的一点是什么 |
-| `description` | 字符串 | 是 | 1–800 字符 | 两三句话：如何贴合 Sticky、推荐材料、打印前要知道的事 |
+| `description` | 字符串 | 否 | 1–800 字符 | 两三句话：如何贴合 Sticky、推荐材料、打印前要知道的事 |
 | `author` | 对象 | 是 | 见下 | 设计者 |
 | `download` | 对象 | 是 | 见下 | 文件在哪里 |
 | `preview` | 对象 | 是 | 见下 | 卡片上的照片 |
@@ -106,7 +120,7 @@ printables/
 
 | 字段 | 类型 | 必填 | 限制 | 填什么 |
 |---|---|---|---|---|
-| `download.platform` | 字符串 | 是 | 1–40 字符 | 托管文件的网站名，会变成按钮文字 **View on `<platform>`**。按网站自己的写法：`Printables`、`MakerWorld`、`Thingiverse`、`GrabCAD`、`GitHub`、`Cults3D`，或你自己的站名 |
+| `download.platform` | 字符串 | 否 | 1–40 字符 | 托管文件的网站名，会变成按钮文字 **View on `<platform>`**；不填时按钮显示 **View download page**。按网站自己的写法：`Printables`、`MakerWorld`、`Thingiverse`、`GrabCAD`、`GitHub`、`Cults3D`，或你自己的站名 |
 | `download.url` | 字符串 | 是 | HTTPS 网址，最长 2048 | 访客下载模型的公开页面（或直接的文件链接） |
 | `download.license` | 字符串 | 否 | 1–80 字符 | 下载页标注的许可证，按平台的写法：`CC BY 4.0`、`CC BY-SA 4.0`、`CC BY-NC 4.0`、`MIT`、`GPL-3.0` |
 
@@ -148,7 +162,7 @@ printables/
 
 - `name`：首字母大写的标题，结尾不加标点，不用写 "for reTerminal Sticky"（每张卡都是给 Sticky 的）。
 - `summary`：一个完整句子，句号结尾，不堆形容词。
-- `description`：说明贴合方式、材料，以及需要的五金件（磁铁、螺丝、毛毡垫）。
+- `description`：选填；要写就说明贴合方式、材料，以及需要的五金件（磁铁、螺丝、毛毡垫）。
 - 所有文字使用英文，网站面向全球访客。
 
 ## 5. 分类
@@ -162,6 +176,7 @@ printables/
 | `mount` | Mounts | 把 Sticky 固定到其他物体上的部件 | 冰箱磁吸座、墙面支架、显示器夹、车把夹 |
 | `accessory` | Accessories | 以上都不属于的附加件 | 触控笔座、线夹、挂绳环、收纳盒 |
 | `reference` | Reference Models | Sticky 本体的模型，用于设计其他部件 | 外壳 CAD 模型、尺寸模板、试装夹具 |
+| `other` | Others | 以上分类都不适用的设计 | 打印夹具、包装内衬、一次性试验件 |
 
 一个设计兼具两种用途（既是外壳又是支架）时，选访客最可能先搜的那个，另一个写进 `tags`。
 
@@ -323,7 +338,7 @@ Sticky 网站发布上线，见
 | `...printable.json: missing required field "download"` | 缺少必填的顶层对象 | 按[第 4 节](#4-printablejson-字段说明)补上 |
 | `...printable.json: contains unsupported field "mode"` | 出现了字段说明里没有的键 | 删掉它（`mode`、`catalogSection`、`source`、`external` 这类固件字段不属于这里） |
 | `...printable.json.id: must match the directory name "my-case"` | `id` 与目录名不一致 | 改成一样 |
-| `...printable.json.category: must be one of: case, stand, mount, accessory, reference` | 拼错，或填了固件分类 | 用五个值之一 |
+| `...printable.json.category: must be one of: case, stand, mount, accessory, reference, other` | 拼错，或填了固件分类 | 用六个值之一 |
 | `...printable.json.summary: must contain between 1 and 140 characters` | 太长 | 缩成一句话，细节移到 `description` |
 | `...printable.json.download.url: must use HTTPS` | 以 `http://` 开头 | 换成 `https://` 版本 |
 | `...printable.json.download.url: must be a valid absolute URL` | 缺协议头或含空格 | 从浏览器地址栏完整复制 |
@@ -390,10 +405,10 @@ Dropthetenors 的 Sticky Wallet Case 发布在 Thingiverse。它在本仓库里�
 ## 12. 提交前清单
 
 - [ ] 目录名与 `printable.json` 的 `id` 完全一致，只含小写字母、数字和连字符。
-- [ ] `category` 是 `case`、`stand`、`mount`、`accessory`、`reference` 之一。
-- [ ] `summary` 是一句话（≤ 140 字符）；`description` 两三句话（≤ 800）。
+- [ ] `category` 是 `case`、`stand`、`mount`、`accessory`、`reference`、`other` 之一。
+- [ ] `summary` 是一句话（≤ 140 字符）；填了 `description` 的话是两三句话（≤ 800）。
 - [ ] `author.name` 写明设计者；`author.url`（如有）是 HTTPS。
-- [ ] `download.platform` 是托管网站名；`download.url` 是公开 HTTPS 页面；下载页标注了许可证时 `download.license` 与之一致。
+- [ ] `download.url` 是公开 HTTPS 页面；填了 `download.platform` 的话是托管网站名；下载页标注了许可证时 `download.license` 与之一致。
 - [ ] `assets/preview.jpg` 是打印成品装在 reTerminal Sticky 上的真实照片，≤ 5 MB，与 `preview.image` 完全一致，并有描述性的 `preview.alt`。
 - [ ] `README.md` 写明打印参数、组装步骤、五金件、文件链接和许可证。
 - [ ] 没有提交任何模型文件。

@@ -690,6 +690,43 @@ test('accepts a printable design card with a preview photo', () => {
   assert.match(result.stdout, /Registry validation passed \(0 firmware\(s\), 1 printable\(s\)\)\./);
 });
 
+test('accepts a printable design that leaves out the description and the platform name', () => {
+  const root = createRegistry();
+  const printable = validPrintable('link-only-stand');
+  delete printable.description;
+  delete printable.download.platform;
+  delete printable.download.license;
+  writePrintable(root, printable);
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /Registry validation passed \(0 firmware\(s\), 1 printable\(s\)\)\./);
+});
+
+test('accepts the other category on a printable design and on a firmware entry', () => {
+  const printableRoot = createRegistry();
+  const printable = validPrintable('other-part');
+  printable.category = 'other';
+  writePrintable(printableRoot, printable);
+
+  const printableResult = runValidator(printableRoot);
+  assert.equal(printableResult.status, 0, printableResult.stderr);
+
+  const firmwareRoot = createRegistry();
+  const firmware = validBase('other-app', 'external');
+  firmware.category = 'other';
+  firmware.external = {
+    label: 'Open official tool',
+    url: 'https://example.com/tool',
+    description: 'Continue in the maintained upstream tool.',
+  };
+  writeIntegration(firmwareRoot, firmware);
+
+  const firmwareResult = runValidator(firmwareRoot);
+  assert.equal(firmwareResult.status, 0, firmwareResult.stderr);
+});
+
 test('rejects a printable design with firmware-only fields', () => {
   const root = createRegistry();
   const printable = validPrintable('hosted-case');

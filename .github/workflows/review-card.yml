@@ -1,0 +1,73 @@
+name: Review Card
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: review-card-${{ github.event.number }}
+  cancel-in-progress: true
+
+jobs:
+  review-card:
+    name: Summarize the pull request for review
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      # The scripts come from the base branch; the pull request content is only read as data.
+      # 脚本来自基础分支；Pull Request 的内容只作为数据读取。
+      - name: Check out the base branch
+        uses: actions/checkout@v4
+        with:
+          path: base
+
+      - name: Check out the pull request content
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: pr
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Build the review card
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REGISTRY_ROOT: pr
+          RAW_BASE_URL: https://raw.githubusercontent.com/${{ github.event.pull_request.head.repo.full_name }}/${{ github.event.pull_request.head.sha }}
+        run: |
+          gh pr diff "${{ github.event.number }}" --repo "$GITHUB_REPOSITORY" --name-only > changed-files.txt
+          CHANGED_FILES="$(cat changed-files.txt)" node base/scripts/review-card.mjs > review-card.md
+          cat review-card.md
+
+      - name: Post or update the card
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr comment "${{ github.event.number }}" --repo "$GITHUB_REPOSITORY" \
+            --body-file review-card.md --edit-last \
+            || gh pr comment "${{ github.event.number }}" --repo "$GITHUB_REPOSITORY" \
+              --body-file review-card.md
+
+      - name: Label a submission that came from the website form
+        if: contains(github.event.pull_request.body, '<!-- printable-submission -->')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create printable-submission --repo "$GITHUB_REPOSITORY" \
+            --color 0E8A16 --description "Opened by the 3D Printables form on the Sticky Playground" \
+            || true
+          gh pr edit "${{ github.event.number }}" --repo "$GITHUB_REPOSITORY" \
+            --add-label printable-submission
