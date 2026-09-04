@@ -69,7 +69,13 @@ scripts/
   validate-registry.mjs
   list-build-targets.mjs
   package-esp-idf.mjs
+  package-platformio.mjs
+  package-arduino.mjs
   verify-esp-idf-build.mjs
+  verify-build-channel.mjs
+examples/
+  platformio-starter/
+  arduino-starter/
 docs/
   contributing-firmware.md / .zh-CN.md
   contributing-printables.md / .zh-CN.md
@@ -88,7 +94,7 @@ npm run create:manifest -- <firmware-id> <version>   # firmware-only packages
 `npm run validate` checks every directory under `firmwares/` and `printables/`.
 `npm run create:manifest` writes `firmware/<version>/manifest.json` from the
 `.bin` files in that directory, filling in every size and SHA-256.
-For source-built firmware, declare the project's ESP-IDF version in
-`firmware.json` and set the newest version to `sourceBuild: true`; GitHub
-Actions builds the project, packages ESP-IDF's flash map, and publishes the
-firmware Release after merge.
+For source-built firmware, declare the project's build system in `firmware.json`
+and set the newest version to `sourceBuild: true`; GitHub Actions builds the
+project with ESP-IDF, PlatformIO, or Arduino, packages the toolchain's flash map,
+and publishes the firmware Release after merge.

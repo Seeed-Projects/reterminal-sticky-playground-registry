@@ -24,7 +24,7 @@ Shared review and release steps live in [CONTRIBUTING.md](../CONTRIBUTING.md).
 - [Contribution paths](#contribution-paths): [source](#source-contribution) or [firmware-only](#firmware-only-package) (with the [manifest.json reference](#manifestjson-for-a-firmware-only-package))
 - [Official Sticky firmware updates](#official-sticky-firmware-updates)
 - [Source contribution requirements](#source-contribution-requirements)
-- [Optional local ESP-IDF build](#optional-local-esp-idf-build)
+- [Optional local build](#optional-local-build)
 - [Local validation](#local-validation) and [common validation errors](#common-validation-errors)
 - [Submitting the pull request](#submitting-the-pull-request)
 - [Physical device test](#physical-device-test)
@@ -242,7 +242,7 @@ Community firmware categories:
 | `origin.url` | string | No | HTTPS URL | Link for `origin.name` |
 | `source.url` | string | Yes | HTTPS URL | Upstream source repository, for both contribution paths |
 | `source.license` | string | Required for firmware-only | 1–80 chars | SPDX-style license id such as `MIT`, `GPL-3.0`, `Apache-2.0` |
-| `source.path` | string | Required for source contributions | relative path inside the directory, normally `source` | Directory containing the ESP-IDF project |
+| `source.path` | string | Required for source contributions | relative path inside the directory, normally `source` | Directory containing the project; Arduino uses the sketch name |
 | `support.url` | string | Yes | HTTPS URL | Where users report problems, normally the issue tracker |
 | `documentationUrl` | string | No | HTTPS URL | User documentation, normally the upstream README |
 
@@ -260,10 +260,15 @@ Community firmware categories:
 
 | Field | Type | Required | Limits | What to write |
 |---|---|---|---|---|
-| `build.system` | string | Yes | must be `esp-idf` | `esp-idf` |
-| `build.version` | string | Yes | up to 64 chars, `^[A-Za-z0-9][A-Za-z0-9._-]*$` | ESP-IDF version the project builds with: `v5.4`, `v5.3.2`, `latest` |
-| `build.target` | string | Yes | up to 40 chars | `esp32s3` (reTerminal Sticky uses an ESP32-S3) |
+| `build.system` | string | Yes | `esp-idf`, `platformio`, or `arduino` | The build system the project already uses |
+| `build.version` | string | ESP-IDF only | up to 64 chars, `^[A-Za-z0-9][A-Za-z0-9._-]*$` | ESP-IDF version the project builds with: `v5.4`, `v5.3.2`, `latest` |
+| `build.target` | string | ESP-IDF only | up to 40 chars | `esp32s3` (reTerminal Sticky uses an ESP32-S3) |
+| `build.environment` | string | PlatformIO only | up to 64 chars, `^[A-Za-z0-9][A-Za-z0-9._-]*$` | `platformio.ini` environment name, without the `env:` prefix |
+| `build.profile` | string | Arduino only | up to 64 chars, `^[A-Za-z0-9][A-Za-z0-9._-]*$` | `sketch.yaml` profile name |
 | `build.projectPath` | string | Yes | relative path | Same value as `source.path` |
+
+Each build system accepts only its own fields. Write `version` and `target` for
+ESP-IDF, `environment` for PlatformIO, and `profile` for Arduino.
 
 Omit the whole `build` object for firmware-only packages.
 
@@ -434,8 +439,11 @@ applicable license.
 Use placeholders or runtime setup for user-specific Wi-Fi credentials, API
 keys, tokens, and passwords.
 
-The first automated build path supports ESP-IDF projects. A typical source tree
-contains:
+CI builds ESP-IDF, PlatformIO, and Arduino projects. Pick the one your project
+already uses and declare it in `build.system`. Starting points for PlatformIO and
+Arduino live in [examples/](../examples/README.md).
+
+### ESP-IDF
 
 ```text
 source/
@@ -448,26 +456,108 @@ source/
   LICENSE
 ```
 
-Projects that need another build system should open an issue first so the
-maintainers can add a reproducible CI build adapter before the firmware PR.
+```json
+"build": {
+  "system": "esp-idf",
+  "version": "v5.4",
+  "target": "esp32s3",
+  "projectPath": "source"
+}
+```
 
-The `build.version` field selects the ESP-IDF version used by GitHub Actions.
-Declare the version already used by the project, for example `v5.0.5`, `v5.3.2`,
-or `latest`.
+`build.version` selects the ESP-IDF Docker image tag, for example `v5.0.5`,
+`v5.3.2`, or `latest`.
 
-## Optional local ESP-IDF build
+### PlatformIO
 
-Authors may build locally before opening the PR. Install the ESP-IDF version
-declared in `firmware.json`, then run from the integration source directory:
+```text
+source/
+  platformio.ini
+  src/
+    main.cpp
+  LICENSE
+```
+
+```json
+"build": {
+  "system": "platformio",
+  "environment": "sticky",
+  "projectPath": "source"
+}
+```
+
+`build.environment` names the `[env:...]` section CI builds, without the `env:`
+prefix. Pin the platform version in `platformio.ini` so a rebuild produces the
+same binary:
+
+```ini
+[env:sticky]
+platform = espressif32@6.13.0
+board = esp32-s3-devkitc-1
+framework = arduino
+```
+
+### Arduino
+
+Arduino CLI requires the sketch directory and the `.ino` file to share a name, so
+name the project directory after the sketch instead of using `source`:
+
+```text
+my-sketch/
+  my-sketch.ino
+  sketch.yaml
+  LICENSE
+```
+
+```json
+"build": {
+  "system": "arduino",
+  "profile": "sticky",
+  "projectPath": "my-sketch"
+}
+```
+
+`build.profile` names a profile in `sketch.yaml`. A profile pins the board core
+and every library, which is what makes the build reproducible:
+
+```yaml
+profiles:
+  sticky:
+    fqbn: esp32:esp32:esp32s3
+    platforms:
+      - platform: esp32:esp32 (3.3.11)
+        platform_index_url: https://espressif.github.io/arduino-esp32/package_esp32_index.json
+default_profile: sticky
+```
+
+Add the board options your firmware needs to the `fqbn`, for example
+`esp32:esp32:esp32s3:PSRAM=opi,FlashSize=32M` for the 32 MB flash and octal PSRAM
+that reTerminal Sticky ships.
+
+Projects on another build system should open an issue first so the maintainers can
+add a reproducible CI build adapter before the firmware PR.
+
+## Optional local build
+
+Authors may build locally before opening the PR. Run the command for the declared
+build system from the project directory:
 
 ```bash
+# ESP-IDF
 idf.py set-target esp32s3
 idf.py -D PROJECT_VER=1.0.0 build
+
+# PlatformIO
+pio run -e sticky
+
+# Arduino
+arduino-cli compile --profile sticky
 ```
 
 This local build verifies the project before submission. The Registry ignores
-the local `build/`, generated `sdkconfig`, dependency cache, and editor settings.
-GitHub Actions performs the official build and packaging after the PR is opened.
+local build output, generated configuration, dependency caches, and editor
+settings. GitHub Actions performs the official build and packaging after the PR
+is opened.
 
 ## Local validation
 
@@ -483,7 +573,7 @@ The validator checks:
 - directory and ID consistency;
 - required metadata and HTTPS links;
 - the integration README and declared source license;
-- local source and ESP-IDF project files when `source.path` is present;
+- local source and the build system's project files when `source.path` is present;
 - image file signatures and static SVG safety;
 - local manifest structure;
 - firmware file existence, byte size, and SHA-256;
@@ -506,7 +596,8 @@ against the files committed in the PR.
 | `...firmware.json.author: is required for community firmware` | Missing `author` | Add `author.name` |
 | `...firmware.json.source.license: is required for firmware-only packages` | Firmware-only without a license id | Add `source.license` |
 | `...firmware.json.build: is required when source.path is provided` | Source contribution without `build` | Add the `build` object |
-| `...firmware.json.build.projectPath: must contain CMakeLists.txt for an ESP-IDF project` | `source/` is empty or points at the wrong directory | Commit the ESP-IDF project root under `source/` |
+| `...firmware.json.build.projectPath: must contain CMakeLists.txt for the esp-idf build system` | `projectPath` is empty or points at the wrong directory | Commit the project root there. PlatformIO needs `platformio.ini`, Arduino needs `sketch.yaml` |
+| `...firmware.json.build: contains unsupported field "target"` | Fields from another build system | Keep only the fields your `build.system` accepts |
 | `...flash.versions[0].sourceBuild: must be true for a source contribution` | Newest version lacks `sourceBuild` | Set `"sourceBuild": true` on the first entry |
 | `...flash.versions[0]: must use exactly one firmware delivery method` | `sourceBuild` and `manifestPath` both set, or neither | Keep one |
 | `...manifestPath: must be inside the firmware/ directory` | Manifest stored elsewhere | Move to `firmware/<version>/manifest.json` |
@@ -573,8 +664,8 @@ The pull request contains the selected contribution path, metadata, assets, and
 hardware test result. GitHub Actions performs these checks:
 
 1. Validate the Registry structure and every firmware-only package.
-2. Build source-contribution ESP-IDF projects with each project-declared IDF version.
-3. Generate the flash manifest and firmware package from ESP-IDF's flash map.
+2. Build source contributions with the toolchain version the project declares.
+3. Generate the flash manifest and firmware package from the toolchain's flash map.
 4. Upload the generated package as a temporary PR artifact for maintainer review.
 
 The pull request remains under review until these checks pass and the maintainer

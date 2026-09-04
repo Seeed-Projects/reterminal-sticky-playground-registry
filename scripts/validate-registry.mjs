@@ -29,7 +29,14 @@ const ALLOWED_STATUSES = new Set(['experimental', 'beta', 'stable']);
 const ALLOWED_CATALOG_SECTIONS = new Set(['official', 'platform', 'community', 'draft']);
 const ALLOWED_FIRMWARE_CATEGORIES = new Set(['ereader', 'productivity', 'personal', 'weather', 'finance', 'tools', 'fun', 'smart-home', 'other']);
 const ALLOWED_PRINTABLE_CATEGORIES = new Set(['case', 'stand', 'mount', 'accessory', 'reference', 'other']);
-const ALLOWED_BUILD_SYSTEMS = new Set(['esp-idf']);
+// Fields and project marker file each supported build system expects.
+// 每种受支持的编译系统所需的字段,以及用于识别工程的标识文件。
+const BUILD_SYSTEMS = new Map([
+  ['esp-idf', { fields: ['system', 'version', 'target', 'projectPath'], marker: 'CMakeLists.txt' }],
+  ['platformio', { fields: ['system', 'environment', 'projectPath'], marker: 'platformio.ini' }],
+  ['arduino', { fields: ['system', 'profile', 'projectPath'], marker: 'sketch.yaml' }],
+]);
+const BUILD_NAME_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
 const ALLOWED_ASSET_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.svg']);
 const ALLOWED_PHOTO_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp']);
 const PRINTABLE_FIELDS = new Set([
@@ -205,23 +212,37 @@ function validateLocalDirectoryPath(value, integrationDir, scope) {
   return resolvedPath;
 }
 
+// Validates a build block against the field set of its declared build system.
+// 按声明的编译系统,校验 build 段落所要求的字段。
 function validateBuild(value, integrationDir, source, scope) {
-  const allowedKeys = new Set(['system', 'version', 'target', 'projectPath']);
-  if (!validateObjectKeys(value, ['system', 'version', 'target', 'projectPath'], allowedKeys, scope)) {
+  if (!isObject(value)) {
+    addError(scope, 'must be an object');
     return;
   }
-  validateEnum(value.system, ALLOWED_BUILD_SYSTEMS, `${scope}.system`);
-  validateString(value.version, `${scope}.version`, {
-    max: 64,
-    pattern: /^[A-Za-z0-9][A-Za-z0-9._-]*$/,
-  });
-  validateString(value.target, `${scope}.target`, { max: 40, pattern: ID_PATTERN });
+  if (!validateEnum(value.system, new Set(BUILD_SYSTEMS.keys()), `${scope}.system`)) {
+    return;
+  }
+
+  const { fields, marker } = BUILD_SYSTEMS.get(value.system);
+  if (!validateObjectKeys(value, fields, new Set(fields), scope)) {
+    return;
+  }
+
+  if (value.system === 'esp-idf') {
+    validateString(value.version, `${scope}.version`, { max: 64, pattern: BUILD_NAME_PATTERN });
+    validateString(value.target, `${scope}.target`, { max: 40, pattern: ID_PATTERN });
+  } else if (value.system === 'platformio') {
+    validateString(value.environment, `${scope}.environment`, { max: 64, pattern: BUILD_NAME_PATTERN });
+  } else {
+    validateString(value.profile, `${scope}.profile`, { max: 64, pattern: BUILD_NAME_PATTERN });
+  }
+
   const projectPath = validateLocalDirectoryPath(value.projectPath, integrationDir, `${scope}.projectPath`);
   if (source?.path && value.projectPath !== source.path) {
     addError(`${scope}.projectPath`, 'must match source.path');
   }
-  if (projectPath && !existsSync(join(projectPath, 'CMakeLists.txt'))) {
-    addError(`${scope}.projectPath`, 'must contain CMakeLists.txt for an ESP-IDF project');
+  if (projectPath && !existsSync(join(projectPath, marker))) {
+    addError(`${scope}.projectPath`, `must contain ${marker} for the ${value.system} build system`);
   }
 }
 
