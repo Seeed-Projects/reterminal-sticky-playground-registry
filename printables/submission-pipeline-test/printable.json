@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "submission-pipeline-test",
+  "name": "Submission Pipeline Test",
+  "category": "other",
+  "summary": "A test entry that checks the website form end to end.",
+  "author": {
+    "name": "Sticky Playground"
+  },
+  "download": {
+    "url": "https://files.seeedstudio.com/wiki/reterminal_sticky/res/sticky_case_simple.stl"
+  },
+  "preview": {
+    "image": "assets/preview.png",
+    "alt": "A test entry that checks the website form end to end."
+  }
+}
