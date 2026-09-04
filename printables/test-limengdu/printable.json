@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "test-limengdu",
+  "name": "test-limengdu",
+  "category": "other",
+  "summary": "Third Anniversary",
+  "author": {
+    "name": "limengdu"
+  },
+  "download": {
+    "url": "https://github.com/Seeed-Projects/reterminal-sticky-playground-registry/pull/38/changes"
+  },
+  "preview": {
+    "image": "assets/preview.jpg",
+    "alt": "Third Anniversary"
+  }
+}
