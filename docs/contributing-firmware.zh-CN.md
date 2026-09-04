@@ -354,16 +354,38 @@ Release，供 Sticky 测试分支读取。
 | `builds[].parts[].size` | 是 | 文件的精确字节数 |
 | `builds[].parts[].sha256` | 是 | 文件的小写 SHA-256 |
 
-各分区不能重叠，单个 `.bin` 不超过 32 MB。数值可以这样获取：
+各分区不能重叠，单个 `.bin` 不超过 32 MB。
+
+**manifest 交给仓库自动生成。** 把 `.bin` 文件放进
+`firmwares/my-firmware/firmware/1.0.0/`，在仓库根目录跑一条命令，它会自动算好每个文件的
+大小和 SHA-256，并打印出可以直接粘进 `firmware.json` 的 `flash.versions` 条目：
+
+```bash
+npm run create:manifest -- my-firmware 1.0.0 --part bootloader.bin@0x0 --part partitions.bin@0x8000 --part firmware.bin@0x10000
+```
+
+如果是用 ESP-IDF 编译的，直接把命令指向编译产物，连地址都不用填：
+
+```bash
+npm run create:manifest -- my-firmware 1.0.0 --flasher-args source/build/flasher_args.json
+```
+
+只有一个合并镜像时，什么参数都不用加：
+
+```bash
+npm run create:manifest -- my-firmware 1.0.0
+```
+
+换了 `.bin` 之后再跑一次，大小和哈希会刷新，manifest 里原有的烧录参数会保留。
+
+烧录地址来自 ESP-IDF 的 `build/flasher_args.json`（`flash_files`）或上游项目的发布说明。
+单个合并镜像从地址 `0` 开始。想手动读这些数值可以用：
 
 ```bash
 cd firmwares/my-firmware/firmware/1.0.0
 wc -c *.bin                 # 大小
 shasum -a 256 *.bin         # sha256（macOS/Linux）；Windows 用 certutil -hashfile 文件名 SHA256
 ```
-
-烧录地址来自 ESP-IDF 的 `build/flasher_args.json`（`flash_files`）或上游项目的发布说明。
-单个合并镜像从地址 `0` 开始。
 
 一句话总结：提交源码时由 Action 产出固件；直接提交固件时由作者提供完整烧录包。
 

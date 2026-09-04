@@ -362,17 +362,42 @@ lists. The website reads this manifest to flash the device in the browser.
 | `builds[].parts[].size` | Yes | Exact byte size of the file |
 | `builds[].parts[].sha256` | Yes | Lowercase SHA-256 of the file |
 
-Parts must not overlap and each `.bin` may not exceed 32 MB. Get the numbers
-with:
+Parts must not overlap and each `.bin` may not exceed 32 MB.
+
+**Let the repository write the manifest.** Copy your `.bin` files into
+`firmwares/my-firmware/firmware/1.0.0/`, then run one command from the
+repository root; it fills in every size and SHA-256 for you and prints the
+`flash.versions` entry to paste into `firmware.json`:
+
+```bash
+npm run create:manifest -- my-firmware 1.0.0 --part bootloader.bin@0x0 --part partitions.bin@0x8000 --part firmware.bin@0x10000
+```
+
+If you built with ESP-IDF, point the command at the build instead of typing
+offsets:
+
+```bash
+npm run create:manifest -- my-firmware 1.0.0 --flasher-args source/build/flasher_args.json
+```
+
+A single merged image needs no offsets at all:
+
+```bash
+npm run create:manifest -- my-firmware 1.0.0
+```
+
+Running the command again after replacing a `.bin` refreshes the sizes and
+hashes and keeps the flasher settings the manifest already had.
+
+Offsets come from ESP-IDF's `build/flasher_args.json` (`flash_files`) or the
+upstream project's release notes. A single merged image starts at offset `0`.
+To read the numbers by hand instead:
 
 ```bash
 cd firmwares/my-firmware/firmware/1.0.0
 wc -c *.bin                 # size
 shasum -a 256 *.bin         # sha256 (macOS/Linux); certutil -hashfile file SHA256 on Windows
 ```
-
-Offsets come from ESP-IDF's `build/flasher_args.json` (`flash_files`) or the
-upstream project's release notes. A single merged image starts at offset `0`.
 
 ## Official Sticky firmware updates
 

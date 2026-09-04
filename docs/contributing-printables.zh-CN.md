@@ -8,6 +8,20 @@ GrabCAD 或 GitHub 上发布模型的创客。你不需要了解任何固件或 
 与固件贡献共用的规则、三种提交 PR 的方式以及发布流程，见
 [CONTRIBUTING.zh-CN.md](../CONTRIBUTING.zh-CN.md)。
 
+## 五分钟通道：官网表单
+
+[3D Printables 页面](https://www.seeedstudio.com/sticky/playground/3d-printables/)
+上的 **Share your design** 按钮会打开一个表单，问的正是本指南里的这些内容：设计名称、
+分类、一句话简介、详细介绍、作者、下载页面、许可证，以及一张照片。提交之后，服务会替你
+写好 `printable.json`、`README.md` 和 `assets/preview.<扩展名>`，并在本仓库开好
+pull request，页面上会直接给出这个 PR 的链接，随时可以查看审核进度。整个过程不需要
+GitHub 账号，不需要 git，也不需要手写 JSON。
+
+如果你更习惯自己准备文件、要更新一个已经上线的设计，或者想弄清楚表单到底生成了什么，
+继续往下读。两条路径的产物完全一样，校验也完全一样。
+
+一句话总结：想快就用官网表单，想自己掌控就照下面的步骤来。
+
 ## 目录
 
 1. [你需要提交什么](#1-你需要提交什么)

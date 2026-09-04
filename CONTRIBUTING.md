@@ -41,6 +41,14 @@ file, template, and detailed guide.
   README. The model files stay on your Printables / MakerWorld / Thingiverse /
   GrabCAD / GitHub page. Expect 15–30 minutes.
 
+**Printables have a shortcut.** The **Share your design** form on the
+[3D Printables page](https://www.seeedstudio.com/sticky/playground/3d-printables/)
+asks for the same information in a web form, takes your photo as an upload, and
+opens the pull request here on your behalf. It needs no GitHub account, no git,
+and no JSON, and it takes about five minutes. The form links you to the pull
+request it created so you can follow the review. Use the manual route below when
+you prefer working in git, or when you update a design that is already listed.
+
 This page covers everything the two kinds have in common. Read it once, then
 follow the detailed guide for your content type.
 
@@ -48,7 +56,7 @@ follow the detailed guide for your content type.
 
 | Requirement | Firmware | Printable | Notes |
 |---|---|---|---|
-| A GitHub account | Yes | Yes | Free account is enough |
+| A GitHub account | Yes | Only for the manual route | Free account is enough; the website form needs none |
 | Git on your computer | Recommended | Optional | Printables can be submitted entirely in the GitHub web interface (see [Method B](#method-b-github-web-interface-no-git)) |
 | Node.js 20 or newer | Recommended | Optional | Runs the same checks locally that GitHub Actions runs on your PR |
 | A reTerminal Sticky | Yes | Yes | Firmware must be flashed and tested on a real device; printables need a photo of the print on a real device |
@@ -82,6 +90,7 @@ schemas/
 
 scripts/
   validate-registry.mjs        checks every directory; run with npm run validate
+  create-flash-manifest.mjs    writes a firmware manifest; run with npm run create:manifest
   list-build-targets.mjs       finds source-built firmware for GitHub Actions
   package-esp-idf.mjs          turns an ESP-IDF build into manifest.json + .bin
 
@@ -261,10 +270,15 @@ SHA-256 values, and flash offsets; see the firmware guide.
    firmware it also compiles the project and attaches the firmware as a PR
    artifact. A red cross means something failed; open **Details** to read the
    log.
-3. A maintainer reviews metadata, images, links, license, and (for firmware)
+3. A **review card** comment appears on the pull request within a minute or two.
+   It shows the card as reviewers see it, the preview photo, whether the links
+   answer, and anything that needs attention such as a missing licence or a
+   credential left in the diff. The comment is rewritten on every push, so it
+   always describes the current state of your branch.
+4. A maintainer reviews metadata, images, links, license, and (for firmware)
    the physical-device test record. Review comments appear on the PR; reply or
    push fixes to the same branch.
-4. When the checks are green and the review is complete, the maintainer merges.
+5. When the checks are green and the review is complete, the maintainer merges.
 
 Typical turnaround is a few working days. If a PR has been quiet for more than
 two weeks, leave a comment on it.
