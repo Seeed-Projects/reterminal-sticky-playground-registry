@@ -175,10 +175,28 @@ test('renders a quick-review card for one printable design', () => {
     assert.ok(card.startsWith('<!-- review-card -->'));
     assert.match(card, /\*\*quick review\*\*/);
     assert.match(card, /raw\.githubusercontent\.com\/owner\/repo\/abc123\/printables\/sticky-desk-stand\/assets\/preview\.jpg/);
-    assert.match(card, /\| Licence \| CC BY-SA 4\.0 \|/);
+    assert.match(card, /\| Download \| \[Printables\]\(https:\/\/www\.printables\.com\/model\/1234\) \|/);
     assert.match(card, /Download page: reachable \(HTTP 200\)/);
     assert.match(card, /Author page: could not verify/);
     assert.match(card, /\| Photo \| 120 KB \|/);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('names the download link generically when the entry has no platform', () => {
+  const root = createRegistry();
+  try {
+    const designDir = join(root, 'printables', 'sticky-desk-stand');
+    const withoutPlatform = { ...printable, download: { url: printable.download.url } };
+    writeFileSync(join(designDir, 'printable.json'), `${JSON.stringify(withoutPlatform, null, 2)}\n`);
+
+    const card = buildReviewCard({
+      entries: collectChangedEntries(['printables/sticky-desk-stand/printable.json']),
+      printableEntries: [readPrintableEntry(root, 'sticky-desk-stand')],
+    });
+
+    assert.match(card, /\| Download \| \[download page\]\(https:\/\/www\.printables\.com\/model\/1234\) \|/);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

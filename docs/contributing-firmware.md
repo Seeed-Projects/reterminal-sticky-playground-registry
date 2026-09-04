@@ -211,7 +211,7 @@ entries are coordinated with Seeed.
 | `name` | string | Yes | 1–80 chars | Card title shown on the website |
 | `group` | string | Yes | `official`, `partner`, `community` | `community` |
 | `catalogSection` | string | Yes | `official`, `platform`, `community`, `draft` | `community`. Cards in `draft` are not published |
-| `category` | string | Required for `community` | `ereader`, `productivity`, `personal`, `weather`, `finance`, `tools`, `fun`, `smart-home` | The filter that shows your card; see the table below |
+| `category` | string | Required for `community` | `ereader`, `productivity`, `personal`, `weather`, `finance`, `tools`, `fun`, `smart-home`, `other` | The filter that shows your card; see the table below |
 | `mode` | string | Yes | `flash`, `external`, `template`, `download` | `flash` (browser flashing). The other modes are reserved for coordinated entries |
 | `status` | string | Yes | `experimental`, `beta`, `stable` | Project maturity; shown as a badge |
 | `summary` | string | Yes | 1–140 chars | One sentence under the title |
@@ -230,6 +230,7 @@ Community firmware categories:
 | `tools` | Tools | Utilities, calculators, converters, device diagnostics |
 | `fun` | Fun | Games, art, toys, novelty displays |
 | `smart-home` | Smart Home | Home Assistant, sensors, controls, presence |
+| `other` | Others | Firmware that fits none of the categories above |
 
 #### Attribution and links
 

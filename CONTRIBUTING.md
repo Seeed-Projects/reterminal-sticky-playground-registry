@@ -43,7 +43,7 @@ file, template, and detailed guide.
 
 **Printables have a shortcut.** The **Share your design** form on the
 [3D Printables page](https://www.seeedstudio.com/sticky/playground/3d-printables/)
-asks for the same information in a web form, takes your photo as an upload, and
+asks for a short version of the same information, takes your photo as an upload, and
 opens the pull request here on your behalf. It needs no GitHub account, no git,
 and no JSON, and it takes about five minutes. The form links you to the pull
 request it created so you can follow the review. Use the manual route below when
