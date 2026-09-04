@@ -7,8 +7,8 @@
   "category": "productivity",
   "mode": "flash",
   "status": "stable",
-  "summary": "Ultra-low-power digital signage & dashboard client with 8MB PSRAM caching, 6-digit pairing, and captive portal.",
-  "description": "ScreenTinker turns your reTerminal Sticky into an ultra-low-power, wireless digital signage display. Features direct 1-bit SSD1677 bitstream streaming, 8MB PSRAM in-memory frame cache for instant button navigation, server-coordinated deep sleep with ETag caching, seamless 6-digit PIN pairing, and a smartphone Captive Portal.",
+  "summary": "Ultra-low-power digital signage & dashboard client with 8MB PSRAM caching, System Menu, QR power-off, and captive portal.",
+  "description": "ScreenTinker turns your reTerminal Sticky into an ultra-low-power, wireless digital signage display. Features direct 1-bit SSD1677 bitstream streaming, 8MB PSRAM in-memory frame cache for instant button browsing, interactive on-screen System Menu, hardware power-off latch release, shutdown screen with scannable QR Code and GitHub link, server-coordinated deep sleep with ETag caching, and smartphone Captive Portal.",
   "author": {
     "name": "René Bohne",
     "url": "https://github.com/renebohne"
@@ -45,9 +45,9 @@
   "flash": {
     "versions": [
       {
-        "version": "1.0.0",
+        "version": "1.1.0",
         "channel": "stable",
-        "manifestPath": "firmware/1.0.0/manifest.json"
+        "manifestPath": "firmware/1.1.0/manifest.json"
       }
     ],
     "notes": [
@@ -58,6 +58,10 @@
       {
         "title": "Dual Onboarding Setup",
         "description": "After flashing, connect your smartphone to the 'ScreenTinker-Setup' Wi-Fi hotspot to configure Wi-Fi and Server URL via the popup setup portal, or use tools/sticky-installer.html via USB."
+      },
+      {
+        "title": "Interactive System Menu & Power Off",
+        "description": "Hold the OK button for 1.5 seconds to open the on-screen System Menu (Back, Power Off with QR code, Factory Reset). Navigate with UP/DOWN and confirm with OK."
       },
       {
         "title": "6-Digit Pairing Code",

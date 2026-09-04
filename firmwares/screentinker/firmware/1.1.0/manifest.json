@@ -1,6 +1,6 @@
 {
   "name": "ScreenTinker",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "flashSize": "16MB",
   "flashMode": "dio",
   "flashFreq": "80m",
@@ -34,9 +34,9 @@
         {
           "path": "screentinker.bin",
           "offset": 65536,
-          "size": 1166192,
-          "sha256": "5305f7a88a8ffadcb6dad035ea4da9c3cf7957c7df98892b3c1ac452131bcd72",
-          "md5": "a3e2cb416f7817ed835e7e324e8c3781"
+          "size": 1183328,
+          "sha256": "287a1e96d111225b61f93aa7e61da8b22c138722f758ac6b9d78c382f72e9eaa",
+          "md5": "9cf443aac434cf49711c162777b56cc1"
         }
       ]
     }
