@@ -14,9 +14,9 @@ request, and the release flow are in [CONTRIBUTING.md](../CONTRIBUTING.md).
 
 The **Share your design** button on the
 [3D Printables page](https://www.seeedstudio.com/sticky/playground/3d-printables/)
-opens a form that asks for exactly what this guide describes: the design name,
-category, summary, description, author, download page, licence, and one photo.
-When you submit it, the submission service writes `printable.json`, `README.md`,
+opens a short form: the design name, category, summary, one photo, the download
+page, and your name. When you submit it, the submission service writes
+`printable.json`, `README.md`,
 and `assets/preview.<ext>` for you and opens the pull request in this
 repository. The page then shows you the pull request link so you can watch the
 review. You need no GitHub account, no git, and no JSON editor.
@@ -66,10 +66,10 @@ filter on the left. A card shows, from top to bottom:
 3. `name` as the title;
 4. `summary` as one or two lines under the title;
 5. an **Author** row showing `author.name`, linked to `author.url` if you gave one;
-6. a full-width **View on `<download.platform>`** button that opens `download.url` in a new tab.
+6. a full-width **View on `<download.platform>`** button that opens `download.url` in a new tab. Leave `download.platform` out and the button reads **View download page**.
 
-`description` is stored for the card's detail view and for search; it is not
-shown in the grid today, so put the essential message in `summary`.
+`description` is optional and kept with the entry for readers who open it on
+GitHub; the card itself shows `summary`, so put the essential message there.
 
 ## 3. Files in your directory
 
@@ -107,9 +107,9 @@ optional; **any other key makes validation fail**. The formal definition is
 | `schemaVersion` | integer | Yes | must be `1` | Always `1` |
 | `id` | string | Yes | 2–64 chars, `^[a-z0-9]+(?:-[a-z0-9]+)*$` | Same as the directory name |
 | `name` | string | Yes | 1–80 chars | Card title, for example `Sticky Wallet Case` |
-| `category` | string | Yes | one of `case`, `stand`, `mount`, `accessory`, `reference` | Which filter shows the card; see [Section 5](#5-categories) |
+| `category` | string | Yes | one of `case`, `stand`, `mount`, `accessory`, `reference`, `other` | Which filter shows the card; see [Section 5](#5-categories) |
 | `summary` | string | Yes | 1–140 chars | One sentence under the title. Say what it is and the one thing that makes it useful |
-| `description` | string | Yes | 1–800 chars | Two or three sentences: how it fits Sticky, recommended material, anything to know before printing |
+| `description` | string | No | 1–800 chars | Two or three sentences: how it fits Sticky, recommended material, anything to know before printing |
 | `author` | object | Yes | see below | Who designed it |
 | `download` | object | Yes | see below | Where the files live |
 | `preview` | object | Yes | see below | The photo on the card |
@@ -126,7 +126,7 @@ optional; **any other key makes validation fail**. The formal definition is
 
 | Field | Type | Required | Limits | What to write |
 |---|---|---|---|---|
-| `download.platform` | string | Yes | 1–40 chars | Site that hosts the files. Becomes the button text **View on `<platform>`**. Use the site's own spelling: `Printables`, `MakerWorld`, `Thingiverse`, `GrabCAD`, `GitHub`, `Cults3D`, or your site name |
+| `download.platform` | string | No | 1–40 chars | Site that hosts the files. Becomes the button text **View on `<platform>`**; without it the button reads **View download page**. Use the site's own spelling: `Printables`, `MakerWorld`, `Thingiverse`, `GrabCAD`, `GitHub`, `Cults3D`, or your site name |
 | `download.url` | string | Yes | HTTPS URL, up to 2048 chars | The public page (or direct file link) where visitors download the model |
 | `download.license` | string | No | 1–80 chars | License shown on your download page, written the way the platform shows it: `CC BY 4.0`, `CC BY-SA 4.0`, `CC BY-NC 4.0`, `MIT`, `GPL-3.0` |
 
@@ -168,7 +168,7 @@ Writing tips:
 
 - `name`: title case, no trailing punctuation, no "for reTerminal Sticky" (every card is for Sticky).
 - `summary`: complete sentence with a period, no marketing adjectives.
-- `description`: mention fit, material, and any hardware the print needs (magnets, screws, felt pads).
+- `description`: optional; when you write one, mention fit, material, and any hardware the print needs (magnets, screws, felt pads).
 - Keep all text in English; the website serves a global audience.
 
 ## 5. Categories
@@ -183,6 +183,7 @@ the one that describes the primary purpose.
 | `mount` | Mounts | Parts that attach Sticky to something else | fridge magnet mount, wall bracket, monitor clip, bike clamp |
 | `accessory` | Accessories | Add-ons that are none of the above | stylus holder, cable clip, lanyard loop, travel box |
 | `reference` | Reference Models | Models of Sticky itself, used to design other parts | enclosure CAD model, dimension template, test-fit jig |
+| `other` | Others | Designs that fit none of the categories above | printing jig, packaging insert, one-off experiment |
 
 If a design does two things (a case that is also a stand), choose the one a
 visitor would search for first and mention the other in `tags`.
@@ -358,7 +359,7 @@ for `printables/my-case/printable.json`:
 | `...printable.json: missing required field "download"` | A required top-level object is absent | Add the object from [Section 4](#4-printablejson-field-reference) |
 | `...printable.json: contains unsupported field "mode"` | A key that is not in the field reference | Remove it (firmware-only fields such as `mode`, `catalogSection`, `source`, `external` do not belong here) |
 | `...printable.json.id: must match the directory name "my-case"` | `id` differs from the directory | Make them identical |
-| `...printable.json.category: must be one of: case, stand, mount, accessory, reference` | Typo or a firmware category | Use one of the five values |
+| `...printable.json.category: must be one of: case, stand, mount, accessory, reference, other` | Typo or a firmware category | Use one of the six values |
 | `...printable.json.summary: must contain between 1 and 140 characters` | Too long | Shorten to one sentence; move detail to `description` |
 | `...printable.json.download.url: must use HTTPS` | URL starts with `http://` | Use the `https://` version of the page |
 | `...printable.json.download.url: must be a valid absolute URL` | Missing scheme or spaces | Copy the URL from the browser address bar |
@@ -428,10 +429,10 @@ directories under `printables/` for more real examples.
 ## 12. Checklist
 
 - [ ] The directory name and `printable.json` `id` are identical and use only lowercase letters, digits, and hyphens.
-- [ ] `category` is one of `case`, `stand`, `mount`, `accessory`, `reference`.
-- [ ] `summary` is one sentence (≤ 140 characters); `description` is two or three sentences (≤ 800).
+- [ ] `category` is one of `case`, `stand`, `mount`, `accessory`, `reference`, `other`.
+- [ ] `summary` is one sentence (≤ 140 characters); `description`, if given, is two or three sentences (≤ 800).
 - [ ] `author.name` credits the designer; `author.url` (if given) is HTTPS.
-- [ ] `download.platform` is the hosting site's name; `download.url` is the public HTTPS page; `download.license` matches the page when a license is shown.
+- [ ] `download.url` is the public HTTPS page; `download.platform` (if given) is the hosting site's name; `download.license` matches the page when a license is shown.
 - [ ] `assets/preview.jpg` is a real photo of the print on reTerminal Sticky, ≤ 5 MB, referenced exactly in `preview.image`, with a descriptive `preview.alt`.
 - [ ] `README.md` lists print settings, assembly steps, hardware, files link, and license.
 - [ ] No model files are committed.

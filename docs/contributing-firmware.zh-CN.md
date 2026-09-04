@@ -211,7 +211,7 @@ cp -R firmwares/_template firmwares/my-firmware
 | `name` | 字符串 | 是 | 1–80 字符 | 网站上的卡片标题 |
 | `group` | 字符串 | 是 | `official`、`partner`、`community` | `community` |
 | `catalogSection` | 字符串 | 是 | `official`、`platform`、`community`、`draft` | `community`。`draft` 的卡片不会发布 |
-| `category` | 字符串 | `community` 必填 | `ereader`、`productivity`、`personal`、`weather`、`finance`、`tools`、`fun`、`smart-home` | 决定卡片出现在哪个筛选项下，见下表 |
+| `category` | 字符串 | `community` 必填 | `ereader`、`productivity`、`personal`、`weather`、`finance`、`tools`、`fun`、`smart-home`、`other` | 决定卡片出现在哪个筛选项下，见下表 |
 | `mode` | 字符串 | 是 | `flash`、`external`、`template`、`download` | `flash`（浏览器烧录）。其余模式保留给协调维护的条目 |
 | `status` | 字符串 | 是 | `experimental`、`beta`、`stable` | 项目成熟度，显示为徽标 |
 | `summary` | 字符串 | 是 | 1–140 字符 | 标题下方的一句话 |
@@ -230,6 +230,7 @@ cp -R firmwares/_template firmwares/my-firmware
 | `tools` | Tools | 实用工具、计算器、换算、设备诊断 |
 | `fun` | Fun | 游戏、艺术、玩具、趣味显示 |
 | `smart-home` | Smart Home | Home Assistant、传感器、控制、在家检测 |
+| `other` | Others | 以上分类都不适用的固件 |
 
 #### 署名与链接
 

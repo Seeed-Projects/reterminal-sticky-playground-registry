@@ -39,7 +39,7 @@
 
 **打印件还有一条快速通道。**
 [3D Printables 页面](https://www.seeedstudio.com/sticky/playground/3d-printables/)
-上的 **Share your design** 表单，会用网页表单问同样的信息，照片直接上传，然后替你在
+上的 **Share your design** 表单，会用网页表单问一份精简版的同类信息，照片直接上传，然后替你在
 本仓库开好 pull request。不需要 GitHub 账号，不需要 git，也不需要写 JSON，大约五分钟
 就能完成。提交后页面会给出 PR 链接，方便你跟进审核。如果你更习惯用 git，或者要更新
 一个已经上线的设计，就走下面的手动流程。

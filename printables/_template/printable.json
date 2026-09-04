@@ -4,7 +4,7 @@
   "name": "Example Case",
   "category": "case",
   "summary": "One sentence shown on the card, for example: A slim snap-on case with open USB-C access.",
-  "description": "Two or three sentences shown on the card. Explain what the design does, how it attaches to Sticky, and anything to know before printing.",
+  "description": "Optional. Two or three sentences kept with the entry: what the design does, how it attaches to Sticky, and anything to know before printing.",
   "author": {
     "name": "Your name or team",
     "url": "https://www.printables.com/@your-profile"
