@@ -10,6 +10,22 @@ For the Chinese guide, see [contributing-printables.zh-CN.md](contributing-print
 Rules shared with firmware contributions, the three ways to open a pull
 request, and the release flow are in [CONTRIBUTING.md](../CONTRIBUTING.md).
 
+## The five-minute route: the website form
+
+The **Share your design** button on the
+[3D Printables page](https://www.seeedstudio.com/sticky/playground/3d-printables/)
+opens a form that asks for exactly what this guide describes: the design name,
+category, summary, description, author, download page, licence, and one photo.
+When you submit it, the submission service writes `printable.json`, `README.md`,
+and `assets/preview.<ext>` for you and opens the pull request in this
+repository. The page then shows you the pull request link so you can watch the
+review. You need no GitHub account, no git, and no JSON editor.
+
+Read on when you prefer to prepare the files yourself, when you are updating a
+design that is already listed, or when you want to understand exactly what the
+form produces. Everything below applies to both routes: the same validation runs
+on every pull request, however it was opened.
+
 ## Contents
 
 1. [What you submit](#1-what-you-submit)
