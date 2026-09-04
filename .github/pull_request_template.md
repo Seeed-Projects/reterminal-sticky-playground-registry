@@ -26,7 +26,7 @@ Complete this section for **3D printable design**. Skip the firmware sections.
 - Directory: `printables/`
 - Download page:
 - Platform (Printables, MakerWorld, Thingiverse, GrabCAD, GitHub, other):
-- Category (`case`, `stand`, `mount`, `accessory`, `reference`):
+- Category (`case`, `stand`, `mount`, `accessory`, `reference`, `other`):
 
 - [ ] `printable.json` follows [docs/contributing-printables.md](https://github.com/Seeed-Projects/reterminal-sticky-playground-registry/blob/main/docs/contributing-printables.md).
 - [ ] `download.url` is the author's public page that hosts the files; no model files are committed here.

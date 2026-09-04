@@ -15,6 +15,24 @@ card and flashing page.
 For the Chinese guide, see [contributing-firmware.zh-CN.md](contributing-firmware.zh-CN.md).
 Shared review and release steps live in [CONTRIBUTING.md](../CONTRIBUTING.md).
 
+## Contents
+
+- [Contribution result](#contribution-result)
+- [Required pull request contents](#required-pull-request-contents)
+- [Create a contribution](#create-a-contribution)
+- [firmware.json](#firmwarejson) and its [field reference](#field-reference)
+- [Contribution paths](#contribution-paths): [source](#source-contribution) or [firmware-only](#firmware-only-package) (with the [manifest.json reference](#manifestjson-for-a-firmware-only-package))
+- [Official Sticky firmware updates](#official-sticky-firmware-updates)
+- [Source contribution requirements](#source-contribution-requirements)
+- [Optional local ESP-IDF build](#optional-local-esp-idf-build)
+- [Local validation](#local-validation) and [common validation errors](#common-validation-errors)
+- [Submitting the pull request](#submitting-the-pull-request)
+- [Physical device test](#physical-device-test)
+- [Pull request review and automation](#pull-request-review-and-automation)
+- [What happens after merge](#what-happens-after-merge)
+- [Updating an existing firmware](#updating-an-existing-firmware)
+- [Pull request checklist](#pull-request-checklist)
+
 ## Contribution result
 
 A published community contribution provides this user flow:
@@ -176,25 +194,93 @@ Normal third-party submissions use `"group": "community"`,
 }
 ```
 
-### Catalog fields
+### Field reference
 
-| Field | Community contribution value |
-|---|---|
-| `group` | `community` |
-| `catalogSection` | `community` |
-| `category` | One value from `ereader`, `productivity`, `personal`, `weather`, `finance`, `tools`, `fun`, or `smart-home` |
-| `mode` | `flash` |
-| `status` | `experimental`, `beta`, or `stable` according to project maturity |
-| `author.name` | Required author or team name shown on the website |
-| `author.url` | Optional HTTPS link opened when the author name is selected |
-| `origin.name` | Optional display source shown on the website |
-| `origin.url` | Optional HTTPS link opened when the display source is selected |
-| `source.url` | Upstream source repository for both contribution paths |
-| `source.license` | Source license identifier, required for firmware-only contributions |
-| `source.path` | Local source directory for the source path, normally `source` |
-| `build.*` | Build metadata supplied together with `source.path` |
-| `flash.versions[].sourceBuild` | Set to `true` when GitHub Actions builds the submitted source |
-| `flash.versions[].manifestPath` | Local manifest used by a firmware-only contribution |
+`firmware.json` is a strict JSON object: every key below is either required or
+optional, and **any other key makes validation fail**. The formal definition is
+[`schemas/firmware.schema.json`](../schemas/firmware.schema.json). Community
+contributions fill in the "Community value" column; partner and official
+entries are coordinated with Seeed.
+
+#### Identity and catalog placement
+
+| Field | Type | Required | Limits | Community value / what to write |
+|---|---|---|---|---|
+| `schemaVersion` | integer | Yes | must be `1` | `1` |
+| `id` | string | Yes | 2–64 chars, `^[a-z0-9]+(?:-[a-z0-9]+)*$` | Same as the directory name, for example `sticky-2048` |
+| `name` | string | Yes | 1–80 chars | Card title shown on the website |
+| `group` | string | Yes | `official`, `partner`, `community` | `community` |
+| `catalogSection` | string | Yes | `official`, `platform`, `community`, `draft` | `community`. Cards in `draft` are not published |
+| `category` | string | Required for `community` | `ereader`, `productivity`, `personal`, `weather`, `finance`, `tools`, `fun`, `smart-home`, `other` | The filter that shows your card; see the table below |
+| `mode` | string | Yes | `flash`, `external`, `template`, `download` | `flash` (browser flashing). The other modes are reserved for coordinated entries |
+| `status` | string | Yes | `experimental`, `beta`, `stable` | Project maturity; shown as a badge |
+| `summary` | string | Yes | 1–140 chars | One sentence under the title |
+| `description` | string | Yes | 1–800 chars | Two or three sentences: what it does, what services it needs, what users should expect |
+| `tags` | array of strings | No | up to 6 items, each 1–32 chars, unique | Short labels such as `offline`, `wifi`, `touch` |
+
+Community firmware categories:
+
+| Value | Filter label | Use it for |
+|---|---|---|
+| `ereader` | eReader | Book, article, and document readers |
+| `productivity` | Productivity | Task lists, calendars, notes, timers, dashboards for work |
+| `personal` | Personal | Habit trackers, prayer times, journals, personal reminders |
+| `weather` | Weather | Weather, air quality, tides, forecasts |
+| `finance` | Finance | Prices, portfolios, budgets |
+| `tools` | Tools | Utilities, calculators, converters, device diagnostics |
+| `fun` | Fun | Games, art, toys, novelty displays |
+| `smart-home` | Smart Home | Home Assistant, sensors, controls, presence |
+| `other` | Others | Firmware that fits none of the categories above |
+
+#### Attribution and links
+
+| Field | Type | Required | Limits | What to write |
+|---|---|---|---|---|
+| `author.name` | string | Required for `community` | 1–80 chars | Author or team name shown on the card |
+| `author.url` | string | No | HTTPS URL | Profile or project page opened when the name is selected |
+| `origin.name` | string | No | 1–80 chars | Display name of where the firmware comes from, for example `Project repository` or a community name |
+| `origin.url` | string | No | HTTPS URL | Link for `origin.name` |
+| `source.url` | string | Yes | HTTPS URL | Upstream source repository, for both contribution paths |
+| `source.license` | string | Required for firmware-only | 1–80 chars | SPDX-style license id such as `MIT`, `GPL-3.0`, `Apache-2.0` |
+| `source.path` | string | Required for source contributions | relative path inside the directory, normally `source` | Directory containing the ESP-IDF project |
+| `support.url` | string | Yes | HTTPS URL | Where users report problems, normally the issue tracker |
+| `documentationUrl` | string | No | HTTPS URL | User documentation, normally the upstream README |
+
+#### Compatibility and images
+
+| Field | Type | Required | Limits | What to write |
+|---|---|---|---|---|
+| `compatibility.devices` | array | Yes | exactly `["reterminal-sticky"]` | Always `["reterminal-sticky"]` |
+| `compatibility.notes` | string | No | up to 400 chars | Tested hardware revision, required accessories, known limits |
+| `assets.preview` | string | Yes | `assets/<file>.(png\|jpg\|jpeg\|webp\|svg)`, ≤ 5 MB | Real Sticky screenshot or photo of the firmware running |
+| `assets.previewAlt` | string | Yes | 1–180 chars | One sentence describing the preview |
+| `assets.logo` | string | No | same pattern, ≤ 1 MB | Optional project logo. Partner entries use their official logo here and in `preview` |
+
+#### Build settings (source contributions only)
+
+| Field | Type | Required | Limits | What to write |
+|---|---|---|---|---|
+| `build.system` | string | Yes | must be `esp-idf` | `esp-idf` |
+| `build.version` | string | Yes | up to 64 chars, `^[A-Za-z0-9][A-Za-z0-9._-]*$` | ESP-IDF version the project builds with: `v5.4`, `v5.3.2`, `latest` |
+| `build.target` | string | Yes | up to 40 chars | `esp32s3` (reTerminal Sticky uses an ESP32-S3) |
+| `build.projectPath` | string | Yes | relative path | Same value as `source.path` |
+
+Omit the whole `build` object for firmware-only packages.
+
+#### Firmware versions
+
+| Field | Type | Required | Limits | What to write |
+|---|---|---|---|---|
+| `flash.versions` | array | Yes | at least 1, newest first | One entry per published version |
+| `flash.versions[].version` | string | Yes | 1–40 chars, unique | Version label shown to users, for example `1.0.0` |
+| `flash.versions[].channel` | string | Yes | `experimental`, `beta`, `stable` | Maturity of that version |
+| `flash.versions[].sourceBuild` | boolean | Source contributions: `true` on the newest version | — | GitHub Actions builds this version from `source/` |
+| `flash.versions[].manifestPath` | string | Firmware-only: required on every version | `firmware/<version>/manifest.json` | Path to the committed manifest |
+| `flash.versions[].manifestUrl`, `manifestSha256`, `releaseUrl` | string | Maintainer use | — | Used for versions that already live in a Registry GitHub Release |
+| `flash.notes` | array | No | 1–12 items | Installation notes shown on the flashing page; each item has `title` (≤ 100) and `description` (≤ 500) |
+
+Each version uses exactly one delivery method: `sourceBuild: true`, or
+`manifestPath`, or the Release triplet.
 
 `author` and `origin` are website attribution fields. The `source` object keeps
 the technical source repository, license, and local build path used during
@@ -205,7 +291,7 @@ Seeed or partner work. Partner entries use `"group": "partner"`,
 `"catalogSection": "platform"`, `"mode": "flash"`, official project links,
 and official identity assets. Author attribution is optional for partner and
 official cards because their platform identity is represented by the
-integration name and official links. Normal community pull requests target the
+firmware name and official links. Normal community pull requests target the
 `community` section. Maintainers may
 temporarily use `draft` for migrated entries that are still waiting for a
 complete firmware package; draft entries are not published to Sticky
@@ -236,6 +322,82 @@ result in the integration README and pull request.
   "url": "https://github.com/example/my-firmware",
   "license": "MIT"
 }
+```
+
+#### manifest.json for a firmware-only package
+
+Each version directory contains one `manifest.json` and the `.bin` files it
+lists. The website reads this manifest to flash the device in the browser.
+
+```json
+{
+  "name": "My Firmware",
+  "version": "1.0.0",
+  "flashSize": "16MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        { "path": "bootloader.bin",      "offset": 0,      "size": 21344,   "sha256": "<sha256>" },
+        { "path": "partition-table.bin", "offset": 32768,  "size": 3072,    "sha256": "<sha256>" },
+        { "path": "my-firmware.bin",     "offset": 65536,  "size": 1523712, "sha256": "<sha256>" }
+      ]
+    }
+  ]
+}
+```
+
+| Field | Required | What to write |
+|---|---|---|
+| `name` | Yes | Same as `firmware.json` `name` |
+| `version` | Yes | Same as the `flash.versions[].version` that points at this manifest |
+| `flashSize` | No | Flash size of the device, `16MB` for reTerminal Sticky; used to reject parts that overflow |
+| `flashMode`, `flashFreq`, `baudRate`, `new_install_prompt_erase` | No | Passed to the browser flasher; the values above work for Sticky |
+| `builds[].chipFamily` | Yes | `ESP32-S3` |
+| `builds[].parts[].path` | Yes | File name only, in the same directory as the manifest, ending in `.bin` |
+| `builds[].parts[].offset` | Yes | Flash address in bytes (decimal), taken from your build's `flasher_args.json` |
+| `builds[].parts[].size` | Yes | Exact byte size of the file |
+| `builds[].parts[].sha256` | Yes | Lowercase SHA-256 of the file |
+
+Parts must not overlap and each `.bin` may not exceed 32 MB.
+
+**Let the repository write the manifest.** Copy your `.bin` files into
+`firmwares/my-firmware/firmware/1.0.0/`, then run one command from the
+repository root; it fills in every size and SHA-256 for you and prints the
+`flash.versions` entry to paste into `firmware.json`:
+
+```bash
+npm run create:manifest -- my-firmware 1.0.0 --part bootloader.bin@0x0 --part partitions.bin@0x8000 --part firmware.bin@0x10000
+```
+
+If you built with ESP-IDF, point the command at the build instead of typing
+offsets:
+
+```bash
+npm run create:manifest -- my-firmware 1.0.0 --flasher-args source/build/flasher_args.json
+```
+
+A single merged image needs no offsets at all:
+
+```bash
+npm run create:manifest -- my-firmware 1.0.0
+```
+
+Running the command again after replacing a `.bin` refreshes the sizes and
+hashes and keeps the flasher settings the manifest already had.
+
+Offsets come from ESP-IDF's `build/flasher_args.json` (`flash_files`) or the
+upstream project's release notes. A single merged image starts at offset `0`.
+To read the numbers by hand instead:
+
+```bash
+cd firmwares/my-firmware/firmware/1.0.0
+wc -c *.bin                 # size
+shasum -a 256 *.bin         # sha256 (macOS/Linux); certutil -hashfile file SHA256 on Windows
 ```
 
 ## Official Sticky firmware updates
@@ -332,6 +494,63 @@ The validator checks:
 For source contributions, manifest and firmware-file checks run after GitHub
 Actions builds the project. For firmware-only contributions, they run directly
 against the files committed in the PR.
+
+### Common validation errors
+
+| Error text | Cause | Fix |
+|---|---|---|
+| `firmwares/my-firmware: is missing firmware.json` | File not created or misnamed | Create `firmwares/my-firmware/firmware.json` |
+| `...firmware.json: contains unsupported field "..."` | A key that is not in the field reference | Remove it or fix the spelling |
+| `...firmware.json.id: must match the directory name "..."` | `id` differs from the directory | Make them identical |
+| `...firmware.json.category: is required for community firmware entries` | Missing `category` | Add one of the eight values |
+| `...firmware.json.author: is required for community firmware` | Missing `author` | Add `author.name` |
+| `...firmware.json.source.license: is required for firmware-only packages` | Firmware-only without a license id | Add `source.license` |
+| `...firmware.json.build: is required when source.path is provided` | Source contribution without `build` | Add the `build` object |
+| `...firmware.json.build.projectPath: must contain CMakeLists.txt for an ESP-IDF project` | `source/` is empty or points at the wrong directory | Commit the ESP-IDF project root under `source/` |
+| `...flash.versions[0].sourceBuild: must be true for a source contribution` | Newest version lacks `sourceBuild` | Set `"sourceBuild": true` on the first entry |
+| `...flash.versions[0]: must use exactly one firmware delivery method` | `sourceBuild` and `manifestPath` both set, or neither | Keep one |
+| `...manifestPath: must be inside the firmware/ directory` | Manifest stored elsewhere | Move to `firmware/<version>/manifest.json` |
+| `...manifestPath: version must match firmware version "1.0.0"` | Manifest `version` differs from `flash.versions[].version` | Make them identical |
+| `...parts[0].path: must be one .bin filename beside the manifest` | Path contains a directory or wrong extension | Put the file next to the manifest and use its bare name |
+| `...parts[0].size: expected 1523712 bytes but found 1523700` | Wrong `size` | Re-run `wc -c` and update |
+| `...parts[0].sha256: does not match the firmware file` | Wrong hash or file changed after hashing | Re-run `shasum -a 256` and update |
+| `...parts[1]: overlaps the previous firmware part` | `offset + size` of one part runs into the next | Check offsets against `flasher_args.json` |
+| `...assets.preview: does not contain a valid PNG file signature` | A JPG renamed to `.png` (or similar) | Use the real extension |
+| `...source.LICENSE: references a missing file: source/LICENSE` | License file missing from the source tree | Add `source/LICENSE` |
+
+## Submitting the pull request
+
+Any of the three methods in
+[CONTRIBUTING.md → Three ways to submit](../CONTRIBUTING.md#5-three-ways-to-submit)
+works; firmware is easiest with git because of the number of files.
+
+```bash
+git checkout -b add-my-firmware
+git add firmwares/my-firmware
+git commit -m "feat: add My Firmware 1.0.0"
+git push -u origin add-my-firmware
+```
+
+Then open the pull request against
+`Seeed-Projects/reterminal-sticky-playground-registry` / `main` and complete
+the template:
+
+1. Under **Contribution type**, tick one **Firmware:** line.
+2. Complete **Common verification**.
+3. In the **Firmware** section, fill in the name, directory, version, upstream
+   project, license, and (for firmware-only) the artifact origin and SHA-256.
+4. Tick the **Package type** and complete only the matching sub-list (source
+   contribution or firmware-only).
+5. Complete **Physical-device test** with the device revision, install method,
+   version, workflow tested, and the reboot/USB results.
+
+Title suggestion: `Add <Firmware Name> <version>`.
+
+Source contributions: after the PR is opened, GitHub Actions compiles the
+project. When the **Build <id>** job finishes, its page has an artifact named
+`firmware-<id>-<version>` containing `manifest.json` and the `.bin` files. You
+can download it and flash it with `esptool` or the browser flasher to complete
+the device test on the exact bytes reviewers will publish.
 
 ## Physical device test
 

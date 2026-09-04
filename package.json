@@ -7,6 +7,7 @@
   "scripts": {
     "test": "node --test scripts/*.test.mjs",
     "validate": "node scripts/validate-registry.mjs",
+    "create:manifest": "node scripts/create-flash-manifest.mjs",
     "package:esp-idf": "node scripts/package-esp-idf.mjs"
   },
   "engines": {

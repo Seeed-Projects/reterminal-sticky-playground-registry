@@ -27,8 +27,8 @@ const ALLOWED_GROUPS = new Set(['official', 'partner', 'community']);
 const ALLOWED_MODES = new Set(['external', 'template', 'download', 'flash']);
 const ALLOWED_STATUSES = new Set(['experimental', 'beta', 'stable']);
 const ALLOWED_CATALOG_SECTIONS = new Set(['official', 'platform', 'community', 'draft']);
-const ALLOWED_FIRMWARE_CATEGORIES = new Set(['ereader', 'productivity', 'personal', 'weather', 'finance', 'tools', 'fun', 'smart-home']);
-const ALLOWED_PRINTABLE_CATEGORIES = new Set(['case', 'stand', 'mount', 'accessory', 'reference']);
+const ALLOWED_FIRMWARE_CATEGORIES = new Set(['ereader', 'productivity', 'personal', 'weather', 'finance', 'tools', 'fun', 'smart-home', 'other']);
+const ALLOWED_PRINTABLE_CATEGORIES = new Set(['case', 'stand', 'mount', 'accessory', 'reference', 'other']);
 const ALLOWED_BUILD_SYSTEMS = new Set(['esp-idf']);
 const ALLOWED_ASSET_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.svg']);
 const ALLOWED_PHOTO_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp']);
@@ -909,7 +909,6 @@ function validatePrintable(printableDir, directoryName, seenIds) {
     'name',
     'category',
     'summary',
-    'description',
     'author',
     'download',
     'preview',
@@ -935,12 +934,16 @@ function validatePrintable(printableDir, directoryName, seenIds) {
   validateString(printable.name, `${scope}.name`, { max: 80 });
   validateEnum(printable.category, ALLOWED_PRINTABLE_CATEGORIES, `${scope}.category`);
   validateString(printable.summary, `${scope}.summary`, { max: 140 });
-  validateString(printable.description, `${scope}.description`, { max: 800 });
+  if (printable.description !== undefined) {
+    validateString(printable.description, `${scope}.description`, { max: 800 });
+  }
   validateAttribution(printable.author, `${scope}.author`);
 
   const downloadScope = `${scope}.download`;
-  if (validateObjectKeys(printable.download, ['platform', 'url'], new Set(['platform', 'url', 'license']), downloadScope)) {
-    validateString(printable.download.platform, `${downloadScope}.platform`, { max: 40 });
+  if (validateObjectKeys(printable.download, ['url'], new Set(['platform', 'url', 'license']), downloadScope)) {
+    if (printable.download.platform !== undefined) {
+      validateString(printable.download.platform, `${downloadScope}.platform`, { max: 40 });
+    }
     validateHttpsUrl(printable.download.url, `${downloadScope}.url`);
     if (printable.download.license !== undefined) {
       validateString(printable.download.license, `${downloadScope}.license`, { max: 80 });

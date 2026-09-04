@@ -12,6 +12,11 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md) ([中文](CONTRIBUTING.zh-CN.md)),
 which explains the shared rules, local checks, review, and release flow, then
 follow the guide for your content type.
 
+Printable designs have a shortcut: the **Share your design** form on the
+[3D Printables page](https://www.seeedstudio.com/sticky/playground/3d-printables/)
+collects the card text and the photo, then opens the pull request here for you.
+A GitHub account is not required to use it.
+
 ## How publishing works
 
 The Sticky website repository is private. It pins one reviewed commit of this
@@ -77,9 +82,12 @@ Requires Node.js 20 or newer.
 ```bash
 npm test
 npm run validate
+npm run create:manifest -- <firmware-id> <version>   # firmware-only packages
 ```
 
 `npm run validate` checks every directory under `firmwares/` and `printables/`.
+`npm run create:manifest` writes `firmware/<version>/manifest.json` from the
+`.bin` files in that directory, filling in every size and SHA-256.
 For source-built firmware, declare the project's ESP-IDF version in
 `firmware.json` and set the newest version to `sourceBuild: true`; GitHub
 Actions builds the project, packages ESP-IDF's flash map, and publishes the
