@@ -109,6 +109,15 @@ the same official logo path from both `assets.logo` and `assets.preview`.
 
 ## Create a contribution
 
+Start from the current upstream `main` so the contribution uses the directory
+layout the Registry reads today:
+
+```bash
+# Once per clone
+git remote add upstream https://github.com/Seeed-Projects/reterminal-sticky-playground-registry.git
+git pull --no-ff upstream main
+```
+
 From the repository root:
 
 ```bash
@@ -589,6 +598,7 @@ against the files committed in the PR.
 
 | Error text | Cause | Fix |
 |---|---|---|
+| `integrations: entries belong in firmwares/ with their metadata in firmware.json` | The branch started from an earlier directory layout | Sync with upstream `main`, then move the entry to `firmwares/<id>/` and rename its metadata to `firmware.json` |
 | `firmwares/my-firmware: is missing firmware.json` | File not created or misnamed | Create `firmwares/my-firmware/firmware.json` |
 | `...firmware.json: contains unsupported field "..."` | A key that is not in the field reference | Remove it or fix the spelling |
 | `...firmware.json.id: must match the directory name "..."` | `id` differs from the directory | Make them identical |

@@ -23,6 +23,12 @@ const PRINTABLES_DIR = join(REPOSITORY_ROOT, 'printables');
 const FIRMWARE_SCHEMA_PATH = join(REPOSITORY_ROOT, 'schemas', 'firmware.schema.json');
 const PRINTABLE_SCHEMA_PATH = join(REPOSITORY_ROOT, 'schemas', 'printable.schema.json');
 
+// Top-level directory names an earlier layout used, mapped to where their content belongs now.
+// 早前目录结构使用的顶层目录名，映射到其内容现在应存放的位置。
+const RENAMED_DIRECTORIES = new Map([
+  ['integrations', { directory: 'firmwares', metadataFile: 'firmware.json' }],
+]);
+
 const ALLOWED_GROUPS = new Set(['official', 'partner', 'community']);
 const ALLOWED_MODES = new Set(['external', 'template', 'download', 'flash']);
 const ALLOWED_STATUSES = new Set(['experimental', 'beta', 'stable']);
@@ -1008,6 +1014,15 @@ function main() {
       JSON.parse(readFileSync(schemaPath, 'utf8'));
     } catch (error) {
       addError(label, `contains invalid JSON (${error.message})`);
+    }
+  }
+
+  for (const [name, current] of RENAMED_DIRECTORIES) {
+    if (existsSync(join(REPOSITORY_ROOT, name))) {
+      addError(
+        name,
+        `entries belong in ${current.directory}/ with their metadata in ${current.metadataFile}`,
+      );
     }
   }
 

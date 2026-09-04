@@ -138,6 +138,17 @@ test('accepts an empty production registry', () => {
   assert.match(result.stdout, /Registry validation passed \(0 firmware\(s\), 0 printable\(s\)\)\./);
 });
 
+test('points an entry left in the earlier directory layout at its current location', () => {
+  const root = createRegistry();
+  mkdirSync(join(root, 'integrations', 'inx-pro'), { recursive: true });
+  writeFileSync(join(root, 'integrations', 'inx-pro', 'integration.json'), '{}\n');
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /integrations: entries belong in firmwares\/ with their metadata in firmware\.json/);
+});
+
 test('accepts an integration without an optional logo', () => {
   const root = createRegistry();
   const integration = validBase('preview-only', 'external');

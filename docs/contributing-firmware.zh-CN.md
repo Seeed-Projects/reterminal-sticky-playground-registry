@@ -108,6 +108,14 @@ firmwares/
 
 ## 创建一份贡献
 
+先把本地 `main` 同步到上游最新，这样贡献使用的目录结构与 Registry 当前读取的一致：
+
+```bash
+# 每个克隆只需执行一次
+git remote add upstream https://github.com/Seeed-Projects/reterminal-sticky-playground-registry.git
+git pull --no-ff upstream main
+```
+
 在仓库根目录执行：
 
 ```bash
@@ -575,6 +583,7 @@ PR 中提交的文件。
 
 | 报错文字 | 原因 | 修法 |
 |---|---|---|
+| `integrations: entries belong in firmwares/ with their metadata in firmware.json` | 分支基于早前的目录结构 | 先与上游 `main` 同步，再把条目移到 `firmwares/<id>/`，并把元数据文件改名为 `firmware.json` |
 | `firmwares/my-firmware: is missing firmware.json` | 文件没创建或名字不对 | 创建 `firmwares/my-firmware/firmware.json` |
 | `...firmware.json: contains unsupported field "..."` | 出现了字段说明里没有的键 | 删掉或修正拼写 |
 | `...firmware.json.id: must match the directory name "..."` | `id` 与目录名不一致 | 改成一样 |
