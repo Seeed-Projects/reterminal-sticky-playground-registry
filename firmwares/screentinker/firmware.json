@@ -7,8 +7,8 @@
   "category": "productivity",
   "mode": "flash",
   "status": "stable",
-  "summary": "Ultra-low-power digital signage & dashboard client with 8MB PSRAM caching, System Menu, QR power-off, and captive portal.",
-  "description": "ScreenTinker turns your reTerminal Sticky into an ultra-low-power, wireless digital signage display. Features direct 1-bit SSD1677 bitstream streaming, 8MB PSRAM in-memory frame cache for instant button browsing, interactive on-screen System Menu, hardware power-off latch release, shutdown screen with scannable QR Code and GitHub link, server-coordinated deep sleep with ETag caching, and smartphone Captive Portal.",
+  "summary": "Ultra-low-power digital signage client with 8MB PSRAM caching, multi-zone layouts, System Menu, and captive portal.",
+  "description": "ScreenTinker turns your reTerminal Sticky into an ultra-low-power, wireless digital signage display. Features direct 1-bit SSD1677 bitstream streaming, 8MB PSRAM in-memory frame cache for instant button browsing, multi-zone layout rendering (switch between Fullscreen and Multi-Zone via System Menu, Captive Portal, or WebSerial), interactive on-screen System Menu, hardware power-off latch release, shutdown screen with scannable QR Code and GitHub link, server-coordinated deep sleep with ETag caching, and smartphone Captive Portal.",
   "author": {
     "name": "René Bohne",
     "url": "https://github.com/renebohne"
@@ -40,7 +40,8 @@
     "dashboard",
     "epaper",
     "wifi",
-    "battery"
+    "battery",
+    "layout"
   ],
   "flash": {
     "versions": [
@@ -57,11 +58,11 @@
       },
       {
         "title": "Dual Onboarding Setup",
-        "description": "After flashing, connect your smartphone to the 'ScreenTinker-Setup' Wi-Fi hotspot to configure Wi-Fi and Server URL via the popup setup portal, or use tools/sticky-installer.html via USB."
+        "description": "After flashing, connect your smartphone to the 'ScreenTinker-Setup' Wi-Fi hotspot to configure Wi-Fi, Server URL, and Layout Mode via the popup setup portal, or use tools/sticky-installer.html via USB with WebSerial Config Protocol (WSCP) v1.0."
       },
       {
         "title": "Interactive System Menu & Power Off",
-        "description": "Hold the OK button for 1.5 seconds to open the on-screen System Menu (Back, Power Off with QR code, Factory Reset). Navigate with UP/DOWN and confirm with OK."
+        "description": "Hold the OK button for 1.5 seconds to open the on-screen System Menu (Back, Layout Mode toggle, Power Off with QR code, Factory Reset). Navigate with UP/DOWN and confirm with OK."
       },
       {
         "title": "6-Digit Pairing Code",

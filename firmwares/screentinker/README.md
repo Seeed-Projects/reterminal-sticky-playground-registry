@@ -11,12 +11,13 @@ ScreenTinker turns reTerminal Sticky into an ultra-low-power, wireless digital s
 Key features include:
 - **Direct 1-Bit SSD1677 Bitstream Streaming:** Zero MCU render overhead; the server provides pre-dithered, packed 1-bit monochome frames.
 - **8 MB PSRAM Frame Caching:** Stores up to 32 frames in memory for instant (< 2s) button browsing (`UP`/`DOWN`).
-- **Interactive On-Screen System Menu:** Hold the `OK` button for 1.5 seconds to open the menu with options: *Back*, *Power Off*, and *Factory Reset*.
+- **Multi-Zone Layout Rendering:** Switch between standard Fullscreen slides and multi-zone layout rendering directly from the On-Device System Menu, Captive Portal, or WebSerial commands. Automatically queries `/api/embedded/render-layout` to render complex screen layouts divided into multiple independent zones.
+- **Interactive On-Screen System Menu:** Hold the `OK` button for 1.5 seconds to open the menu with options: *Back*, *Layout Mode* (toggle Multi-Zone / Standard), *Power Off*, and *Factory Reset*.
 - **Hardware Power-Off Latch & QR Code Screen:** Releases battery power latches for 0 µA shutdown and displays a dedicated power-off screen with a scannable QR Code and GitHub repository link.
 - **Server-Coordinated Sleep & ETag Caching:** Automatically skips display refresh and enters deep sleep when content has not changed (`HTTP 304`).
 - **Dual Onboarding / Provisioning:**
-  - **Option A (Wi-Fi Hotspot):** Out of the box, broadcasts `ScreenTinker-Setup` for zero-tool smartphone configuration via captive portal (`192.168.4.1`).
-  - **Option B (WebSerial Installer):** Configure directly in Chrome/Edge via USB.
+  - **Option A (Wi-Fi Hotspot):** Out of the box, broadcasts `ScreenTinker-Setup` for zero-tool smartphone configuration via captive portal (`192.168.4.1`). Layout mode can be selected during setup.
+  - **Option B (WebSerial Installer):** Configure directly in Chrome/Edge via USB using the WebSerial Config Protocol (WSCP) v1.0.
 - **Zero-Hardcoding 6-Digit Pairing:** Safe CSPRNG pairing flow with one-time claim token.
 - **Bilingual Support:** Dynamic language switching (English / German) on the hardware buttons.
 
