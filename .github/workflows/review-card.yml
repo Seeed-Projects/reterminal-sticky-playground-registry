@@ -51,6 +51,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           REGISTRY_ROOT: pr
+          BASE_REGISTRY_ROOT: base
           RAW_BASE_URL: https://raw.githubusercontent.com/${{ github.event.pull_request.head.repo.full_name }}/${{ github.event.pull_request.head.sha }}
         run: |
           gh pr diff "${{ github.event.number }}" --repo "$GITHUB_REPOSITORY" --name-only > changed-files.txt

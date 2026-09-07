@@ -13,6 +13,8 @@ const SECRET_PATTERNS = [
   { name: 'Wi-Fi credential', pattern: /(?:WIFI_PASS|WIFI_PASSWORD|ssid)["'\s:=]+[^\s"']{8,}/i },
 ];
 const SCANNABLE_EXTENSIONS = new Set(['.json', '.md', '.c', '.h', '.cpp', '.hpp', '.py', '.ini', '.yml', '.yaml', '.txt', '.cfg', '.conf', '.sh']);
+const RESERVED_GROUPS = new Set(['official', 'partner']);
+const RESERVED_CATALOG_SECTIONS = new Set(['official', 'platform']);
 
 // Groups the files of a pull request by the Registry entry they belong to.
 // 按所属的 Registry 条目对 Pull Request 改动的文件分组。
@@ -126,11 +128,58 @@ export function findModelFiles(changedFiles) {
   return changedFiles.filter((file) => MODEL_EXTENSIONS.has(extname(file).toLowerCase()));
 }
 
-function assessRisk({ entries, secrets, modelFiles, linkChecks }) {
+// Official Sticky firmware and Partner Firmwares are reserved catalog entries.
+// 官方固件与 Partner Firmwares 属于保留目录条目。
+export function isReservedCatalog(firmware) {
+  return Boolean(
+    firmware
+    && (RESERVED_GROUPS.has(firmware.group) || RESERVED_CATALOG_SECTIONS.has(firmware.catalogSection)),
+  );
+}
+
+function catalogLabel(firmware) {
+  const group = firmware?.group || 'unknown';
+  const section = firmware?.catalogSection || 'unknown';
+  return `${group} / ${section}`;
+}
+
+// Lists official or partner firmware entries this pull request creates, edits, or removes.
+// 列出本 Pull Request 新建、修改或删除的官方或合作伙伴固件条目。
+export function collectReservedCatalogTouches(firmwareEntries, baseFirmwareEntries = []) {
+  const baseById = new Map(baseFirmwareEntries.map((entry) => [entry.id, entry]));
+  const touches = [];
+
+  for (const entry of firmwareEntries) {
+    const base = baseById.get(entry.id);
+    const pullReserved = !entry.removed && isReservedCatalog(entry.firmware);
+    const baseReserved = Boolean(base) && !base.removed && isReservedCatalog(base.firmware);
+    if (!pullReserved && !baseReserved) continue;
+
+    const identity = baseReserved ? base.firmware : entry.firmware;
+    let reason = 'this submission marks itself as official or partner';
+    if (baseReserved && entry.removed) {
+      reason = 'this official or partner entry would be removed';
+    } else if (baseReserved) {
+      reason = 'this official or partner entry already exists on main';
+    }
+
+    touches.push({
+      id: entry.id,
+      name: identity?.name || entry.id,
+      catalog: catalogLabel(identity),
+      reason,
+    });
+  }
+
+  return touches;
+}
+
+function assessRisk({ entries, secrets, modelFiles, linkChecks, reservedCatalogTouches }) {
   const reasons = [];
   if (secrets.length > 0) reasons.push('a possible secret appears in the diff');
   if (modelFiles.length > 0) reasons.push('model files are committed instead of linked');
   if (entries.outside.length > 0) reasons.push('files outside an entry directory changed');
+  if (reservedCatalogTouches.length > 0) reasons.push('an official or partner firmware entry changed');
   if (reasons.length > 0) return { level: 'needs a close look', reasons };
 
   if (entries.firmwares.length > 0) reasons.push('firmware runs on the device and needs the hardware test record');
@@ -232,12 +281,22 @@ export function buildReviewCard({
   entries,
   printableEntries = [],
   firmwareEntries = [],
+  baseFirmwareEntries = [],
   linkChecks = [],
   secrets = [],
   modelFiles = [],
+  reservedCatalogTouches,
   rawBaseUrl = '',
 }) {
-  const risk = assessRisk({ entries, secrets, modelFiles, linkChecks });
+  const reservedTouches = reservedCatalogTouches
+    ?? collectReservedCatalogTouches(firmwareEntries, baseFirmwareEntries);
+  const risk = assessRisk({
+    entries,
+    secrets,
+    modelFiles,
+    linkChecks,
+    reservedCatalogTouches: reservedTouches,
+  });
   const lines = [
     MARKER,
     '## Review card',
@@ -245,6 +304,19 @@ export function buildReviewCard({
     `**${risk.level}** — ${risk.reasons.join('; ')}.`,
     '',
   ];
+
+  if (reservedTouches.length > 0) {
+    lines.push(
+      '### Reserved catalog entries',
+      '',
+      'Community submissions belong in Community Firmwares. Official Sticky firmware and Partner Firmwares are maintained by Seeed or the partner platform.',
+      '',
+      ...reservedTouches.map((touch) => (
+        `- \`${touch.id}\` (${touch.catalog}) — ${touch.reason}`
+      )),
+      '',
+    );
+  }
 
   for (const entry of printableEntries) {
     lines.push(...printableSection(entry, { linkChecks, rawBaseUrl }));
@@ -302,6 +374,12 @@ async function main() {
   const entries = collectChangedEntries(changedFiles);
   const printableEntries = entries.printables.map((id) => readPrintableEntry(rootDir, id));
   const firmwareEntries = entries.firmwares.map((id) => readFirmwareEntry(rootDir, id));
+  const baseRootDir = process.env.BASE_REGISTRY_ROOT
+    ? resolve(process.env.BASE_REGISTRY_ROOT)
+    : '';
+  const baseFirmwareEntries = baseRootDir
+    ? entries.firmwares.map((id) => readFirmwareEntry(baseRootDir, id))
+    : [];
 
   const urls = new Set();
   for (const entry of printableEntries) {
@@ -314,6 +392,7 @@ async function main() {
     entries,
     printableEntries,
     firmwareEntries,
+    baseFirmwareEntries,
     linkChecks,
     secrets: scanForSecrets(rootDir, changedFiles),
     modelFiles: findModelFiles(changedFiles),
