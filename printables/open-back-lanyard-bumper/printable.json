@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "open-back-lanyard-bumper",
-  "name": "Open-Back Lanyard Bumper",
+  "name": "Lanyard Case",
   "category": "case",
   "summary": "An open-back bumper with two lanyard tabs, port access, and separate TPU and short-edge-rib PLA variants.",
   "description": "A one-piece bumper with an open screen and back, two top lanyard tabs, and openings for the buttons and ports. The flexible version has a continuous front lip; the experimental PLA version retains only two short-edge ribs and still requires case deflection during insertion. A user-supplied photo shows a printed cover fitted on Sticky; material, print settings and functional checks are not yet recorded.",
@@ -16,7 +16,7 @@
   },
   "preview": {
     "image": "assets/preview.jpg",
-    "alt": "White Open-Back Lanyard Bumper fitted on reTerminal Sticky, showing the screen and two top lanyard tabs"
+    "alt": "White Lanyard Case fitted on reTerminal Sticky, showing the screen and two top lanyard tabs"
   },
   "tags": [
     "bumper",

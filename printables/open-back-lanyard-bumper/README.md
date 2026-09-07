@@ -1,4 +1,4 @@
-# Open-Back Lanyard Bumper
+# Lanyard Case
 
 A one-piece edge cover with an open screen and back, two top lanyard tabs, and access to the side buttons, microSD, USB-C, charging LED, microphone, reset and original lanyard holes. Separate files provide a flexible full-lip variant and an experimental PLA variant with front retention ribs only on the two short edges.
 
