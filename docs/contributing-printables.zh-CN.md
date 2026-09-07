@@ -11,7 +11,7 @@ GrabCAD 或 GitHub 上发布模型的创客。你不需要了解任何固件或 
 ## 五分钟通道：官网表单
 
 [3D Printables 页面](https://www.seeedstudio.com/sticky/playground/3d-printables/)
-上的 **Share your design** 按钮会打开一个简短表单：设计名称、分类、一句话简介、
+上的 **用表单提交** 按钮会打开一个简短表单：设计名称、分类、一句话简介、
 一张照片、下载页面和作者名。提交之后，服务会替你
 写好 `printable.json`、`README.md` 和 `assets/preview.<扩展名>`，并在本仓库开好
 pull request，页面上会直接给出这个 PR 的链接，随时可以查看审核进度。整个过程不需要

@@ -39,10 +39,16 @@
 
 **打印件还有一条快速通道。**
 [3D Printables 页面](https://www.seeedstudio.com/sticky/playground/3d-printables/)
-上的 **Share your design** 表单，会用网页表单问一份精简版的同类信息，照片直接上传，然后替你在
+上的 **用表单提交**，会用网页表单问一份精简版的同类信息，照片直接上传，然后替你在
 本仓库开好 pull request。不需要 GitHub 账号，不需要 git，也不需要写 JSON，大约五分钟
 就能完成。提交后页面会给出 PR 链接，方便你跟进审核。如果你更习惯用 git，或者要更新
 一个已经上线的设计，就走下面的手动流程。
+
+**只有 bin 的固件也有同一条快速通道。**
+[Firmware 页面](https://www.seeedstudio.com/sticky/playground/firmware/)
+上的 **用表单提交** 接收编译好的 `.bin`（一份合并镜像，或带偏移的多个文件）
+和卡片信息。需要 GitHub Actions 编译的源码贡献，仍走
+[contributing-firmware.zh-CN.md](docs/contributing-firmware.zh-CN.md) 里的手动流程。
 
 本页只讲两类贡献共同的部分。读完一遍，再去看你那一类的详细指南。
 
@@ -52,7 +58,7 @@
 
 | 条件 | 固件 | 打印件 | 说明 |
 |---|---|---|---|
-| GitHub 账号 | 需要 | 只有手动流程需要 | 免费账号即可；走官网表单不需要账号 |
+| GitHub 账号 | 只有手动流程需要 | 只有手动流程需要 | 免费账号即可；走官网表单不需要账号 |
 | 电脑上安装 Git | 推荐 | 可选 | 打印件可以完全在 GitHub 网页里完成，见[方式 B](#方式-bgithub-网页操作不需要-git) |
 | Node.js 20 或更高 | 推荐 | 可选 | 用来在本地跑和 GitHub Actions 相同的检查 |
 | 一台 reTerminal Sticky | 需要 | 需要 | 固件必须在真机上烧录测试；打印件需要一张装在真机上的照片 |
