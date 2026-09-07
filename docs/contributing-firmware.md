@@ -678,6 +678,10 @@ hardware test result. GitHub Actions performs these checks:
 3. Generate the flash manifest and firmware package from the toolchain's flash map.
 4. Upload the generated package as a temporary PR artifact for maintainer review.
 
+The review card also lists any change to Official Sticky firmware or Partner
+Firmwares. Those catalog entries are maintained by Seeed or the partner
+platform; community submissions use Community Firmwares.
+
 The pull request remains under review until these checks pass and the maintainer
 can verify the project purpose, license, compatibility, and hardware test.
 
