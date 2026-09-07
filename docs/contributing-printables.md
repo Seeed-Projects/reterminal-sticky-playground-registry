@@ -12,7 +12,7 @@ request, and the release flow are in [CONTRIBUTING.md](../CONTRIBUTING.md).
 
 ## The five-minute route: the website form
 
-The **Share your design** button on the
+The **Submit with the form** button on the
 [3D Printables page](https://www.seeedstudio.com/sticky/playground/3d-printables/)
 opens a short form: the design name, category, summary, one photo, the download
 page, and your name. When you submit it, the submission service writes

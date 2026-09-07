@@ -12,11 +12,29 @@ include metadata, visual assets, and a physical-device test record. The private
 Sticky website reads only a reviewed Registry commit and generates the public
 card and flashing page.
 
+## The five-minute route: the website form
+
+When you already have a compiled `.bin`, the **Submit with the form** button on
+the [Firmware page](https://www.seeedstudio.com/sticky/playground/firmware/)
+opens a short form: the firmware name, category, summary, version, license,
+project page, one photo, and the binary. You can send one merged image written
+at `0x0`, or separate files at the offsets already used by packages on
+Playground (`0x0`, `0x8000`, `0xE000`, `0x10000`). The submission service writes
+`firmware.json`, `README.md`, `assets/preview.<ext>`, and
+`firmware/<version>/` for you and opens the pull request. The page then shows
+the pull request link. You need no GitHub account, no git, and no JSON editor.
+
+Source contributions that GitHub Actions compiles still use the manual route
+below. Read on when you prefer to prepare the files yourself, when you update a
+firmware that is already listed, or when you want to understand exactly what
+the form produces.
+
 For the Chinese guide, see [contributing-firmware.zh-CN.md](contributing-firmware.zh-CN.md).
 Shared review and release steps live in [CONTRIBUTING.md](../CONTRIBUTING.md).
 
 ## Contents
 
+- [The five-minute route: the website form](#the-five-minute-route-the-website-form)
 - [Contribution result](#contribution-result)
 - [Required pull request contents](#required-pull-request-contents)
 - [Create a contribution](#create-a-contribution)

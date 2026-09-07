@@ -12,7 +12,7 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md) ([中文](CONTRIBUTING.zh-CN.md)),
 which explains the shared rules, local checks, review, and release flow, then
 follow the guide for your content type.
 
-Printable designs have a shortcut: the **Share your design** form on the
+Printable designs have a shortcut: the **Submit with the form** button on the
 [3D Printables page](https://www.seeedstudio.com/sticky/playground/3d-printables/)
 collects the card text and the photo, then opens the pull request here for you.
 A GitHub account is not required to use it.

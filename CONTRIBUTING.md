@@ -41,13 +41,19 @@ file, template, and detailed guide.
   README. The model files stay on your Printables / MakerWorld / Thingiverse /
   GrabCAD / GitHub page. Expect 15–30 minutes.
 
-**Printables have a shortcut.** The **Share your design** form on the
+**Printables have a shortcut.** The **Submit with the form** button on the
 [3D Printables page](https://www.seeedstudio.com/sticky/playground/3d-printables/)
 asks for a short version of the same information, takes your photo as an upload, and
 opens the pull request here on your behalf. It needs no GitHub account, no git,
 and no JSON, and it takes about five minutes. The form links you to the pull
 request it created so you can follow the review. Use the manual route below when
 you prefer working in git, or when you update a design that is already listed.
+
+**Firmware-only packages have the same shortcut.** The **Submit with the form**
+button on the [Firmware page](https://www.seeedstudio.com/sticky/playground/firmware/)
+accepts a compiled `.bin` (one merged image, or separate files with offsets)
+plus the card details. Source contributions that GitHub Actions compiles still
+use the manual route in [contributing-firmware.md](docs/contributing-firmware.md).
 
 This page covers everything the two kinds have in common. Read it once, then
 follow the detailed guide for your content type.
@@ -56,7 +62,7 @@ follow the detailed guide for your content type.
 
 | Requirement | Firmware | Printable | Notes |
 |---|---|---|---|
-| A GitHub account | Yes | Only for the manual route | Free account is enough; the website form needs none |
+| A GitHub account | Only for the manual route | Only for the manual route | Free account is enough; the website form needs none |
 | Git on your computer | Recommended | Optional | Printables can be submitted entirely in the GitHub web interface (see [Method B](#method-b-github-web-interface-no-git)) |
 | Node.js 20 or newer | Recommended | Optional | Runs the same checks locally that GitHub Actions runs on your PR |
 | A reTerminal Sticky | Yes | Yes | Firmware must be flashed and tested on a real device; printables need a photo of the print on a real device |

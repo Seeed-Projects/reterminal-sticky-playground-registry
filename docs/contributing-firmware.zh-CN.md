@@ -9,11 +9,25 @@
 图片和实机测试记录。Sticky 私有网站只读取经过审核并锁定版本的公开仓库内容，再生成
 卡片和烧录页。
 
+## 五分钟通道：官网表单
+
+已经有编译好的 `.bin` 时，[Firmware 页面](https://www.seeedstudio.com/sticky/playground/firmware/)
+上的 **用表单提交** 会打开一个短表单：固件名称、分类、简介、版本、许可证、
+项目主页、一张照片，以及固件文件。可以交一份从 `0x0` 写入的合并镜像，也可以按
+Playground 上已有固件包最常见的偏移（`0x0`、`0x8000`、`0xE000`、`0x10000`）上传分开的文件。
+提交服务会写好 `firmware.json`、`README.md`、`assets/preview.<ext>` 和
+`firmware/<version>/`，并打开 pull request。页面随后给出 PR 链接。不需要 GitHub
+账号，不需要 git，也不需要写 JSON。
+
+需要 GitHub Actions 编译的源码贡献，仍走下面的手动流程。如果你更习惯自己准备文件、
+要更新已经上线的固件，或想看清表单最终写出哪些文件，请继续往下读。
+
 英文指南请查看 [contributing-firmware.md](contributing-firmware.md)。
 两类贡献共用的审核与发布流程见 [CONTRIBUTING.zh-CN.md](../CONTRIBUTING.zh-CN.md)。
 
 ## 目录
 
+- [五分钟通道：官网表单](#五分钟通道官网表单)
 - [贡献完成后，用户会得到什么](#贡献完成后用户会得到什么)
 - [PR 必须提供的文件](#pr-必须提供的文件)
 - [创建一份贡献](#创建一份贡献)
