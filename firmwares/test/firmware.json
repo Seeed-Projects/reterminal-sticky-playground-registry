@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "id": "test",
+  "name": "test",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "other",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "Third Anniversary",
+  "description": "Third Anniversary",
+  "author": {
+    "name": "limengdu"
+  },
+  "origin": {
+    "name": "test",
+    "url": "https://github.com/limengdu/reTerminal_Sticky_Bunny"
+  },
+  "source": {
+    "url": "https://github.com/limengdu/reTerminal_Sticky_Bunny",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/limengdu/reTerminal_Sticky_Bunny/issues"
+  },
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "For Seeed Studio reTerminal Sticky with ESP32-S3 and 32MB flash."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "Third Anniversary"
+  },
+  "flash": {
+    "versions": [
+      {
+        "version": "1.0.0",
+        "channel": "stable",
+        "manifestPath": "firmware/1.0.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "This package is a complete merged Sticky image. Use the erase option when replacing another firmware."
+      }
+    ]
+  }
+}

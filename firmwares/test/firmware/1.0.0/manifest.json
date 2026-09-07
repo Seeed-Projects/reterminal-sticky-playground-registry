@@ -1,0 +1,22 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "sticky-0.1.0-full.bin",
+          "offset": 0,
+          "size": 2185264,
+          "sha256": "f329579f64648703dab7b8f689ab6566d0d83c5e0193dbea9940e5294e969fd8"
+        }
+      ]
+    }
+  ]
+}
