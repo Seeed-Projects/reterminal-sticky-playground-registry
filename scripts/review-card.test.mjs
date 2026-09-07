@@ -12,7 +12,9 @@ import {
   buildReviewCard,
   checkUrl,
   collectChangedEntries,
+  collectReservedCatalogTouches,
   findModelFiles,
+  isReservedCatalog,
   readFirmwareEntry,
   readPrintableEntry,
   scanForSecrets,
@@ -221,19 +223,87 @@ test('raises the risk level for secrets, model files, and unrelated changes', ()
   assert.match(card, /`printables\/sticky-desk-stand\/case\.stl`/);
 });
 
-test('marks firmware changes as a normal review', () => {
-  const entries = collectChangedEntries(['firmwares/trmnl/firmware.json']);
+test('marks community firmware changes as a normal review', () => {
+  const entries = collectChangedEntries(['firmwares/inx-pro/firmware.json']);
   const card = buildReviewCard({
     entries,
     firmwareEntries: [{
-      id: 'trmnl',
-      firmware: { name: 'TRMNL', catalogSection: 'platform', author: { name: 'TRMNL' }, source: { license: 'MIT' } },
-      versions: [{ version: '1.8.10', channel: 'stable', delivery: 'firmware package' }],
+      id: 'inx-pro',
+      firmware: {
+        name: 'Inx Pro',
+        group: 'community',
+        catalogSection: 'community',
+        author: { name: 'Inx Pro' },
+        source: { license: 'MIT' },
+      },
+      versions: [{ version: '1.0.0-beta', channel: 'beta', delivery: 'firmware package' }],
       hasSourceLicense: false,
     }],
   });
 
   assert.match(card, /\*\*normal review\*\*/);
-  assert.match(card, /### Firmware `trmnl`/);
-  assert.match(card, /\| 1\.8\.10 \| stable \| firmware package \|/);
+  assert.match(card, /### Firmware `inx-pro`/);
+  assert.match(card, /\| 1\.0\.0-beta \| beta \| firmware package \|/);
+  assert.doesNotMatch(card, /Reserved catalog entries/);
+});
+
+test('treats official and partner catalog labels as reserved', () => {
+  assert.equal(isReservedCatalog({ group: 'official', catalogSection: 'official' }), true);
+  assert.equal(isReservedCatalog({ group: 'partner', catalogSection: 'platform' }), true);
+  assert.equal(isReservedCatalog({ group: 'community', catalogSection: 'platform' }), true);
+  assert.equal(isReservedCatalog({ group: 'community', catalogSection: 'community' }), false);
+  assert.equal(isReservedCatalog(undefined), false);
+});
+
+test('flags a new submission that marks itself as official or partner', () => {
+  const pullEntry = {
+    id: 'new-partner',
+    firmware: { name: 'New Partner', group: 'partner', catalogSection: 'platform' },
+    versions: [],
+  };
+  const touches = collectReservedCatalogTouches([pullEntry], [{ id: 'new-partner', removed: true }]);
+
+  assert.deepEqual(touches, [{
+    id: 'new-partner',
+    name: 'New Partner',
+    catalog: 'partner / platform',
+    reason: 'this submission marks itself as official or partner',
+  }]);
+
+  const card = buildReviewCard({
+    entries: collectChangedEntries(['firmwares/new-partner/firmware.json']),
+    firmwareEntries: [pullEntry],
+    baseFirmwareEntries: [{ id: 'new-partner', removed: true }],
+  });
+
+  assert.match(card, /\*\*needs a close look\*\*/);
+  assert.match(card, /an official or partner firmware entry changed/);
+  assert.match(card, /### Reserved catalog entries/);
+  assert.match(card, /Community submissions belong in Community Firmwares/);
+  assert.match(card, /`new-partner` \(partner \/ platform\) — this submission marks itself as official or partner/);
+});
+
+test('flags a change to an official or partner entry that already exists on main', () => {
+  const baseEntry = {
+    id: 'sticky-factory',
+    firmware: { name: 'reTerminal Sticky', group: 'official', catalogSection: 'official' },
+  };
+  const pullEntry = {
+    id: 'sticky-factory',
+    firmware: { name: 'reTerminal Sticky', group: 'community', catalogSection: 'community' },
+  };
+
+  assert.deepEqual(collectReservedCatalogTouches([pullEntry], [baseEntry]), [{
+    id: 'sticky-factory',
+    name: 'reTerminal Sticky',
+    catalog: 'official / official',
+    reason: 'this official or partner entry already exists on main',
+  }]);
+
+  const removed = collectReservedCatalogTouches(
+    [{ id: 'trmnl', removed: true }],
+    [{ id: 'trmnl', firmware: { name: 'TRMNL', group: 'partner', catalogSection: 'platform' } }],
+  );
+  assert.equal(removed[0].reason, 'this official or partner entry would be removed');
+  assert.equal(removed[0].catalog, 'partner / platform');
 });
