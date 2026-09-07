@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "kitty-enclosure-for-sticky",
+  "name": "Kitty enclosure for sticky",
+  "category": "case",
+  "summary": "A cute, kitty-themed enclosure for the reTerminal Sticky from Seeed Studio.",
+  "author": {
+    "name": "Gokul"
+  },
+  "download": {
+    "platform": "Printables",
+    "url": "https://www.printables.com/model/1835217-kitty-enclosure-for-reterminal-sticky"
+  },
+  "preview": {
+    "image": "assets/preview.png",
+    "alt": "A cute, kitty-themed enclosure for the reTerminal Sticky from Seeed Studio."
+  }
+}
