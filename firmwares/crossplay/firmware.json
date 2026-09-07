@@ -2,8 +2,9 @@
   "schemaVersion": 1,
   "id": "crossplay",
   "name": "CrossPlay",
-  "group": "partner",
-  "catalogSection": "platform",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "fun",
   "mode": "flash",
   "status": "beta",
   "summary": "Games, puzzles and flashcards for e-ink, on top of a full CrossPoint e-reader.",
@@ -39,7 +40,7 @@
     "games",
     "ereader",
     "flashcards",
-    "partner"
+    "community"
   ],
   "flash": {
     "versions": [
