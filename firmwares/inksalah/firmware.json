@@ -8,7 +8,7 @@
   "mode": "flash",
   "status": "beta",
   "summary": "Turn reTerminal Sticky into an offline-first prayer-window display with native touch settings.",
-  "description": "InkSalah is a calm, always-visible Salah companion for reTerminal Sticky. It calculates Fajr, Sunrise, Dhuhr, Asr, Maghrib, Isha, and optional Qiyam locally from the device's saved location and prayer settings, shows the active prayer window and remaining time, and provides touch-based settings, Wi-Fi onboarding, rotation-aware layouts, reminders, and deep sleep.",
+  "description": "InkSalah is an offline-first Salah companion for reTerminal Sticky. It calculates Fajr, Sunrise, Dhuhr, Asr, Maghrib, Isha, and optional Qiyam locally, showing the current prayer window and remaining time. Version 0.1.1 adds Roboto typography, connected Arabic labels, AM/PM times, and distinct portrait and landscape arch layouts. Native touch settings, direct location and settings shortcuts, Wi-Fi onboarding, reminders, and a retained deep-sleep display keep daily use simple.",
   "author": {
     "name": "limengdu",
     "url": "https://github.com/limengdu"
@@ -29,11 +29,11 @@
     "devices": [
       "reterminal-sticky"
     ],
-    "notes": "Version 0.1.0 uses the release profile developed and exercised on reTerminal Sticky production hardware."
+    "notes": "Targets reTerminal Sticky production hardware with ESP32-S3R8 and 32 MB flash. Package provenance and version-specific verification are recorded in the Registry README."
   },
   "assets": {
     "preview": "assets/preview.jpg",
-    "previewAlt": "InkSalah portrait prayer-window interface running on reTerminal Sticky"
+    "previewAlt": "InkSalah 0.1.0 prayer-window interface on reTerminal Sticky; current 0.1.1 interface images are in the project documentation"
   },
   "tags": [
     "prayer-times",
@@ -45,6 +45,11 @@
   ],
   "flash": {
     "versions": [
+      {
+        "version": "0.1.1",
+        "channel": "beta",
+        "manifestPath": "firmware/0.1.1/manifest.json"
+      },
       {
         "version": "0.1.0",
         "channel": "beta",
