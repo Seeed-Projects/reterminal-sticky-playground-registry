@@ -279,7 +279,7 @@ Community firmware categories:
 |---|---|---|---|---|
 | `compatibility.devices` | array | Yes | exactly `["reterminal-sticky"]` | Always `["reterminal-sticky"]` |
 | `compatibility.notes` | string | No | up to 400 chars | Tested hardware revision, required accessories, known limits |
-| `assets.preview` | string | Yes | `assets/<file>.(png\|jpg\|jpeg\|webp\|svg)`, ≤ 5 MB | Real Sticky screenshot or photo of the firmware running |
+| `assets.preview` | string | Yes | `assets/<file>.(png\|jpg\|jpeg\|webp\|svg)`, ≤ 1 MB | Real Sticky screenshot or photo of the firmware running |
 | `assets.previewAlt` | string | Yes | 1–180 chars | One sentence describing the preview |
 | `assets.logo` | string | No | same pattern, ≤ 1 MB | Optional project logo. Partner entries use their official logo here and in `preview` |
 

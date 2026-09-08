@@ -222,7 +222,7 @@ These are enforced by `npm run validate` and by review.
 | One directory per contribution | Everything for one firmware or one design lives in its own directory. Do not touch other directories in the same PR. |
 | Directory name = `id` | Lowercase letters, digits, and single hyphens only: `^[a-z0-9]+(?:-[a-z0-9]+)*$`, 2–64 characters. Examples: `sticky-2048`, `wallet-case`. The `id` field inside the metadata file must be identical. |
 | HTTPS links only | Every URL field must start with `https://`. |
-| Images under `assets/` | Referenced as `assets/<file>`. Firmware accepts PNG, JPG, WebP, or static SVG; printables accept PNG, JPG, WebP. Maximum 5 MB for previews, 1 MB for logos. |
+| Images under `assets/` | Referenced as `assets/<file>`. Firmware accepts PNG, JPG, WebP, or static SVG; printables accept PNG, JPG, WebP. Maximum 1 MB for previews and logos; 1200–1600 px on the long edge is plenty. |
 | Real images | Previews are real screenshots or photos on a reTerminal Sticky. Renders and stock images are not accepted. |
 | English card text | `name`, `summary`, `description`, `alt` texts, and README are in English because the website serves a global audience. |
 | No secrets | Source, configuration, and README contain no Wi-Fi passwords, API keys, tokens, or private keys. Use placeholders and describe runtime setup instead. |
