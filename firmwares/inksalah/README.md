@@ -36,7 +36,8 @@ for the complete release notes.
 
 These interface images come from the version 0.1.1 native renderer with a fixed
 Istanbul demonstration scenario. The catalog's [real-device photo](assets/preview.jpg)
-records the version 0.1.0 hardware test.
+shows the current portrait interface with the Asr prayer window and daily times
+in Dongguan.
 
 ## What it does
 
@@ -140,7 +141,7 @@ network, without restarting the device.
 | Source CI release and debug builds | Passed |
 | Packaged files compared with local build outputs | Byte-identical |
 | Application image inspection | ESP32-S3, 32 MB, version `0.1.1`, checksum and validation hash valid |
-| Version 0.1.0 package and real-device photo | Preserved unchanged |
+| Version 0.1.0 package | Preserved unchanged |
 | Physical installation of the exact version 0.1.1 package | Pending |
 
 For hardware acceptance, install version 0.1.1 using its manifest, confirm the
@@ -162,8 +163,7 @@ The exact three files in `firmware/0.1.0/` were built from source commit
 production hardware at the manifest offsets with esptool. Each write completed
 with its data hash verified. A cold restart then reported InkSalah `0.1.0`,
 connected to Wi-Fi, synchronized the RTC, restored the saved Shenzhen settings,
-rendered the prayer page, and started touch and IMU monitoring. The submitted
-preview is a real-device photo of the portrait prayer-window interface.
+rendered the prayer page, and started touch and IMU monitoring.
 
 | Item | Result |
 | --- | --- |

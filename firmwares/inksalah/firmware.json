@@ -33,7 +33,7 @@
   },
   "assets": {
     "preview": "assets/preview.jpg",
-    "previewAlt": "InkSalah 0.1.0 prayer-window interface on reTerminal Sticky; current 0.1.1 interface images are in the project documentation"
+    "previewAlt": "InkSalah portrait interface on reTerminal Sticky showing the Asr prayer window and daily times in Dongguan"
   },
   "tags": [
     "prayer-times",
