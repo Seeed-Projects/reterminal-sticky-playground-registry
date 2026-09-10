@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "id": "tesserae",
+  "name": "Tesserae",
+  "group": "partner",
+  "catalogSection": "platform",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "Self-hosted e-ink dashboards with widgets, Home Assistant, calendars and touch controls, rendered by your own server.",
+  "description": "Tesserae turns reTerminal Sticky into a battery-friendly dashboard panel for a Tesserae server you run at home (Docker, or the Home Assistant App). Compose pages from widgets such as weather, calendars, Home Assistant entities, transit and photos in the browser, then the Sticky wakes on a schedule, pulls the next frame over Wi-Fi as a ready-to-paint 4-level grayscale buffer, and goes back to deep sleep. The firmware supports partial refresh, touch controls drawn on the panel, wake on tap, battery reporting and signed over-the-air updates from the server. A Tesserae server on your network is required.",
+  "origin": {
+    "name": "Tesserae",
+    "url": "https://tesserae.ink"
+  },
+  "source": {
+    "url": "https://github.com/dmellok/tesserae-device-firmware",
+    "license": "AGPL-3.0"
+  },
+  "support": {
+    "url": "https://github.com/dmellok/tesserae-device-firmware/issues"
+  },
+  "documentationUrl": "https://docs.tesserae.ink/install/clients/",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Package built for reTerminal Sticky (ESP32-S3, 16 MB flash) by the tesserae-device-firmware release pipeline. 4-level grayscale, partial refresh and touch are supported. Requires a Tesserae server on the local network."
+  },
+  "assets": {
+    "logo": "assets/logo.svg",
+    "preview": "assets/logo.svg",
+    "previewAlt": "Tesserae logo"
+  },
+  "tags": [
+    "dashboard",
+    "home-assistant",
+    "self-hosted",
+    "touch",
+    "wifi",
+    "open-source"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "1.33.1",
+        "channel": "stable",
+        "manifestPath": "firmware/1.33.1/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "The package writes the bootloader, partition table, OTA data and application at their own offsets. Choosing the erase option clears the whole flash first; without it, existing Wi-Fi credentials in the NVS region are kept."
+      },
+      {
+        "title": "Tesserae server",
+        "description": "This firmware needs a Tesserae server on your network (Docker image or Home Assistant App). Install it first at https://docs.tesserae.ink/install/server/ and note its URL."
+      },
+      {
+        "title": "First boot",
+        "description": "On first boot the Sticky opens a Wi-Fi captive portal. Join it, enter your Wi-Fi details and the Tesserae server URL, and the device registers itself and appears under Settings, Devices."
+      },
+      {
+        "title": "Updates",
+        "description": "Later versions arrive over the air from your Tesserae server. The same package can also be flashed from https://tesserae.ink/flash."
+      }
+    ]
+  }
+}
