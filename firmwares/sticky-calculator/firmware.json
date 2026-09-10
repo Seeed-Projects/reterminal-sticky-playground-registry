@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-calculator",
+  "name": "Sticky Calculator",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "tools",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "A retro and modern calculator demo for reTerminal Sticky with TI-2500 Datamath and smartphone-style calculator interfaces.",
+  "description": "A retro and modern calculator demo for reTerminal Sticky with TI-2500 Datamath and smartphone-style calculator interfaces.",
+  "author": {
+    "name": "Lukilyy",
+    "url": "https://github.com/Lukilyy"
+  },
+  "origin": {
+    "name": "Sticky Calculator",
+    "url": "https://github.com/Lukilyy/reterminal-sticky-calculator"
+  },
+  "source": {
+    "url": "https://github.com/Lukilyy/reterminal-sticky-calculator",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/Lukilyy/reterminal-sticky-calculator/issues"
+  },
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "For Seeed Studio reTerminal Sticky with ESP32-S3 and 32MB flash."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "A retro and modern calculator demo for reTerminal Sticky with TI-2500 Datamath and smartphone-style calculator interfaces."
+  },
+  "flash": {
+    "versions": [
+      {
+        "version": "1.0.0",
+        "channel": "stable",
+        "manifestPath": "firmware/1.0.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "This package is a complete merged Sticky image. Use the erase option when replacing another firmware."
+      }
+    ]
+  }
+}

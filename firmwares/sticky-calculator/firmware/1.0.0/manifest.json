@@ -1,0 +1,22 @@
+{
+  "name": "Sticky Calculator",
+  "version": "1.0.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "reterminal-sticky-calculator-v1.0.0.bin",
+          "offset": 0,
+          "size": 531392,
+          "sha256": "6fd5270ebcab7c8f2c721e6aa150923e6db4f76d5040487e137b48fb743044b9"
+        }
+      ]
+    }
+  ]
+}
