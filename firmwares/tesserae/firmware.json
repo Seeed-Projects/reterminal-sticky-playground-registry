@@ -8,6 +8,10 @@
   "status": "stable",
   "summary": "Self-hosted e-ink dashboards with widgets, Home Assistant, calendars and touch controls, rendered by your own server.",
   "description": "Tesserae turns reTerminal Sticky into a battery-friendly dashboard panel for a Tesserae server you run at home (Docker, or the Home Assistant App). Compose pages from widgets such as weather, calendars, Home Assistant entities, transit and photos in the browser, then the Sticky wakes on a schedule, pulls the next frame over Wi-Fi as a ready-to-paint 4-level grayscale buffer, and goes back to deep sleep. The firmware supports partial refresh, touch controls drawn on the panel, wake on tap, battery reporting and signed over-the-air updates from the server. A Tesserae server on your network is required.",
+  "author": {
+    "name": "Kayden D'Mello",
+    "url": "https://github.com/dmellok"
+  },
   "origin": {
     "name": "Tesserae",
     "url": "https://tesserae.ink"
