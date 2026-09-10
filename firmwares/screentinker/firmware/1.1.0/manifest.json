@@ -34,9 +34,9 @@
         {
           "path": "screentinker.bin",
           "offset": 65536,
-          "size": 1186704,
-          "sha256": "0bbb2f65f667e359e4fa94ad6b863b98f88b22114f0810bb55089c311a691b9b",
-          "md5": "20b71b7473291cfa26523495afe8e30e"
+          "size": 1188304,
+          "sha256": "7dcc9f8011a54b57f9a610dca674977a438c3462f8499d653bdbece60cf93a27",
+          "md5": "1d5cf761ff71c87e7eb6a323f4d51007"
         }
       ]
     }
