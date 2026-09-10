@@ -32,8 +32,8 @@
   },
   "assets": {
     "logo": "assets/logo.svg",
-    "preview": "assets/logo.svg",
-    "previewAlt": "Tesserae logo"
+    "preview": "assets/wordmark.svg",
+    "previewAlt": "Tesserae wordmark"
   },
   "tags": [
     "dashboard",
