@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "snap-fit-enclosure-for-reterminal-sticky",
+  "name": "Snap-Fit Enclosure for reTerminal Sticky",
+  "category": "case",
+  "summary": "A snap-fit casing for reTerminal Sticky, which fits the 3.97'' ePaper display perfectly.",
+  "author": {
+    "name": "Gokul",
+    "url": "https://www.printables.com/@Gokux_1349042"
+  },
+  "download": {
+    "platform": "Printables",
+    "url": "https://www.printables.com/model/1839036-enclosure-for-reterminal-sticky"
+  },
+  "preview": {
+    "image": "assets/preview.webp",
+    "alt": "A snap-fit casing for reTerminal Sticky, which fits the 3.97'' ePaper display perfectly."
+  },
+  "tags": [
+    "casing",
+    "snap-fit",
+    "enclosure"
+  ]
+}
