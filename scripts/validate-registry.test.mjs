@@ -900,6 +900,70 @@ test('rejects a printable design whose download page is not HTTPS', () => {
   assert.match(result.stderr, /download\.url: must use HTTPS/);
 });
 
+function jpegOfSize(bytes) {
+  const buffer = Buffer.alloc(bytes, 0);
+  buffer[0] = 0xff;
+  buffer[1] = 0xd8;
+  buffer[2] = 0xff;
+  return buffer;
+}
+
+function webpOfSize(bytes) {
+  const buffer = Buffer.alloc(bytes, 0);
+  buffer.write('RIFF', 0, 'ascii');
+  buffer.writeUInt32LE(bytes - 8, 4);
+  buffer.write('WEBP', 8, 'ascii');
+  return buffer;
+}
+
+test('accepts preview photos larger than 1 MB and at most 5 MB', () => {
+  const printableRoot = createRegistry();
+  const printable = validPrintable('large-photo-stand');
+  const printableDir = writePrintable(printableRoot, printable);
+  writeFileSync(join(printableDir, 'assets', 'preview.jpg'), jpegOfSize((1024 * 1024) + 1));
+
+  const printableResult = runValidator(printableRoot);
+  assert.equal(printableResult.status, 0, printableResult.stderr);
+
+  const firmwareRoot = createRegistry();
+  const firmware = validBase('large-preview-app', 'external');
+  firmware.external = {
+    label: 'Open official tool',
+    url: 'https://example.com/tool',
+    description: 'Continue in the maintained upstream tool.',
+  };
+  const firmwareDir = writeIntegration(firmwareRoot, firmware);
+  writeFileSync(join(firmwareDir, 'assets', 'preview.webp'), webpOfSize((1024 * 1024) + 1));
+
+  const firmwareResult = runValidator(firmwareRoot);
+  assert.equal(firmwareResult.status, 0, firmwareResult.stderr);
+});
+
+test('rejects preview photos larger than 5 MB', () => {
+  const printableRoot = createRegistry();
+  const printable = validPrintable('huge-photo-stand');
+  const printableDir = writePrintable(printableRoot, printable);
+  writeFileSync(join(printableDir, 'assets', 'preview.jpg'), jpegOfSize((5 * 1024 * 1024) + 1));
+
+  const printableResult = runValidator(printableRoot);
+  assert.equal(printableResult.status, 1);
+  assert.match(printableResult.stderr, /preview\.image: must not exceed 5 MB/);
+
+  const firmwareRoot = createRegistry();
+  const firmware = validBase('huge-preview-app', 'external');
+  firmware.external = {
+    label: 'Open official tool',
+    url: 'https://example.com/tool',
+    description: 'Continue in the maintained upstream tool.',
+  };
+  const firmwareDir = writeIntegration(firmwareRoot, firmware);
+  writeFileSync(join(firmwareDir, 'assets', 'preview.webp'), webpOfSize((5 * 1024 * 1024) + 1));
+
+  const firmwareResult = runValidator(firmwareRoot);
+  assert.equal(firmwareResult.status, 1);
+  assert.match(firmwareResult.stderr, /assets\.preview: must not exceed 5 MB/);
+});
+
 test('rejects a printable design whose preview photo is missing', () => {
   const root = createRegistry();
   const printable = validPrintable('no-photo-stand');

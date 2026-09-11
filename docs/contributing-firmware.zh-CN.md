@@ -274,7 +274,7 @@ cp -R firmwares/_template firmwares/my-firmware
 |---|---|---|---|---|
 | `compatibility.devices` | 数组 | 是 | 必须恰好是 `["reterminal-sticky"]` | 固定写 `["reterminal-sticky"]` |
 | `compatibility.notes` | 字符串 | 否 | 最长 400 字符 | 测试过的硬件版本、需要的配件、已知限制 |
-| `assets.preview` | 字符串 | 是 | `assets/<文件>.(png\|jpg\|jpeg\|webp\|svg)`，≤ 1 MB | 固件运行中的真实 Sticky 截图或照片 |
+| `assets.preview` | 字符串 | 是 | `assets/<文件>.(png\|jpg\|jpeg\|webp\|svg)`，≤ 5 MB | 固件运行中的真实 Sticky 截图或照片 |
 | `assets.previewAlt` | 字符串 | 是 | 1–180 字符 | 一句话描述预览图 |
 | `assets.logo` | 字符串 | 否 | 同上格式，≤ 1 MB | 可选的项目标识。合作伙伴条目在这里和 `preview` 都使用官方 logo |
 

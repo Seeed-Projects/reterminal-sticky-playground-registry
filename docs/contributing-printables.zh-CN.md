@@ -128,7 +128,7 @@ printables/
 
 | 字段 | 类型 | 必填 | 限制 | 填什么 |
 |---|---|---|---|---|
-| `preview.image` | 字符串 | 是 | 必须匹配 `^assets/[A-Za-z0-9._-]+\.(png\|jpg\|jpeg\|webp)$`；文件 ≤ 1 MB | 照片在目录内的路径，通常是 `assets/preview.jpg` |
+| `preview.image` | 字符串 | 是 | 必须匹配 `^assets/[A-Za-z0-9._-]+\.(png\|jpg\|jpeg\|webp)$`；文件 ≤ 5 MB | 照片在目录内的路径，通常是 `assets/preview.jpg` |
 | `preview.alt` | 字符串 | 是 | 1–180 字符 | 一句话描述照片内容，供读屏软件和图片搜索使用，例如 `Black PETG wallet case fitted on reTerminal Sticky, front view` |
 
 ### 完整示例
@@ -189,7 +189,7 @@ printables/
 | 真实照片 | 打印成品装在真机 reTerminal Sticky 上。渲染图、切片软件截图、没有设备的照片都不接受。 |
 | 构图 | 横向，约 4:3。卡片会按这个比例裁切，主体放在中间。 |
 | 格式 | JPG、PNG 或 WebP。JPG 通常最小。 |
-| 大小 | 最大 1 MB。长边 1200–1600 px 足够。 |
+| 大小 | 最大 5 MB。长边 1200–1600 px 足够。 |
 | 路径 | 放在 `assets/` 下，与 `preview.image` 完全一致。 |
 | 内容 | 不加水印、不叠文字、不出现其他产品。 |
 
@@ -354,7 +354,7 @@ Sticky 网站发布上线，见
 | `...printable.json.preview.image: references a missing file: assets/preview.jpg` | 文件名或后缀不一致，或没加进 git | 检查拼写和大小写；执行 `git add printables/my-case/assets` |
 | `...printable.json.preview.image: must use one of these file extensions: .png, .jpg, .jpeg, .webp` | HEIC、SVG、GIF 等格式 | 导出为 JPG 或 PNG |
 | `...printable.json.preview.image: does not contain a valid JPEG file signature` | 把 PNG（或别的文件）直接改名成 `.jpg` | 用正确格式重新导出，或改回真实后缀并更新 `preview.image` |
-| `...printable.json.preview.image: must not exceed 1 MB` | 照片过大 | 缩到长边约 1600 px |
+| `...printable.json.preview.image: must not exceed 5 MB` | 照片过大 | 缩到长边约 1600 px |
 | `...printable.json.tags: must be an array containing no more than 6 tags` | 标签太多 | 保留最有用的 6 个 |
 | `...printable.json.tags[2]: duplicates tag "case"` | 同一标签出现两次 | 删掉重复项 |
 | `...printable.json.README.md: references a missing file: README.md` | README 被删或没提交 | 加上 `printables/my-case/README.md` |
@@ -417,7 +417,7 @@ Dropthetenors 的 Sticky Wallet Case 发布在 Thingiverse。它在本仓库里�
 - [ ] `summary` 是一句话（≤ 140 字符）；填了 `description` 的话是两三句话（≤ 800）。
 - [ ] `author.name` 写明设计者；`author.url`（如有）是 HTTPS。
 - [ ] `download.url` 是公开 HTTPS 页面；填了 `download.platform` 的话是托管网站名；下载页标注了许可证时 `download.license` 与之一致。
-- [ ] `assets/preview.jpg` 是打印成品装在 reTerminal Sticky 上的真实照片，≤ 1 MB，与 `preview.image` 完全一致，并有描述性的 `preview.alt`。
+- [ ] `assets/preview.jpg` 是打印成品装在 reTerminal Sticky 上的真实照片，≤ 5 MB，与 `preview.image` 完全一致，并有描述性的 `preview.alt`。
 - [ ] `README.md` 写明打印参数、组装步骤、五金件、文件链接和许可证。
 - [ ] 没有提交任何模型文件。
 - [ ] `npm test` 和 `npm run validate` 通过。

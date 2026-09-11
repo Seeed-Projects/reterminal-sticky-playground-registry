@@ -134,7 +134,7 @@ optional; **any other key makes validation fail**. The formal definition is
 
 | Field | Type | Required | Limits | What to write |
 |---|---|---|---|---|
-| `preview.image` | string | Yes | must match `^assets/[A-Za-z0-9._-]+\.(png\|jpg\|jpeg\|webp)$`; file ≤ 1 MB | Path to the photo inside your directory, normally `assets/preview.jpg` |
+| `preview.image` | string | Yes | must match `^assets/[A-Za-z0-9._-]+\.(png\|jpg\|jpeg\|webp)$`; file ≤ 5 MB | Path to the photo inside your directory, normally `assets/preview.jpg` |
 | `preview.alt` | string | Yes | 1–180 chars | One sentence describing the photo for screen readers and image search, for example `Black PETG wallet case fitted on reTerminal Sticky, front view` |
 
 ### Complete example
@@ -198,7 +198,7 @@ before opening your page.
 | Real photo | The printed part fitted on a real reTerminal Sticky. Renders, slicer screenshots, and photos without the device are not accepted. |
 | Framing | Landscape, roughly 4:3. The card crops to that ratio, so keep the subject centred. |
 | Format | JPG, PNG, or WebP. JPG is usually smallest. |
-| Size | Up to 1 MB. 1200–1600 px on the long edge is plenty. |
+| Size | Up to 5 MB. 1200–1600 px on the long edge is plenty. |
 | Path | Inside `assets/`, referenced exactly in `preview.image`. |
 | Content | No watermarks, no text overlays, no other products. |
 
@@ -376,7 +376,7 @@ for `printables/my-case/printable.json`:
 | `...printable.json.preview.image: references a missing file: assets/preview.jpg` | File name or extension differs, or the file was not added to git | Check spelling and case; run `git add printables/my-case/assets` |
 | `...printable.json.preview.image: must use one of these file extensions: .png, .jpg, .jpeg, .webp` | HEIC, SVG, GIF, or other format | Export as JPG or PNG |
 | `...printable.json.preview.image: does not contain a valid JPEG file signature` | A PNG (or other file) renamed to `.jpg` | Re-export in the right format, or rename to the real extension and update `preview.image` |
-| `...printable.json.preview.image: must not exceed 1 MB` | Photo too large | Resize to about 1600 px on the long edge |
+| `...printable.json.preview.image: must not exceed 5 MB` | Photo too large | Resize to about 1600 px on the long edge |
 | `...printable.json.tags: must be an array containing no more than 6 tags` | Too many tags | Keep the six most useful |
 | `...printable.json.tags[2]: duplicates tag "case"` | Same tag twice | Remove the duplicate |
 | `...printable.json.README.md: references a missing file: README.md` | README deleted or not committed | Add `printables/my-case/README.md` |
@@ -442,7 +442,7 @@ directories under `printables/` for more real examples.
 - [ ] `summary` is one sentence (≤ 140 characters); `description`, if given, is two or three sentences (≤ 800).
 - [ ] `author.name` credits the designer; `author.url` (if given) is HTTPS.
 - [ ] `download.url` is the public HTTPS page; `download.platform` (if given) is the hosting site's name; `download.license` matches the page when a license is shown.
-- [ ] `assets/preview.jpg` is a real photo of the print on reTerminal Sticky, ≤ 1 MB, referenced exactly in `preview.image`, with a descriptive `preview.alt`.
+- [ ] `assets/preview.jpg` is a real photo of the print on reTerminal Sticky, ≤ 5 MB, referenced exactly in `preview.image`, with a descriptive `preview.alt`.
 - [ ] `README.md` lists print settings, assembly steps, hardware, files link, and license.
 - [ ] No model files are committed.
 - [ ] `npm test` and `npm run validate` pass.

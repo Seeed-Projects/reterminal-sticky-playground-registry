@@ -468,7 +468,7 @@ function validateAssets(value, integrationDir, scope) {
   }
   const previewPath = validateLocalFilePath(value.preview, integrationDir, `${scope}.preview`, {
     extensions: ALLOWED_ASSET_EXTENSIONS,
-    maxBytes: 1024 * 1024,
+    maxBytes: 5 * 1024 * 1024,
   });
   validateAssetContent(previewPath, `${scope}.preview`);
   validateString(value.previewAlt, `${scope}.previewAlt`, { max: 180 });
@@ -984,7 +984,7 @@ function validatePrintable(printableDir, directoryName, seenIds) {
     }
     const imagePath = validateLocalFilePath(printable.preview.image, printableDir, `${previewScope}.image`, {
       extensions: ALLOWED_PHOTO_EXTENSIONS,
-      maxBytes: 1024 * 1024,
+      maxBytes: 5 * 1024 * 1024,
     });
     validateAssetContent(imagePath, `${previewScope}.image`);
     validateString(printable.preview.alt, `${previewScope}.alt`, { max: 180 });
