@@ -6,15 +6,23 @@ from your phone and pin to the screen, six games, and the everyday tools.
 ## What it does
 
 - **Reader.** EPUBs off the card, with the book's own contents list, adjustable
-  type, three line spacings and three screen rotations. Reading positions are
-  written in CrossPoint's format as well as its own, so a card carries its
-  places between the two firmwares.
+  type, three line spacings and three screen rotations. Illustrations draw
+  straight out of a book that has been through CrossInk's optimizer, with no
+  conversion step. Reading positions are written in CrossPoint's format as well
+  as its own, so a card carries its places between the two firmwares.
+- **Fonts.** Typefaces are read from the card in CrossInk's `.cpfont` format --
+  the device's own text and one face each for books, notes, flashcards and
+  recipes, so a novel can be set in a serif without the menus following it. A
+  book set in a card family is sized in that family's own cuts. Anything a font
+  does not carry falls back to the built-in face, so choosing one can never
+  empty a language.
 - **Comics.** A `.tbk` page format prepared on a PC by
   [Toybox Slicer](https://github.com/z4b333/Toybox-slicer), which re-cuts a
   webtoon strip at blank gutters so a page never breaks through a face.
 - **Notes.** The device serves a small editor to a phone over its own access
   point, or reads a Markdown file off the card. A pinned note stays on the panel
-  with the power off.
+  with the power off -- as can a picture, a book's cover, or the page you were
+  reading with a picture laid over it.
 - **Games.** Wordle, Sudoku, Nonogram, 2048, Ships and XO. Boards and streaks
   are saved as you play.
 - **Tools.** Coin, dice, timer and stopwatch, random number, card draw, a picker
@@ -33,13 +41,13 @@ screen.
 ## Package origin
 
 Built from [sticky-toybox](https://github.com/z4b333/sticky-toybox) at
-`db16fab4d862e894140c62acf137c062a90ade53`, tagged `v1.0.5`, dated 22 Aug 2026. The four binaries here are
+`0712bb6b4afd51224204ba2a5ae0f4fa749b5d3c`, tagged `v1.4.4`, dated 01 Sep 2026. The four binaries here are
 the same files the project's own web installer serves at
 <https://z4b333.github.io/sticky-toybox/> -- produced by `tools/make_image.sh`
 and packaged for this registry by `tools/make_registry.py`, so the two installers
 write identical bytes.
 
-Application: 3964864 bytes, SHA-256 `3891790d687d9d5a2142c8ae82bf09f5e962cacb5975a7bc15b3ac345c7cc712`.
+Application: 3983536 bytes, SHA-256 `62927c8c90548e32951b1db248f4f7c9ae845bb599b0e532f23472b15df39109`.
 
 Built with PlatformIO and the Arduino ESP32 framework rather than ESP-IDF, which
 is why this is a firmware-only contribution rather than a source build.
