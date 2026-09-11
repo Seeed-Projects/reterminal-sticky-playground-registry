@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "total-enclosure-for-reterminal-sticky",
+  "name": "Total Enclosure for reTerminal sticky",
+  "category": "case",
+  "summary": "Customize Sticky with your own colors. Its compact snap-fit design keeps it protected while giving easy access to the buttons and display.",
+  "author": {
+    "name": "gokul"
+  },
+  "download": {
+    "platform": "Printables",
+    "url": "https://www.printables.com/model/1839036-enclosure-for-reterminal-sticky"
+  },
+  "preview": {
+    "image": "assets/preview.jpg",
+    "alt": "Customize Sticky with your own colors. Its compact snap-fit design keeps it protected while giving easy access to the buttons and display."
+  },
+  "tags": [
+    "enclosure"
+  ]
+}
