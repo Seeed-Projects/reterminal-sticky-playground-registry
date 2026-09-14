@@ -1,6 +1,6 @@
 {
   "name": "Tesserae",
-  "version": "1.33.1",
+  "version": "1.35.0",
   "flashSize": "16MB",
   "flashMode": "dio",
   "flashFreq": "80m",
@@ -13,14 +13,14 @@
         {
           "path": "bootloader.bin",
           "offset": 0,
-          "size": 20912,
-          "sha256": "d7db60b1ee4300c37941d01cbcfcaa78cc7b8137adbb95e6474ea5d60a16f922"
+          "size": 21408,
+          "sha256": "420686cb5369676069baf23abb0d6391b762c0fe09ecd9f4b2b45d40fdd472a0"
         },
         {
           "path": "partitions.bin",
           "offset": 32768,
           "size": 3072,
-          "sha256": "5b069fbb77ba3097eeff5f5bd020ce818c892da3c75b6850d5bcfc1b75ffd1e0"
+          "sha256": "d77f3c2441e035bf11cfec63621d378f26d91ef3d9db80d31d8cfc66680da159"
         },
         {
           "path": "ota_data_initial.bin",
@@ -31,8 +31,8 @@
         {
           "path": "firmware.bin",
           "offset": 131072,
-          "size": 2165888,
-          "sha256": "35c2d289d8fd05aac3f2bf807e22d3d48bae7c82a01304d8551c7c01a59f5032"
+          "size": 2186816,
+          "sha256": "5bfa665f981b074795b2c1d5ffbf56c8ee9ebae5a717808d88cb418c14681214"
         }
       ]
     }
