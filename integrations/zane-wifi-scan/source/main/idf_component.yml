@@ -1,0 +1,12 @@
+# Managed dependencies pulled by the ESP-IDF component manager.
+#
+# arduino-esp32 provides the Arduino API used by main.cpp. Its version and
+# the ESP-IDF version are tied together: each arduino-esp32 release targets
+# a specific IDF release. Verify the pair before submitting, and declare the
+# same IDF version in integration.json "build.version".
+dependencies:
+  idf:
+    version: ">=5.3"
+
+  espressif/arduino-esp32:
+    version: "^3.1.0"

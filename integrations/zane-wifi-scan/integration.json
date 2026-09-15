@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "id": "zane-wifi-scan",
+  "name": "ZANE WiFi Scanner",
+  "group": "community",
+  "catalogSection": "community",
+  "mode": "flash",
+  "status": "experimental",
+  "summary": "ESP32-S3 and Arduino based WiFi scanner firmware.",
+  "description": "High-performance WiFi scanning firmware for reTerminal Sticky built with ESP-IDF and Arduino component.",
+  "author": {
+    "name": "ZANEsystems",
+    "url": "https://github.com/ZANEsystems"
+  },
+  "origin": {
+    "name": "zane_wifi_scan",
+    "url": "https://github.com/ZANEsystems/zane_wifi_scan"
+  },
+  "source": {
+    "url": "https://github.com/ZANEsystems/zane_wifi_scan",
+    "license": "MIT",
+    "path": "source"
+  },
+  "support": {
+    "url": "https://github.com/ZANEsystems/zane_wifi_scan/issues"
+  },
+  "documentationUrl": "https://github.com/ZANEsystems/zane_wifi_scan#readme",
+  "compatibility": {
+    "devices": ["reterminal-sticky"],
+    "notes": "Tested on reTerminal Sticky production hardware."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "ZANE WiFi Scanner running on reTerminal Sticky"
+  },
+  "tags": ["wifi", "scanner", "esp32s3"],
+  "build": {
+    "system": "esp-idf",
+    "version": "v5.3",
+    "target": "esp32s3",
+    "projectPath": "source"
+  },
+  "flash": {
+    "versions": [
+      {
+        "version": "1.0.0",
+        "channel": "experimental",
+        "sourceBuild": true
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      }
+    ]
+  }
+}
