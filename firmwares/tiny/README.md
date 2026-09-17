@@ -140,22 +140,27 @@ Application SHA-256: see `firmware/0.28.0/manifest.json`.
 | Host tests (`tests/run.sh`: askq, bootmark, dr52 deep-sleep/wake) | Passed |
 | Packaged files byte-identical to `firmware/build/` | Passed — copied by `tools/playground_package.sh` from IDF's `flasher_args.json` |
 | Manifest sizes / SHA-256 regenerated from the files | Passed — `npm run validate` in the Registry |
-| Physical installation of the exact package | See below |
+| Physical installation of the exact package | Passed — two devices, see below |
 
 ### Physical-device record
 
-The tested device is a production reTerminal Sticky (ESP32-S3R8, 32 MB flash,
-8 MB PSRAM). It runs firmware `0.28.0` built from the **same `firmware/`
-source tree as tag `v0.28.0`** (its `fw_commit` predates the repository's
-history squash; `git diff 93c10344 v0.28.0 -- firmware/` is empty). The
-rows below were exercised on that build over several days of daily use; the
-USB write of this exact Registry package is recorded separately at the end.
+Two production reTerminal Sticky units (ESP32-S3R8, 32 MB flash, 8 MB PSRAM).
+On 2026-09-17 the **exact files in `firmware/0.28.0/`** were written to both
+with esptool at the manifest offsets (`erase_flash`, then `write_flash
+--flash_mode dio --flash_size 32MB --flash_freq 80m 0x0 bootloader.bin 0x8000
+partition-table.bin 0xf000 ota_data_initial.bin 0x20000 tiny_sticky.bin`; all
+parts "Hash of data verified"). Both then reported `"fw":"0.28.0",
+"fw_commit":"v0.28.0"` in a `status` reply over the air — the receipt that the
+Registry bytes, not an earlier build, are what answered. The longer-running rows
+(OTA, microSD, deep sleep, days of use) come from the same `firmware/` source
+tree (`git diff 93c10344 v0.28.0 -- firmware/` is empty) on the first unit.
 
 | Item | Result |
 | --- | --- |
 | Hardware | reTerminal Sticky production hardware |
 | Firmware version | `0.28.0`, grammar v12 |
-| First boot → onboarding (welcome → Wi-Fi → link → pair → tour) | Passed — including the portal pair form (the 4 KB httpd stack overflow this release fixes) |
+| First boot after full erase → onboarding `ob-welcome`, setup AP `tiny-XXXX` up, **Next** tap → Wi-Fi step, auto-rotate | Passed (serial log, exact package) |
+| Onboarding end to end (welcome → Wi-Fi → link → pair → tour), incl. the portal pair form fixed in this release | Passed |
 | Wi-Fi onboarding (phone QR → portal, and on-glass scan + keyboard) | Passed |
 | Heartbeat to tiny.technology, `status` / `render_ui` / `screenshot` verbs | Passed — every image in this README is a `screenshot` reply |
 | Voice ask (AI button ≥1 s) → streamed answer on glass | Passed |
@@ -165,8 +170,10 @@ USB write of this exact Registry package is recorded separately at the end.
 | Deep sleep (idle timer) → button wake → home | Passed (~1.1 s to home) |
 | microSD mount + gallery | Passed (128 GB card) |
 | OTA A/B with rollback-armed trial boot | Passed (0.27.0-u2 → 0.28.0 over the air) |
-| USB reconnection and repeated installation | Passed (repeated `idf.py flash` at 460800 through a hub) |
-| Exact Registry package written over USB at the manifest offsets | _pending_ — will be done from the PR artifact / a local build of the site and recorded in the PR before review |
+| Repeated installation: package written twice to the same unit, second write over the first without erase | Passed (exact package) |
+| Reboot after install: tour dismissed → boots to home, Wi-Fi rejoined, heartbeat 200 | Passed (exact package) |
+| USB reconnection through a hub (CH343 "USB Single Serial", 460800 baud) | Passed |
+| Second unit: erase + exact package + first boot + heartbeat | Passed |
 
 ## Links
 
