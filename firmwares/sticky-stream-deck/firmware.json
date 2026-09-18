@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-stream-deck",
+  "name": "Sticky Stream Deck",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "tools",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "Transform your Seeed Studio reTerminal Sticky  into a standalone, customizable 15-button E-Paper Stream Deck & Macro Controller fo",
+  "description": "Transform your Seeed Studio reTerminal Sticky  into a standalone, customizable 15-button E-Paper Stream Deck & Macro Controller fo",
+  "author": {
+    "name": "Gokul"
+  },
+  "origin": {
+    "name": "Sticky Stream Deck",
+    "url": "https://github.com/gokuxmaker/Sticky-Stream-Deck-Controller"
+  },
+  "source": {
+    "url": "https://github.com/gokuxmaker/Sticky-Stream-Deck-Controller",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/gokuxmaker/Sticky-Stream-Deck-Controller/issues"
+  },
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "For Seeed Studio reTerminal Sticky with ESP32-S3 and 32MB flash."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "Transform your Seeed Studio reTerminal Sticky  into a standalone, customizable 15-button E-Paper Stream Deck & Macro Controller fo"
+  },
+  "flash": {
+    "versions": [
+      {
+        "version": "0.0.1",
+        "channel": "stable",
+        "manifestPath": "firmware/0.0.1/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "This package is a complete merged Sticky image. Use the erase option when replacing another firmware."
+      }
+    ]
+  }
+}
