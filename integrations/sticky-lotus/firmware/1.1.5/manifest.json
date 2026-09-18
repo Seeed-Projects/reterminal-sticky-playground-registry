@@ -1,0 +1,23 @@
+{
+  "name": "sticky-lotus",
+  "version": "1.1.5",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "sticky-lotus-v1.1.5.bin",
+          "offset": 0,
+          "size": 709472,
+          "sha256": "31f15e8314d06d364662be24d1928527df428d2df9915e4258bdae4b73f7eaf4",
+          "md5": "796db71f7c41c081c264cb29d0d26f81"
+        }
+      ]
+    }
+  ]
+}
