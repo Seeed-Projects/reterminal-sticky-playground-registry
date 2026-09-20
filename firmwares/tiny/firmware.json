@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "id": "tiny",
+  "name": "tiny",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "productivity",
+  "mode": "flash",
+  "status": "experimental",
+  "summary": "A voice + touch agent surface for reTerminal Sticky — your tiny.technology agent, on e-ink, in your pocket.",
+  "description": "tiny turns reTerminal Sticky into a body for one personal agent: hold the AI button and speak, or type on the on-glass keyboard, and the answer streams onto the e-ink and stays there. The agent composes cards (text, list, key/value, menu, QR, chart, chat, composite, image, gallery) that the firmware renders natively in four grays; taps flow back as events. Requires a free tiny.technology account — the device holds only a revocable device token, never an account credential. Includes first-run onboarding on the glass (Wi-Fi via phone QR or on-device scan + keyboard, pairing, a short tour), sha256-pinned A/B OTA with rollback, IMU pocket-lock and auto-rotate, deep sleep with the last card left on the glass, a microSD gallery, and a local shell that works without the network.",
+  "author": {
+    "name": "Cagatay Cali",
+    "url": "https://github.com/cagataycali"
+  },
+  "origin": {
+    "name": "sticky-the-reterminal",
+    "url": "https://github.com/cagataycali/sticky-the-reterminal"
+  },
+  "source": {
+    "url": "https://github.com/cagataycali/sticky-the-reterminal",
+    "license": "Apache-2.0"
+  },
+  "support": {
+    "url": "https://github.com/cagataycali/sticky-the-reterminal/issues"
+  },
+  "documentationUrl": "https://cagataycali.github.io/sticky-the-reterminal/",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "reTerminal Sticky production hardware (ESP32-S3R8, 32 MB flash, 8 MB PSRAM). Needs 2.4 GHz Wi-Fi and a tiny.technology account. Installing erases the whole flash, including Seeed's factory demo — dump it first if you want it back (docs: Recovery)."
+  },
+  "assets": {
+    "preview": "assets/preview.png",
+    "previewAlt": "tiny's home screen on reTerminal Sticky — the real 800×480 framebuffer with the agent conversation canvas, glance cluster and message bar"
+  },
+  "tags": [
+    "agent",
+    "voice",
+    "touch",
+    "ota",
+    "esp-idf",
+    "deep-sleep"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "0.28.0",
+        "channel": "experimental",
+        "manifestPath": "firmware/0.28.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB-C data cable and use desktop Chrome or Edge. Pick the port called \"USB Single Serial\" (the CH343 bridge, no driver needed)."
+      },
+      {
+        "title": "Clean installation",
+        "description": "Accept the erase prompt. The first install wipes the whole flash including Seeed's factory demo (dump it first if you want it back — see Recovery in the docs) and starts with an empty settings store. From then on updates arrive over the air into the other A/B slot with rollback."
+      },
+      {
+        "title": "First boot: Wi-Fi and pairing on the glass",
+        "description": "The device walks you through setup on its own screen: scan the QR with your phone to join the tiny-XXXX setup network (password tinysetup) and open http://192.168.4.1, or tap \"Type it here\" to pick a network from the on-glass scan list and type the password on the e-ink keyboard. Then pair it to your tiny.technology account and take the one-screen tour. No app required."
+      },
+      {
+        "title": "What it needs",
+        "description": "2.4 GHz Wi-Fi and a tiny.technology account (free). The intelligence runs server-side; without Wi-Fi the device keeps its local pages (home, status, sensors, settings, gallery) and the last card on the glass, but cannot answer questions."
+      }
+    ]
+  }
+}
