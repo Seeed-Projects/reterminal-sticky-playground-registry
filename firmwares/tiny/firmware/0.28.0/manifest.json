@@ -1,0 +1,40 @@
+{
+  "name": "tiny",
+  "version": "0.28.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "bootloader.bin",
+          "offset": 0,
+          "size": 21088,
+          "sha256": "7e47df8efae9b92aded7000fb8247c5abd274e8ecccaaa86e2ec9f0fc0ec2376"
+        },
+        {
+          "path": "partition-table.bin",
+          "offset": 32768,
+          "size": 3072,
+          "sha256": "f84d60dff7cb63b7d772564d9861a375823c2180e054d45e7ea8fb97329c6c18"
+        },
+        {
+          "path": "ota_data_initial.bin",
+          "offset": 61440,
+          "size": 8192,
+          "sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f"
+        },
+        {
+          "path": "tiny_sticky.bin",
+          "offset": 131072,
+          "size": 1525760,
+          "sha256": "93cbb1630cdfb2125e9a5f2a225371e26462a763dd05711ffcb80d75e15979dc"
+        }
+      ]
+    }
+  ]
+}

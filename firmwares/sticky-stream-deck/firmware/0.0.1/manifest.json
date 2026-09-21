@@ -1,0 +1,22 @@
+{
+  "name": "Sticky Stream Deck",
+  "version": "0.0.1",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "reterminal_sticky_arduino.ino.merged.bin",
+          "offset": 0,
+          "size": 16777216,
+          "sha256": "0e68f0ef02372034bd10097faed8f72d9144391fbef173eb038baa81bc54ae4b"
+        }
+      ]
+    }
+  ]
+}

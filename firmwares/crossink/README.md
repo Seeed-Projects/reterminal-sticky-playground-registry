@@ -1,11 +1,10 @@
 # CrossInk
 
-This partner entry publishes the CrossInk 1.5.0 Sticky application build as the
-1.5.0-beta Registry package for browser-based installation on reTerminal
-Sticky.
+This partner entry publishes the CrossInk 1.5.1 Sticky application build as the
+1.5.1 Registry package for browser-based installation on reTerminal Sticky.
 
 The package was built from the CrossInk `main` branch at commit
-`4b2199b76cdab5fe79cafa3ebf1cf47db30c483e` and is distributed under the
+`4f2da6b7777b9a38fdf2606796d6da34caa7d2cb` and is distributed under the
 upstream MIT license.
 
 The firmware directory contains a complete four-part ESP32-S3 package with the
