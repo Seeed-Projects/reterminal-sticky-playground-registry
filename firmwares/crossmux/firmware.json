@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "id": "crossmux",
+  "name": "CrossMux",
+  "group": "partner",
+  "catalogSection": "platform",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "Open-source e-reader firmware with an apps hub, tools, games, and multilingual support.",
+  "description": "Install the CrossMux firmware package prepared for reTerminal Sticky. CrossMux combines an e-reader with an apps hub of practical tools and mini-games.",
+  "author": {
+    "name": "CrossMux",
+    "url": "https://crossmux.com/"
+  },
+  "source": {
+    "url": "https://github.com/0x1abin/crossmux",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/0x1abin/crossmux/issues"
+  },
+  "documentationUrl": "https://crossmux.com/",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Version 1.6.0 is tested on reTerminal Sticky production hardware."
+  },
+  "assets": {
+    "logo": "assets/logo.png",
+    "preview": "assets/logo.png",
+    "previewAlt": "CrossMux official logo"
+  },
+  "tags": [
+    "ereader",
+    "partner",
+    "apps",
+    "tools",
+    "games",
+    "multilingual"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "1.6.0",
+        "channel": "stable",
+        "manifestPath": "firmware/1.6.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "The standard option writes the complete four-part CrossMux package."
+      }
+    ]
+  }
+}
