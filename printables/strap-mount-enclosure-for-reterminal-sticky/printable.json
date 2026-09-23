@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "strap-mount-enclosure-for-reterminal-sticky",
+  "name": "Strap mount enclosure for reTerminal sticky",
+  "category": "case",
+  "summary": "This design allows straps and a carabiner to attach to the Sticky.",
+  "author": {
+    "name": "Gokul"
+  },
+  "download": {
+    "platform": "Printables",
+    "url": "https://www.printables.com/model/1852020-strap-mount-enclosure-for-reterminal-sticky"
+  },
+  "preview": {
+    "image": "assets/preview.jpg",
+    "alt": "This design allows straps and a carabiner to attach to the Sticky."
+  }
+}
