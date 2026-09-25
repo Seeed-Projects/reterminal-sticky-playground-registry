@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "id": "jhoni-tools",
+  "name": "JHONI Tools",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "productivity",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "A distraction-free e-reader with calculators, lists, calendar notes, QR tools, sales tracking, Gutenberg, and more.",
+  "description": "A distraction-free e-reader with calculators, lists, calendar notes, QR tools, sales tracking, Gutenberg, and more.",
+  "author": {
+    "name": "JHONI",
+    "url": "https://github.com/JHONI-nyc"
+  },
+  "origin": {
+    "name": "JHONI Tools",
+    "url": "https://github.com/JHONI-nyc/JHONI-Tools-Sticky/releases/tag/v1.0.0"
+  },
+  "source": {
+    "url": "https://github.com/JHONI-nyc/JHONI-Tools-Sticky/releases/tag/v1.0.0",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/JHONI-nyc/JHONI-Tools-Sticky/issues"
+  },
+  "documentationUrl": "https://github.com/JHONI-nyc/JHONI-Tools-Sticky",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "For Seeed Studio reTerminal Sticky with ESP32-S3 and 32MB flash."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "A distraction-free e-reader with calculators, lists, calendar notes, QR tools, sales tracking, Gutenberg, and more."
+  },
+  "tags": [
+    "- ereader",
+    "productivity",
+    "calculator",
+    "calendar",
+    "gutenberg",
+    "tools"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "1.0.0",
+        "channel": "stable",
+        "manifestPath": "firmware/1.0.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "This package is a complete merged Sticky image. Use the erase option when replacing another firmware."
+      }
+    ]
+  }
+}
