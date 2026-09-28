@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-fokus",
+  "name": "Sticky Fokus",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "productivity",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "Distraction-free Fokus companion: today's plan, tasks, calendar, goals and notes, with one-press voice capture. Needs a Fokus account.",
+  "description": "Distraction-free Fokus companion: today's plan, tasks, calendar, goals and notes, with one-press voice capture. Needs a Fokus account.",
+  "author": {
+    "name": "Fokus",
+    "url": "https://www.getfokus.com"
+  },
+  "origin": {
+    "name": "Sticky Fokus",
+    "url": "https://www.getfokus.com/sticky/"
+  },
+  "source": {
+    "url": "https://www.getfokus.com/sticky/",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://www.getfokus.com/sticky/"
+  },
+  "documentationUrl": "https://guide.getfokus.com/en/docs/apps/sticky",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "For Seeed Studio reTerminal Sticky with ESP32-S3 and 32MB flash."
+  },
+  "assets": {
+    "preview": "assets/preview.png",
+    "previewAlt": "Distraction-free Fokus companion: today's plan, tasks, calendar, goals and notes, with one-press voice capture. Needs a Fokus account."
+  },
+  "tags": [
+    "productivity",
+    "tasks",
+    "calendar",
+    "notes",
+    "capture",
+    "offline"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "0.3.3",
+        "channel": "stable",
+        "manifestPath": "firmware/0.3.3/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "This package is a complete merged Sticky image. Use the erase option when replacing another firmware."
+      }
+    ]
+  }
+}
