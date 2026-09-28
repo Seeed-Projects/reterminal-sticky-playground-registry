@@ -1,0 +1,22 @@
+{
+  "name": "SD Card Debugger",
+  "version": "1.0.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "sticky_sd_card_debugger_merged.bin",
+          "offset": 0,
+          "size": 552048,
+          "sha256": "684ad98a9d4b4cf3ba05a38e111374b3e343f85d4f24fe0fadc200e665950007"
+        }
+      ]
+    }
+  ]
+}

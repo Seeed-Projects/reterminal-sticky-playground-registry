@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "id": "sd-card-debugger",
+  "name": "SD Card Debugger",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "tools",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "Inspect, diagnose, manage, and initialize SD cards directly on reTerminal Sticky.",
+  "description": "Inspect, diagnose, manage, and initialize SD cards directly on reTerminal Sticky.",
+  "author": {
+    "name": "Lukilyy",
+    "url": "https://github.com/Lukilyy"
+  },
+  "origin": {
+    "name": "SD Card Debugger",
+    "url": "https://github.com/Lukilyy/SD-Card-Debugger"
+  },
+  "source": {
+    "url": "https://github.com/Lukilyy/SD-Card-Debugger",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/Lukilyy/SD-Card-Debugger/issues"
+  },
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "For Seeed Studio reTerminal Sticky with ESP32-S3 and 32MB flash."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "Inspect, diagnose, manage, and initialize SD cards directly on reTerminal Sticky."
+  },
+  "flash": {
+    "versions": [
+      {
+        "version": "1.0.0",
+        "channel": "stable",
+        "manifestPath": "firmware/1.0.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "This package is a complete merged Sticky image. Use the erase option when replacing another firmware."
+      }
+    ]
+  }
+}
