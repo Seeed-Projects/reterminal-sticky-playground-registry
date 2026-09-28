@@ -1,0 +1,22 @@
+{
+  "name": "JHONI Tools",
+  "version": "1.0.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "JHONI-Tools-1.0.factory.bin",
+          "offset": 0,
+          "size": 6067936,
+          "sha256": "c8216dad53af46c384f225a24162aed3b1062f03e1ec72613c807ebb0a269002"
+        }
+      ]
+    }
+  ]
+}
