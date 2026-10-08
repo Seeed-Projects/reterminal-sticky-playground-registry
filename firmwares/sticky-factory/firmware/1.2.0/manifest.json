@@ -1,0 +1,23 @@
+{
+  "name": "reTerminal Sticky Official Firmware",
+  "version": "1.2.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "reterminal_sticky_1_2_0.bin",
+          "offset": 0,
+          "size": 33292288,
+          "sha256": "5cd55031ddee26cf32ed9e01dd89ed8d820bdbfe752d0140b136177fab26a2a2",
+          "md5": "a38ce0f052d6f2c16089bc5d8fbffca6"
+        }
+      ]
+    }
+  ]
+}
