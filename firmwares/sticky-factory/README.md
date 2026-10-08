@@ -13,6 +13,17 @@ the delivery method associated with each version.
 
 ## Repository-backed versions
 
+### 1.2.0
+
+- Official artifact origin: `merge_sticky_120_prod.bin` supplied by Seeed staff
+- Device: reTerminal Sticky
+- Chip: ESP32-S3
+- Package: merged official firmware binary
+- Flash offset: `0x0`
+- Binary size: `33,292,288` bytes
+- SHA-256: `5cd55031ddee26cf32ed9e01dd89ed8d820bdbfe752d0140b136177fab26a2a2`
+- Physical-device verification: pending
+
 ### 1.1.0
 
 - Device: reTerminal Sticky
