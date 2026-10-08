@@ -1,0 +1,22 @@
+{
+  "name": "Sticky Fokus",
+  "version": "0.3.3",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "sticky-0.3.3-merged.bin",
+          "offset": 0,
+          "size": 3149872,
+          "sha256": "e48044d1f6e3c7e4a4606efd366d157afc5221915916838a1c75a2058493ec8d"
+        }
+      ]
+    }
+  ]
+}
