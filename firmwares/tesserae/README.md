@@ -86,7 +86,14 @@ live on the device card in the server UI.
 
 ## Physical-device test record
 
-Pending: the on-device test of this package will be recorded here before the PR is marked ready.
+- Device: Seeed reTerminal Sticky (production unit), October 2026
+- Installation: over the air from a Tesserae server, as most Sticky users
+  will receive it. The application image is the `firmware.bin` committed
+  here (same SHA-256). OTA does not rewrite the bootloader or partition
+  table; `partitions.bin` is unchanged from 1.35.0, whose full USB package
+  was written and verified on this unit
+- Result: booted 1.45.0 and ran its normal cycle (Wi-Fi, status report to the
+  server, dashboard paints, deep sleep and wake) with no issues
 
 Project source, documentation and support are provided by the
 [tesserae-device-firmware repository](https://github.com/dmellok/tesserae-device-firmware),
