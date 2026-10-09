@@ -33,7 +33,7 @@
   "assets": {
     "logo": "assets/logo.svg",
     "preview": "assets/wordmark.svg",
-    "previewAlt": "Tesserae Server wordmark"
+    "previewAlt": "Tesserae wordmark"
   },
   "tags": [
     "dashboard",
