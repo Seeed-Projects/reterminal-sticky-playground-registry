@@ -28,27 +28,36 @@ frame over Wi-Fi as a 4-level grayscale buffer, paints it and sleeps again.
 A Tesserae server on the local network is required. Install it with Docker or
 the Home Assistant App: <https://docs.tesserae.ink/install/server/>.
 
-## New in 1.35.0
+## New since 1.35.0
 
-- The CPU light-sleeps while the panel refreshes, cutting the current drawn
-  during each paint.
-- The battery power latch is driven at boot, so a Sticky started from its
-  power button stays on after the button is released.
-- A microSD card that fails to mount no longer disturbs the display bus, and
-  mounting retries at lower SPI clocks for slow cards.
-- Crash dumps are kept in a new 64 KB flash partition (written at USB
-  install; over-the-air updates do not change the partition table).
+- Touch wake has a gesture option (1.44.0). With it, the touch controller
+  sits in its low-power gesture mode during deep sleep instead of scanning,
+  and a double tap or a swipe wakes the Sticky. Tap wake stays the default.
+- Setup over USB (1.43.0). The browser flasher at tesserae.ink/flash can set
+  Wi-Fi and the server address right after flashing, with no hotspot step.
+  The setup hotspot is still there and gains a Cloud tab beside Local and
+  Relay.
+- Lower sleep current (1.40.0, 1.42.0). The microSD slot power stays off
+  through deep sleep, with the pin pull-ups switched off before each hold.
+- The server can ask for the device log and is told about failed paints,
+  brownouts and crashes on the next wake (1.41.0). A failed paint is retried
+  on the next wake instead of being skipped.
+- Touch buttons bound to a Home Assistant entity show its on/off state, and
+  switches confirm their new state within a second or two of a tap (1.38.0,
+  1.39.0).
+- The logo splash after a cold boot is always replaced by the dashboard on
+  the next poll (1.37.0).
 
 ## Package origin
 
-Version 1.35.0 was built by the tesserae-device-firmware GitHub Actions
+Version 1.45.0 was built by the tesserae-device-firmware GitHub Actions
 release pipeline from tag
-[`v1.35.0`](https://github.com/dmellok/tesserae-device-firmware/releases/tag/v1.35.0)
-(commit `edf493f2a14bc1c992955caff8b83a5310d10b54`), PlatformIO environment
+[`v1.45.0`](https://github.com/dmellok/tesserae-device-firmware/releases/tag/v1.45.0)
+(commit `fab26cb70188cf633492bda43eac3850220d8770`), PlatformIO environment
 `seeed-reterminal-sticky`, ESP-IDF via PlatformIO `espressif32`. The four
-files under `firmware/1.35.0/` are byte-identical to the images the pipeline
+files under `firmware/1.45.0/` are byte-identical to the images the pipeline
 publishes for the tesserae.ink browser flasher
-(`https://tesserae.ink/firmware/seeed-reterminal-sticky/v1.35.0/`), and the
+(`https://tesserae.ink/firmware/seeed-reterminal-sticky/v1.45.0/`), and the
 SHA-256 values in `manifest.json` match that catalog. The firmware is
 distributed under the upstream AGPL-3.0 licence.
 
@@ -72,30 +81,12 @@ non-erasing reinstall.
 4. Bind a page to the device and press **Send**. The Sticky paints it on its
    next wake.
 
-Per-device options such as touch input, touch linger time and wake interval
+Per-device options such as touch input, touch wake (tap or gesture), touch linger time and wake interval
 live on the device card in the server UI.
 
 ## Physical-device test record
 
-- Device: Seeed reTerminal Sticky (production unit), tested 2026-09-12
-- Package: the four files in `firmware/1.35.0/`, written byte-identical with
-  esptool 5.1.2 over USB at `0x0`, `0x8000`, `0x10000` and `0x20000`
-  (`--flash-mode keep --flash-freq keep --flash-size keep`, no erase); every
-  part hash-verified by esptool
-- Result: booted `v1.35.0` from `ota_0`, found the new `coredump` partition,
-  reconnected to Wi-Fi with the credentials kept in NVS, reported battery
-  (BQ27220) and environment readings to the Tesserae server, mounted the
-  microSD card, painted the logo splash (full 4-gray refresh 1.23 s) and
-  entered deep sleep on the server-driven schedule
-- Touch: two taps, each waking the unit from deep sleep with the coordinate
-  recovered by the wake stub and reported to the server; after the first the
-  device downloaded and painted its 480x800 4-gray dashboard (paint 1.7 s),
-  after the second it painted a re-rendered frame during the 30 s touch
-  linger, then slept again
-- The same 1.35.0 application image is what the upstream release pipeline
-  serves over the air; this unit had run the pre-release build of the same
-  tree on the bench the day before (light sleep during refresh, power latch
-  on battery)
+TODO: flash `firmware/1.45.0/` to the Sticky and record the result.
 
 Project source, documentation and support are provided by the
 [tesserae-device-firmware repository](https://github.com/dmellok/tesserae-device-firmware),
