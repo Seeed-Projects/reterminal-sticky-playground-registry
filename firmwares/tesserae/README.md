@@ -86,7 +86,7 @@ live on the device card in the server UI.
 
 ## Physical-device test record
 
-TODO: flash `firmware/1.45.0/` to the Sticky and record the result.
+Pending: the on-device test of this package will be recorded here before the PR is marked ready.
 
 Project source, documentation and support are provided by the
 [tesserae-device-firmware repository](https://github.com/dmellok/tesserae-device-firmware),
