@@ -46,6 +46,11 @@
   "flash": {
     "versions": [
       {
+        "version": "0.3.4",
+        "channel": "stable",
+        "manifestPath": "firmware/0.3.4/manifest.json"
+      },
+      {
         "version": "0.3.3",
         "channel": "stable",
         "manifestPath": "firmware/0.3.3/manifest.json"
