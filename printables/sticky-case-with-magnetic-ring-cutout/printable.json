@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-case-with-magnetic-ring-cutout",
+  "name": "Sticky Case with Magnetic Ring Cutout",
+  "category": "case",
+  "summary": "A lightweight case for the Sticky with a hole for the MagSafe ring that came with the device",
+  "author": {
+    "name": "Zoltan Szalontay",
+    "url": "https://www.printables.com/@ZoltanSzalont_112485"
+  },
+  "download": {
+    "platform": "Printables",
+    "url": "https://www.printables.com/model/1850044-seeed-studio-reterminal-sticky-case"
+  },
+  "preview": {
+    "image": "assets/preview.webp",
+    "alt": "A lightweight case for the Sticky with a hole for the MagSafe ring that came with the device"
+  },
+  "tags": [
+    "casing",
+    "magnetic ring",
+    "sticky"
+  ]
+}
