@@ -1,0 +1,40 @@
+{
+  "name": "Draftling",
+  "version": "1.0.16",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "bootloader.bin",
+          "offset": 0,
+          "size": 22496,
+          "sha256": "6bd627c2184ede51942575bf0ea58658f493c45efb33b5ae31dc43432cccf127"
+        },
+        {
+          "path": "partition-table.bin",
+          "offset": 32768,
+          "size": 3072,
+          "sha256": "dd46f8c28cfa1d5383f756166531fd25f1d62ae55772b3f506ab6d6764aa3da3"
+        },
+        {
+          "path": "otadata.bin",
+          "offset": 53248,
+          "size": 8192,
+          "sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f"
+        },
+        {
+          "path": "draftling.bin",
+          "offset": 65536,
+          "size": 2278064,
+          "sha256": "6463a99adbb532cf501cf1d22a6f4b3e3f3d10df8d8728a0460b46c513a80d44"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "id": "draftling",
+  "name": "Draftling",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "productivity",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "Distraction-free writerdeck: edit Markdown on Sticky with any Bluetooth keyboard and sync with Git.",
+  "description": "Draftling turns Sticky into a minimalist writerdeck. Pair any Bluetooth Low Energy keyboard and edit Markdown, Fountain screenplays, or plain text files stored on the microSD card, with styled WYSIWYG rendering and split-screen editing. A built-in Git client can sync your files over Wi-Fi with GitHub or any smart-HTTP Git server.",
+  "author": {
+    "name": "clackups",
+    "url": "https://github.com/clackups"
+  },
+  "origin": {
+    "name": "Draftling",
+    "url": "https://draftling.art/"
+  },
+  "source": {
+    "url": "https://github.com/clackups/draftling",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/clackups/draftling/issues"
+  },
+  "documentationUrl": "https://github.com/clackups/draftling#readme",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Version 1.0.16 is tested on reTerminal Sticky production hardware. Requires a Bluetooth Low Energy keyboard and a microSD card. SD card via USB is not available on this board."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "Draftling editing a Markdown file on reTerminal Sticky with a Bluetooth keyboard"
+  },
+  "tags": [
+    "writing",
+    "markdown",
+    "bluetooth",
+    "keyboard",
+    "git",
+    "wifi"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "1.0.16",
+        "channel": "stable",
+        "manifestPath": "firmware/1.0.16/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "The package writes the bootloader, partition table, OTA data, and Draftling application. It uses a dual-OTA partition layout, so the device can move between Draftling and other Sticky firmware without extra steps."
+      },
+      {
+        "title": "Storage and keyboard",
+        "description": "Insert a microSD card for your documents. Press F1 on a paired Bluetooth keyboard to open the menu; holding the Power button for 2 seconds forgets all stored keyboards."
+      }
+    ]
+  }
+}
