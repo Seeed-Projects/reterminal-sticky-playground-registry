@@ -1,0 +1,22 @@
+{
+  "name": "sticky-weather",
+  "version": "1.0.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "StickyTiempo.ino.merged.bin",
+          "offset": 0,
+          "size": 16777216,
+          "sha256": "bb588d231502a5390d993e546c32c12048b3ef9f074a4da90d0bfcb41750b922"
+        }
+      ]
+    }
+  ]
+}

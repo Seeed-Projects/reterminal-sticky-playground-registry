@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-weather",
+  "name": "sticky-weather",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "weather",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "App to view current weather and a 3-day forecast. Available in 6 languages.",
+  "description": "App to view current weather and a 3-day forecast. Available in 6 languages.",
+  "author": {
+    "name": "Angel Esteban"
+  },
+  "origin": {
+    "name": "sticky-weather",
+    "url": "https://github.com/estebangel-crypto/sticky-weather"
+  },
+  "source": {
+    "url": "https://github.com/estebangel-crypto/sticky-weather",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/estebangel-crypto/sticky-weather/issues"
+  },
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "For Seeed Studio reTerminal Sticky with ESP32-S3 and 32MB flash."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "App to view current weather and a 3-day forecast. Available in 6 languages."
+  },
+  "flash": {
+    "versions": [
+      {
+        "version": "1.0.0",
+        "channel": "stable",
+        "manifestPath": "firmware/1.0.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "This package is a complete merged Sticky image. Use the erase option when replacing another firmware."
+      }
+    ]
+  }
+}
