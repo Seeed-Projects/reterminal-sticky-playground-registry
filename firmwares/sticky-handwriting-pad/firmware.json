@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-handwriting-pad",
+  "name": "Sticky Handwriting Pad",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "productivity",
+  "mode": "flash",
+  "status": "experimental",
+  "summary": "An offline handwriting notebook with 20 pages, four pen styles, grayscale ink, and undo/redo.",
+  "description": "Write and sketch with your finger on reTerminal Sticky. Choose round, calligraphy, pencil, or brush strokes, switch ink colors and sizes, erase, and undo or redo edits on each page. Pages, pen settings, and edit history are saved when the device sleeps and restored on wake. Runs entirely on the device.",
+  "author": {
+    "name": "limengdu",
+    "url": "https://github.com/limengdu"
+  },
+  "origin": {
+    "name": "Sticky Handwriting Pad project",
+    "url": "https://github.com/limengdu/reterminal_sticky_handwriting_pad"
+  },
+  "source": {
+    "url": "https://github.com/limengdu/reterminal_sticky_handwriting_pad",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/limengdu/reterminal_sticky_handwriting_pad/issues"
+  },
+  "documentationUrl": "https://github.com/limengdu/reterminal_sticky_handwriting_pad#readme",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Hardware-tested on reTerminal Sticky with ESP32-S3R8, 32 MB flash, SSD1677 e-paper, and GT911 touch. Use portrait orientation with the buttons on the right."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "Sticky Handwriting Pad on a real reTerminal Sticky, showing a handwritten smiley and the pen toolbar"
+  },
+  "tags": [
+    "handwriting",
+    "notes",
+    "offline",
+    "touch",
+    "eink",
+    "undo"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "0.1.0",
+        "channel": "experimental",
+        "manifestPath": "firmware/0.1.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Connect your device",
+        "description": "Connect reTerminal Sticky with a USB data cable and open this page in desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "This package includes the bootloader, partition table, and app for ESP32-S3 with 32 MB flash. The browser flasher uses the supplied flash map, DIO mode, and 80 MHz."
+      },
+      {
+        "title": "Start writing",
+        "description": "Use portrait orientation with the buttons on the right. Tap the bottom handle or swipe up to open the pen toolbar. The side buttons switch pages."
+      },
+      {
+        "title": "Save your notebook",
+        "description": "Press the AI button to save and sleep before disconnecting power. Press again to wake. The notebook also saves and sleeps after one minute of inactivity."
+      }
+    ]
+  }
+}
