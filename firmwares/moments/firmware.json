@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "id": "moments",
+  "name": "Moments",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "productivity",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "Context aware dashboards. Just like TRMNL, but dashboards update automatically based on context.",
+  "description": "Context aware dashboards. Just like TRMNL, but dashboards update automatically based on context.",
+  "author": {
+    "name": "Arpan",
+    "url": "https://www.youtube.com/@makestreme"
+  },
+  "origin": {
+    "name": "Moments",
+    "url": "https://github.com/Makestreme/moments"
+  },
+  "source": {
+    "url": "https://github.com/Makestreme/moments",
+    "license": "Apache-2.0"
+  },
+  "support": {
+    "url": "https://github.com/Makestreme/moments/issues"
+  },
+  "documentationUrl": "https://makestreme.github.io/moments/",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "For Seeed Studio reTerminal Sticky with ESP32-S3 and 32MB flash."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "Context aware dashboards. Just like TRMNL, but dashboards update automatically based on context."
+  },
+  "tags": [
+    "productivity",
+    "smarthome",
+    "dashboard",
+    "terminal",
+    "trmnl"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "1.0.0",
+        "channel": "stable",
+        "manifestPath": "firmware/1.0.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "This package writes each uploaded file to the flash offset recorded in the manifest."
+      }
+    ]
+  }
+}

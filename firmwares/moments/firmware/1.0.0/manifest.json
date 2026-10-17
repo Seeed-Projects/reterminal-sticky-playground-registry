@@ -1,0 +1,40 @@
+{
+  "name": "Moments",
+  "version": "1.0.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "bootloader.bin",
+          "offset": 0,
+          "size": 18720,
+          "sha256": "ef0fdb66c1788cd7251d8f016596581adcfbf3d99c95eedb426babfa0c341fe7"
+        },
+        {
+          "path": "partitions.bin",
+          "offset": 32768,
+          "size": 3072,
+          "sha256": "d8bdbdc14e4638b764b6b67fbe7dd2ad82592f8ee24a8615e781d7ed0dbcd0af"
+        },
+        {
+          "path": "boot_app0.bin",
+          "offset": 57344,
+          "size": 8192,
+          "sha256": "f94c5d786a7a8fab06ac5d10e33bf37711a6697636dc037559ea19cc410a17f0"
+        },
+        {
+          "path": "moments.bin",
+          "offset": 65536,
+          "size": 1820384,
+          "sha256": "5806feb320f8b2aa5732227ac0ae35270fb8212d8fd9999bbfd32a29befb49c7"
+        }
+      ]
+    }
+  ]
+}
