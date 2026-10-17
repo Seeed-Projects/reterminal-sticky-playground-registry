@@ -72,7 +72,7 @@ modified for submission. Its image structure and checksum were checked locally.
 | Image and configured flash size | 16 MiB (16,777,216 bytes) |
 | File | `firmware/3.1.1/edcbook_full.bin` |
 | Flash offset | `0x0` |
-| SHA-256 | `0148ef4c5714edf4fba3ab71277c2eed7a873d7292cc6b128df876ee2eff78bf` |
+| SHA-256 | `588539e79aadf60543c3c80eccaf1086b6fe7fcb17950edaade69c4e43417958` |
 | Manifest | [firmware/3.1.1/manifest.json](firmware/3.1.1/manifest.json) |
 
 ## Validation and physical-device test record
