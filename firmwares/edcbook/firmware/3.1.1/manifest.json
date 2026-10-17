@@ -1,0 +1,20 @@
+{
+  "name": "EDC Book",
+  "version": "3.1.1",
+  "flashSize": "16MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "edcbook_full.bin",
+          "offset": 0,
+          "size": 16777216,
+          "sha256": "588539e79aadf60543c3c80eccaf1086b6fe7fcb17950edaade69c4e43417958"
+        }
+      ]
+    }
+  ]
+}
