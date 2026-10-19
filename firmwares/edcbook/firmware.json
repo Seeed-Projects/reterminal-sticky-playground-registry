@@ -30,8 +30,8 @@
   },
   "assets": {
     "logo": "assets/logo.png",
-    "preview": "assets/logo.png",
-    "previewAlt": "EDC Book official logo"
+    "preview": "assets/preview.jpg",
+    "previewAlt": "EDC Book running on a physical reTerminal Sticky"
   },
   "tags": ["ereader", "partner", "offline", "epub", "chinese", "touch"],
   "flash": {
