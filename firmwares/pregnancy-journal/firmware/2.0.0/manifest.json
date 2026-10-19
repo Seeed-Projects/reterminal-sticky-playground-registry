@@ -1,0 +1,22 @@
+{
+  "name": "Pregnancy-Journal",
+  "version": "2.0.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "pregnancy-journal-2.0.0-merged.bin",
+          "offset": 0,
+          "size": 5368576,
+          "sha256": "87dafb2da15ba03b6659a6a50a63525d3c7ed017bb9d326ed9cca90f02de8773"
+        }
+      ]
+    }
+  ]
+}

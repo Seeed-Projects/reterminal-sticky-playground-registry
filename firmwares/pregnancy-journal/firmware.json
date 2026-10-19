@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "id": "pregnancy-journal",
+  "name": "Pregnancy-Journal",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "tools",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "孕期手帐是运行在 Seeed Studio reTerminal Sticky（一台小型磁吸电子纸设备）上的离线 孕期记录固件。它在 Sticky Core 硬件框架上提供孕周首页、体重记录、数胎动和设置。",
+  "description": "孕期手帐是运行在 Seeed Studio reTerminal Sticky（一台小型磁吸电子纸设备）上的离线 孕期记录固件。它在 Sticky Core 硬件框架上提供孕周首页、体重记录、数胎动和设置。",
+  "author": {
+    "name": "孕期手帐"
+  },
+  "origin": {
+    "name": "Pregnancy-Journal",
+    "url": "https://github.com/sky18Dragon/Pregnancy-Journal"
+  },
+  "source": {
+    "url": "https://github.com/sky18Dragon/Pregnancy-Journal",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/sky18Dragon/Pregnancy-Journal/issues"
+  },
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "For Seeed Studio reTerminal Sticky with ESP32-S3 and 32MB flash."
+  },
+  "assets": {
+    "preview": "assets/preview.png",
+    "previewAlt": "孕期手帐是运行在 Seeed Studio reTerminal Sticky（一台小型磁吸电子纸设备）上的离线 孕期记录固件。它在 Sticky Core 硬件框架上提供孕周首页、体重记录、数胎动和设置。"
+  },
+  "flash": {
+    "versions": [
+      {
+        "version": "2.0.0",
+        "channel": "stable",
+        "manifestPath": "firmware/2.0.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "This package is a complete merged Sticky image. Use the erase option when replacing another firmware."
+      }
+    ]
+  }
+}
