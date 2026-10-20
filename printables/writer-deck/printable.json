@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "writer-deck",
+  "name": "Writer Deck",
+  "category": "case",
+  "summary": "Combine a Sticky with a tiny keyboard",
+  "author": {
+    "name": "ben brown",
+    "url": "https://benbrown.com/"
+  },
+  "download": {
+    "platform": "MakerWorld",
+    "url": "https://makerworld.com/en/models/3469467-writerdeck-remixed-for-seeed-sticky"
+  },
+  "preview": {
+    "image": "assets/preview.jpg",
+    "alt": "Combine a Sticky with a tiny keyboard"
+  }
+}
