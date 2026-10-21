@@ -2,7 +2,17 @@
 
 ## What it is
 
-孕期手帐是运行在 Seeed Studio reTerminal Sticky（一台小型磁吸电子纸设备）上的离线 孕期记录固件。它在 Sticky Core 硬件框架上提供孕周首页、体重记录、数胎动和设置。
+Pregnancy-Journal is offline pregnancy-tracking firmware for Seeed Studio reTerminal Sticky, a compact magnetic e-paper device. Built on the Sticky Core hardware framework, it provides a pregnancy-week home screen, weight records, fetal movement counting, and settings.
+
+## Requirements
+
+A MicroSD card formatted as FAT32 is required. User data is stored on the card; exFAT is not supported.
+
+## First-time setup
+
+1. Insert the MicroSD card.
+2. Open Settings → MicroSD and create a dataset.
+3. In Baby Week, set the due date or the date of the last menstrual period.
 
 ## Source
 
