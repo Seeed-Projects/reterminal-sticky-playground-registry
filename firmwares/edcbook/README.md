@@ -24,14 +24,13 @@ it makes no claim of an open-source license.
 
 ## Official logo and device demonstration
 
-The Partner Firmware card uses the official EDC Book logo in
-[`assets/logo.png`](assets/logo.png).
+The Partner Firmware card uses the official EDC Book logo.
 
-![EDC Book running on a physical reTerminal Sticky](assets/preview.jpg)
+![EDC Book official logo](assets/logo.png)
 
 [Watch or download the real-device demonstration](assets/demo.mp4).
 The approximately 149-second video is a compressed copy of the author's
-recording, with its full duration retained. The photograph and recording were
+recording, with its full duration retained. The logo and recording were
 provided by the author for this submission.
 
 ## Installation and first use
