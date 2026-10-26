@@ -75,7 +75,8 @@ any downgrade.
 ## Source and package provenance
 
 - Project and support: https://github.com/sky18Dragon/Pregnancy-Journal
-- Source base: https://github.com/sky18Dragon/Pregnancy-Journal/tree/4c8f5fa15871c76441eb062a773dd9f236f1a270
+- Exact source commit: https://github.com/sky18Dragon/Pregnancy-Journal/tree/9c08cd71d1518d5969e70d1c842a7c2066bddc59
+- Functional base: `4c8f5fa15871c76441eb062a773dd9f236f1a270`.
 - Version-only source delta: `firmware/2.0.1/source-version.patch`, changing
   CMake PROJECT_VER and STICKY_FIRMWARE_VERSION from 2.0.0 to 2.0.1.
 - License: MIT; see LICENSE and NOTICE.md for retained attribution.
