@@ -36,6 +36,11 @@
   "flash": {
     "versions": [
       {
+        "version": "2.0.1",
+        "channel": "stable",
+        "manifestPath": "firmware/2.0.1/manifest.json"
+      },
+      {
         "version": "2.0.0",
         "channel": "stable",
         "manifestPath": "firmware/2.0.0/manifest.json"
@@ -47,8 +52,20 @@
         "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
       },
       {
+        "title": "MicroSD required",
+        "description": "Insert a FAT32-formatted MicroSD card. exFAT is not supported. On a writable card without a dataset, choose SET UP MEMORY CARD and confirm creation. The firmware never formats the card."
+      },
+      {
+        "title": "Before upgrading",
+        "description": "Back up the PREGJNL folder on your MicroSD card. This complete image also overwrites the internal NVS area, even without a full-chip erase. Export any legacy internal data before installation. The image does not contain or write MicroSD data."
+      },
+      {
         "title": "Installation",
-        "description": "This package is a complete merged Sticky image. Use the erase option when replacing another firmware."
+        "description": "Flash the complete merged image at 0x0 on reTerminal Sticky (32 MB flash). Use the erase option when replacing another firmware. After boot, check the device time, language and existing card records."
+      },
+      {
+        "title": "Personal records",
+        "description": "This firmware organizes personal pregnancy records. It does not diagnose conditions or replace professional medical advice."
       }
     ]
   }
