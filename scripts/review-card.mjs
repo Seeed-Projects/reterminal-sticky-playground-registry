@@ -2,6 +2,7 @@
 
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { extname, join, resolve } from 'node:path';
+import { isIP } from 'node:net';
 
 const MARKER = '<!-- review-card -->';
 const MODEL_EXTENSIONS = new Set(['.stl', '.3mf', '.step', '.stp', '.obj', '.f3d', '.ipt', '.sldprt']);
@@ -77,22 +78,38 @@ export function readFirmwareEntry(rootDir, id) {
 
 // Confirms a download or profile page answers, without failing the card when a host blocks CI.
 // 确认下载页或主页可以访问；主机屏蔽 CI 时不把结果算作失败。
-export async function checkUrl(url, { fetchImpl = globalThis.fetch, timeoutMs = 10_000 } = {}) {
+export async function checkUrl(url, { fetchImpl = globalThis.fetch, timeoutMs = 10_000, followRedirects = true } = {}) {
+  if (!followRedirects) {
+    try {
+      const destination = new URL(url);
+      if (destination.protocol !== 'https:' || destination.username || destination.password
+        || isIP(destination.hostname.replace(/^\[|\]$/g, '')) || !destination.hostname.includes('.')
+        || /\.(localhost|local|internal|test|invalid)$/i.test(destination.hostname)) {
+        return { url, state: 'broken', detail: 'Use a public HTTPS website without embedded credentials' };
+      }
+    } catch {
+      return { url, state: 'broken', detail: 'Use a valid public HTTPS website' };
+    }
+  }
   const attempt = async (method) => {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {
-      const response = await fetchImpl(url, { method, redirect: 'follow', signal: controller.signal });
-      return response.status;
+      return await fetchImpl(url, { method, redirect: followRedirects ? 'follow' : 'manual', signal: controller.signal });
     } finally {
       clearTimeout(timer);
     }
   };
 
   try {
-    let status = await attempt('HEAD');
+    let response = await attempt('HEAD');
+    let status = response.status;
     if (status === 403 || status === 405 || status === 404) {
-      status = await attempt('GET');
+      response = await attempt('GET');
+      status = response.status;
+    }
+    if (!followRedirects && status >= 300 && status < 400) {
+      return { url, state: 'unverified', detail: `HTTP ${status}; redirect to ${response.headers.get('location') || 'an unspecified URL'}; inspect the destination manually` };
     }
     if (status >= 200 && status < 400) return { url, state: 'ok', detail: `HTTP ${status}` };
     if (status === 403 || status === 429) return { url, state: 'unverified', detail: `HTTP ${status}, the host blocks automated checks` };
@@ -182,11 +199,32 @@ function assessRisk({ entries, secrets, modelFiles, linkChecks, reservedCatalogT
   if (reservedCatalogTouches.length > 0) reasons.push('an official or partner firmware entry changed');
   if (reasons.length > 0) return { level: 'needs a close look', reasons };
 
-  if (entries.firmwares.length > 0) reasons.push('firmware runs on the device and needs the hardware test record');
+  if (entries.firmwares.length > 0) reasons.push('a Sticky workflow needs its delivery and usage conditions reviewed');
   if (linkChecks.some((check) => check.state === 'broken')) reasons.push('a link did not answer');
   if (reasons.length > 0) return { level: 'normal review', reasons };
 
   return { level: 'quick review', reasons: ['card metadata and one photo only'] };
+}
+
+// Escapes contributor text for a Markdown review comment.
+// 将贡献者填写的文字转为审核评论中的普通文本。
+function reviewText(value) {
+  return String(value || '').replace(/[<>&|`\[\]\\"']/g, (character) => `&#${character.charCodeAt(0)};`).replace(/\r?\n/g, ' ');
+}
+
+export function collectReviewUrls(printableEntries, firmwareEntries) {
+  const urls = new Map();
+  for (const entry of printableEntries) {
+    if (entry.printable?.download?.url) urls.set(entry.printable.download.url, true);
+    if (entry.printable?.author?.url) urls.set(entry.printable.author.url, true);
+  }
+  for (const entry of firmwareEntries) {
+    if (entry.firmware?.mode !== 'external') continue;
+    for (const url of [entry.firmware.external?.url]) {
+      if (typeof url === 'string' && url.startsWith('https://')) urls.set(url, false);
+    }
+  }
+  return Array.from(urls, ([url, followRedirects]) => ({ url, followRedirects }));
 }
 
 function formatBytes(bytes) {
@@ -246,7 +284,7 @@ function printableSection(entry, { linkChecks, rawBaseUrl }) {
   return lines;
 }
 
-function firmwareSection(entry) {
+function firmwareSection(entry, rawBaseUrl, linkChecks) {
   if (entry.removed) {
     return [`### Firmware \`${entry.id}\` (removed)`, ''];
   }
@@ -257,10 +295,10 @@ function firmwareSection(entry) {
     '',
     '| Field | Value |',
     '| --- | --- |',
-    `| Name | ${firmware.name} |`,
-    `| Catalog | ${firmware.catalogSection || 'community'}${firmware.category ? ` / ${firmware.category}` : ''} |`,
-    `| Author | ${firmware.author?.name || '**not provided**'} |`,
-    `| Licence | ${firmware.source?.license || '**not provided**'} |`,
+    `| Name | ${reviewText(firmware.name)} |`,
+    `| Catalog | ${reviewText(firmware.catalogSection || 'community')}${firmware.category ? ` / ${reviewText(firmware.category)}` : ''} |`,
+    `| Author | ${reviewText(firmware.author?.name) || '**not provided**'} |`,
+    `| Licence | ${reviewText(firmware.source?.license) || '**not provided**'} |`,
     `| Source licence file | ${entry.hasSourceLicense ? 'present' : 'not applicable'} |`,
     '',
   ];
@@ -272,6 +310,31 @@ function firmwareSection(entry) {
       ...entry.versions.map((version) => `| ${version.version} | ${version.channel} | ${version.delivery} |`),
       '',
     );
+  }
+
+  if (firmware.mode === 'external') {
+    const submission = firmware.external?.submission || {};
+    let destinationHost = 'invalid URL';
+    try { destinationHost = new URL(firmware.external?.url).hostname; } catch {}
+    lines.push(
+      '#### External project application — maintainer review required',
+      '',
+      '| Field | Application |',
+      '| --- | --- |',
+      `| Destination | ${reviewText(firmware.external?.url)} |`,
+      `| Domain | ${reviewText(destinationHost)} |`,
+      `| Link check | ${reviewText(linkState(linkChecks, firmware.external?.url))} |`,
+      `| Reason a .bin cannot be supplied | ${reviewText(submission.hostingReason)} |`,
+      `| User workflow | ${reviewText(submission.userFlow)} |`,
+      `| Accounts, payments, permissions, and data | ${reviewText(submission.siteRequirements)} |`,
+      '',
+      'A maintainer verifies the external delivery need, destination workflow, and usage conditions. Link availability is a connectivity check. Site content and downloaded software require manual review.',
+      '',
+    );
+    if (rawBaseUrl && firmware.assets?.preview) {
+      const imagePath = firmware.assets.preview.split('/').map(encodeURIComponent).join('/');
+      lines.push(`<img src="${rawBaseUrl}/firmwares/${encodeURIComponent(entry.id)}/${imagePath}" alt="External project preview" width="320">`, '');
+    }
   }
 
   return lines;
@@ -322,7 +385,19 @@ export function buildReviewCard({
     lines.push(...printableSection(entry, { linkChecks, rawBaseUrl }));
   }
   for (const entry of firmwareEntries) {
-    lines.push(...firmwareSection(entry));
+    lines.push(...firmwareSection(entry, rawBaseUrl, linkChecks));
+    const base = baseFirmwareEntries.find((item) => item.id === entry.id);
+    const previousUrl = base?.firmware?.external?.url;
+    if (previousUrl && previousUrl !== entry.firmware?.external?.url) {
+      lines.push(
+        '#### External destination changed — renew maintainer review',
+        '',
+        `Previous destination: ${reviewText(previousUrl)}`,
+        '',
+        `Proposed destination: ${reviewText(entry.firmware?.external?.url) || 'external delivery removed'}`,
+        '',
+      );
+    }
   }
 
   if (secrets.length > 0) {
@@ -381,12 +456,8 @@ async function main() {
     ? entries.firmwares.map((id) => readFirmwareEntry(baseRootDir, id))
     : [];
 
-  const urls = new Set();
-  for (const entry of printableEntries) {
-    if (entry.printable?.download?.url) urls.add(entry.printable.download.url);
-    if (entry.printable?.author?.url) urls.add(entry.printable.author.url);
-  }
-  const linkChecks = await Promise.all(Array.from(urls).map((url) => checkUrl(url)));
+  const urls = collectReviewUrls(printableEntries, firmwareEntries);
+  const linkChecks = await Promise.all(urls.map(({ url, followRedirects }) => checkUrl(url, { followRedirects })));
 
   process.stdout.write(buildReviewCard({
     entries,

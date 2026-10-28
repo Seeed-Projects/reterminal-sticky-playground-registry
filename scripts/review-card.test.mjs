@@ -13,6 +13,7 @@ import {
   checkUrl,
   collectChangedEntries,
   collectReservedCatalogTouches,
+  collectReviewUrls,
   findModelFiles,
   isReservedCatalog,
   readFirmwareEntry,
@@ -153,6 +154,58 @@ test('finds credentials and model files in the diff', () => {
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
+});
+
+test('external review checks destinations without following redirects or fetching local addresses', async () => {
+  let fetchCount = 0;
+  const redirected = await checkUrl('https://example.com/tool', {
+    followRedirects: false,
+    fetchImpl: async (_url, options) => {
+      fetchCount += 1;
+      assert.equal(options.redirect, 'manual');
+      return new Response(null, { status: 302, headers: { location: 'https://other.example/tool' } });
+    },
+  });
+  assert.equal(redirected.state, 'unverified');
+  assert.match(redirected.detail, /other.example/);
+  assert.equal(fetchCount, 1);
+  for (const url of ['http://example.com', 'https://127.0.0.1/', 'https://[::1]/', 'https://intranet.local/', 'https://name:password@example.com/']) {
+    const result = await checkUrl(url, { followRedirects: false, fetchImpl: () => { throw new Error('Unexpected fetch'); } });
+    assert.equal(result.state, 'broken');
+  }
+});
+
+test('external review renders the application as text and checks the destination', () => {
+  const firmware = {
+    name: 'Example Tool', group: 'community', catalogSection: 'community', mode: 'external', category: 'tools',
+    author: { name: 'Example Author' }, source: { license: 'MIT' }, assets: { preview: 'assets/preview.jpg' },
+    external: {
+      url: 'https://example.com/tool',
+      submission: {
+        hostingReason: 'Converts documents rather than providing device firmware.',
+        userFlow: 'Convert, download, transfer, and read on Sticky.',
+        siteRequirements: '<script>alert(1)</script> | account information',
+      },
+    },
+  };
+  const firmwareEntries = [{ id: 'example-tool', firmware, versions: [], hasSourceLicense: false }];
+  assert.deepEqual(collectReviewUrls([], firmwareEntries), [
+    { url: 'https://example.com/tool', followRedirects: false },
+  ]);
+  const card = buildReviewCard({
+    entries: collectChangedEntries(['firmwares/example-tool/firmware.json']), firmwareEntries,
+    rawBaseUrl: 'https://raw.githubusercontent.com/example/registry/commit',
+    linkChecks: [{ url: firmware.external.url, state: 'ok', detail: 'HTTP 200' }],
+  });
+  for (const text of ['maintainer review required', 'example.com', 'Converts documents', 'Convert, download', 'width="320"']) assert.ok(card.includes(text));
+  assert.ok(!card.includes('<script>'));
+  assert.match(card, /&#60;script&#62;/);
+  const updatedCard = buildReviewCard({
+    entries: collectChangedEntries(['firmwares/example-tool/firmware.json']), firmwareEntries,
+    baseFirmwareEntries: [{ id: 'example-tool', firmware: { ...firmware, external: { ...firmware.external, url: 'https://old.example/tool' } } }],
+  });
+  assert.match(updatedCard, /External destination changed/);
+  assert.match(updatedCard, /old.example/);
 });
 
 test('renders a quick-review card for one printable design', () => {

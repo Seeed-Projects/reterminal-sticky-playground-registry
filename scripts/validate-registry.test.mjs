@@ -678,7 +678,7 @@ test('rejects a community contribution with local source but no build config', (
   assert.match(result.stderr, /build: is required when source\.path is provided/);
 });
 
-test('rejects a non-flash community catalog entry', () => {
+test('rejects a download-only community catalog entry', () => {
   const root = createRegistry();
   const integration = validBase('source-link-only', 'download');
   integration.catalogSection = 'community';
@@ -691,7 +691,83 @@ test('rejects a non-flash community catalog entry', () => {
   const result = runValidator(root);
 
   assert.equal(result.status, 1);
-  assert.match(result.stderr, /must be "flash" for the community catalog section/);
+  assert.match(result.stderr, /must be "flash" or "external" for the community catalog section/);
+});
+
+function externalCommunity() {
+  return {
+    ...validBase('external-community', 'external'),
+    catalogSection: 'community',
+    external: {
+      label: 'Visit project website',
+      url: 'https://example.com/sticky/setup',
+      description: 'Generate and install a device-specific image on the project website.',
+      submission: {
+        hostingReason: 'The installer generates an image with device-specific configuration.',
+        userFlow: 'Select Sticky, configure a dashboard, connect USB, install, and verify the display.',
+        siteRequirements: 'No account or payment. USB access is requested by the browser installer; settings stay local.',
+      },
+    },
+  };
+}
+
+test('accepts an external community entry with its review submission and no firmware package', () => {
+  const root = createRegistry();
+  writeIntegration(root, externalCommunity());
+  const result = runValidator(root);
+  assert.equal(result.status, 0, result.stderr);
+});
+
+test('requires the external submission, category and author and accepts short usage conditions', () => {
+  for (const field of ['hostingReason', 'userFlow', 'siteRequirements']) {
+    const root = createRegistry();
+    const integration = externalCommunity();
+    delete integration.external.submission[field];
+    writeIntegration(root, integration);
+    const result = runValidator(root);
+    assert.equal(result.status, 1);
+    assert.ok(result.stderr.includes(field));
+  }
+  for (const field of ['category', 'author']) {
+    const root = createRegistry();
+    const integration = externalCommunity();
+    delete integration[field];
+    writeIntegration(root, integration);
+    assert.equal(runValidator(root).status, 1);
+  }
+  const root = createRegistry();
+  const integration = externalCommunity();
+  integration.external.submission.siteRequirements = '无需';
+  writeIntegration(root, integration);
+  assert.equal(runValidator(root).status, 0);
+});
+
+test('rejects external entries with a missing submission or conflicting flash metadata', () => {
+  for (const conflict of ['submission', 'flash']) {
+    const root = createRegistry();
+    const integration = externalCommunity();
+    if (conflict === 'submission') delete integration.external.submission;
+    else integration.flash = { versions: [{ version: '1.0.0' }] };
+    writeIntegration(root, integration);
+    const result = runValidator(root);
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, conflict === 'submission' ? /external.submission/ : /cannot include the "flash" object/);
+  }
+});
+
+test('rejects private destinations, credentials, and empty external delivery reasons', () => {
+  for (const url of ['https://127.0.0.1/', 'https://[::1]/', 'https://name:password@example.com/', 'https://intranet.local/']) {
+    const root = createRegistry();
+    const integration = externalCommunity();
+    integration.external.url = url;
+    writeIntegration(root, integration);
+    assert.match(runValidator(root).stderr, /public website hostname/);
+  }
+  const root = createRegistry();
+  const integration = externalCommunity();
+  integration.external.submission.hostingReason = ' '.repeat(40);
+  writeIntegration(root, integration);
+  assert.match(runValidator(root).stderr, /hostingReason/);
 });
 
 test('reports a directory and integration ID mismatch', () => {

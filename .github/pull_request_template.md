@@ -51,6 +51,30 @@ Complete the fields and sections below for any **Firmware** contribution type.
 
 - [ ] Source contribution built by GitHub Actions
 - [ ] Firmware-only package
+- [ ] External community project (complete the application below)
+
+### External community project application
+
+Complete this section for `mode: external`. The full requirements are in
+[the external project guide](https://github.com/Seeed-Projects/reterminal-sticky-playground-registry/blob/main/docs/community-external-projects.md).
+Copy the concrete application into `external.submission` so it stays with the entry.
+
+- Technical or delivery reason a usable `.bin` cannot be supplied; explain why the external website is necessary:
+- Exact destination URL:
+- Full user workflow, from opening the website to a verified result on Sticky:
+- Required firmware, accessories, and supported device:
+- Real Sticky preview:
+- Account requirements and charges, including optional payments:
+- Browser/device permissions, required software, data collected or transmitted, and any third-party services:
+- Maintainer contact and support URL:
+
+- [ ] The destination provides the described Sticky function.
+- [ ] The reason for external delivery is specific and supported by the project workflow.
+- [ ] The destination, redirects, downloads, accounts, costs, permissions, and data handling were inspected by a maintainer before merge.
+- [ ] Future destination or service changes will be submitted in a new PR for review.
+
+For an external project, complete the common and external application sections.
+Package/build and physical-device test checklists apply to `mode: flash`.
 
 ### What this firmware provides
 

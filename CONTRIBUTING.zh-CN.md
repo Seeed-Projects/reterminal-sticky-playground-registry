@@ -32,7 +32,10 @@
 
 - **固件**贡献需要提交可编译的 ESP-IDF、PlatformIO 或 Arduino 源码（由 GitHub
   Actions 编译），或者一个带 manifest 的、经过验证的 `.bin` 固件包，并在真机上
-  测试后才能审核。第一次提交预计一到两小时。
+  测试后才能审核。第一次提交预计一到两小时。使用流程在外部网站完成的 Sticky
+  配套项目，可以申请[社区外链项目](docs/community-external-projects.zh-CN.md)。
+  PR 必须详细说明无法提供 `.bin` 的原因、完整使用流程，以及目标网站的
+  账号、费用、权限和数据处理方式，交由维护者审核后发布。
 - **打印件**贡献只是一张卡片：一个 JSON 文件、一张照片、一份简短 README。模型文件
   留在你自己的 Printables / MakerWorld / Thingiverse / GrabCAD / GitHub 页面。
   预计 15–30 分钟。
@@ -49,6 +52,10 @@
 上的 **用表单提交** 接收编译好的 `.bin`（一份合并镜像，或带偏移的多个文件）
 和卡片信息。需要 GitHub Actions 编译的源码贡献，仍走
 [contributing-firmware.zh-CN.md](docs/contributing-firmware.zh-CN.md) 里的手动流程。
+
+外部工具或安装平台在同一表单中选择「外链项目」，填写
+[外链申请资料](docs/community-external-projects.zh-CN.md)并上传真实 Sticky 照片。
+外链提交会生成社区草稿条目和 PR，由维护者核实后批准发布。
 
 本页只讲两类贡献共同的部分。读完一遍，再去看你那一类的详细指南。
 
@@ -274,8 +281,8 @@ Registry validation failed with 2 error(s):
 1. 合并 Registry pull request。
 2. 源码模式固件需等待 Registry `main` 的工作流发布固件 Release。
 3. 在 Sticky 网站仓库更新锁定的 Registry 提交。
-4. 本地构建网站，确认新卡片（固件还包括烧录页）正确生成。
-5. 固件从本地页面烧录到真机验收。
+4. 本地构建网站，确认卡片及所选入口：`flash` 的烧录页或 `external` 的目标网站。
+5. 在真实 Sticky 上验收安装或配套工具的完整使用流程。
 6. 合并到 Sticky 网站 `main` 并部署。
 
 第 6 步完成后，你的卡片出现在 <https://www.seeedstudio.com/sticky/playground/>。

@@ -2,7 +2,9 @@
 
 This guide covers firmware for the **Firmware** page of the Sticky Playground.
 A completed community firmware contribution becomes a card on that page and
-opens a Seeed-hosted browser flashing page. To share a 3D printable case or
+opens a Seeed-hosted browser flashing page. A Sticky companion tool or an installation
+workflow hosted by its author can apply as a [community external project](community-external-projects.md).
+To share a 3D printable case or
 stand instead, follow [Contributing a 3D printable design](contributing-printables.md).
 
 Contributors may submit either a complete buildable source project, or a
@@ -29,6 +31,11 @@ below. Read on when you prefer to prepare the files yourself, when you update a
 firmware that is already listed, or when you want to understand exactly what
 the form produces.
 
+For a reviewed external tool or installer, select **External project** in the
+same form. Provide the [external application details](community-external-projects.md),
+and a real Sticky photo. The service opens a PR with a
+community draft entry for maintainer review.
+
 For the Chinese guide, see [contributing-firmware.zh-CN.md](contributing-firmware.zh-CN.md).
 Shared review and release steps live in [CONTRIBUTING.md](../CONTRIBUTING.md).
 
@@ -53,7 +60,7 @@ Shared review and release steps live in [CONTRIBUTING.md](../CONTRIBUTING.md).
 
 ## Contribution result
 
-A published community contribution provides this user flow:
+A published `mode: flash` community contribution provides this user flow:
 
 1. The user opens Sticky Playground.
 2. The user selects the community firmware card.
@@ -64,6 +71,8 @@ A published community contribution provides this user flow:
 The Registry stores the installable package and either the buildable source or
 its upstream source reference. The Sticky website owns the card layout, browser
 serial connection, flashing interface, domain, and production deployment.
+For `mode: external`, the card opens the reviewed project website and the
+user completes the [documented external workflow](community-external-projects.md).
 
 ## Required pull request contents
 
@@ -158,6 +167,10 @@ Complete the files in this order:
 
 Normal third-party submissions use `"group": "community"`,
 `"catalogSection": "community"`, and `"mode": "flash"`.
+For a reviewed external workflow, use `"mode": "external"` and complete the
+[external project application](community-external-projects.md). That route submits
+card metadata, a real Sticky preview, and the application details through the website
+form or a manual PR.
 
 ```json
 {
@@ -239,7 +252,7 @@ entries are coordinated with Seeed.
 | `group` | string | Yes | `official`, `partner`, `community` | `community` |
 | `catalogSection` | string | Yes | `official`, `platform`, `community`, `draft` | `community`. Cards in `draft` are not published |
 | `category` | string | Required for `community` | `ereader`, `productivity`, `writing`, `personal`, `health`, `weather`, `finance`, `tools`, `fun`, `smart-home`, `other` | The filter that shows your card; see the table below |
-| `mode` | string | Yes | `flash`, `external`, `template`, `download` | `flash` (browser flashing). The other modes are reserved for coordinated entries |
+| `mode` | string | Yes | `flash`, `external`, `template`, `download` | `flash` for browser installation; `external` for a reviewed external community workflow. Other modes are coordinated by maintainers |
 | `status` | string | Yes | `experimental`, `beta`, `stable` | Project maturity; shown as a badge |
 | `summary` | string | Yes | 1–140 chars | One sentence under the title |
 | `description` | string | Yes | 1–800 chars | Two or three sentences: what it does, what services it needs, what users should expect |
@@ -607,7 +620,7 @@ The validator checks:
 - local manifest structure;
 - firmware file existence, byte size, and SHA-256;
 - non-overlapping flash address ranges;
-- the direct-flash requirements for community catalog entries.
+- the selected community delivery route: a complete flash package or external application details.
 - the repository-backed package path for the newest Sticky official firmware.
 
 For source contributions, manifest and firmware-file checks run after GitHub

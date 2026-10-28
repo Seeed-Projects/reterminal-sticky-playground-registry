@@ -4,6 +4,9 @@
 通过审核后，会在该页面生成一张固件卡片，并进入由 Seeed 网站提供的浏览器烧录页面。
 如果你想分享 3D 打印外壳或支架，请阅读[贡献 3D 打印设计](contributing-printables.zh-CN.md)。
 
+在作者网站完成使用流程的 Sticky 配套工具或安装平台，可申请[社区外链项目](community-external-projects.zh-CN.md)。
+这条路径通过官网表单或手动 PR 提交卡片资料、实拍图和完整申请说明，由维护者审核项目与目标网站。
+
 贡献者可以选择提交完整可编译源码，也可以只提交经过验证的固件包并提供上游源码
 链接。源码模式由 GitHub Actions 自动编译并整理固件。两种方式都需要项目信息、展示
 图片和实机测试记录。Sticky 私有网站只读取经过审核并锁定版本的公开仓库内容，再生成
@@ -21,6 +24,10 @@ Playground 上已有固件包最常见的偏移（`0x0`、`0x8000`、`0xE000`、
 
 需要 GitHub Actions 编译的源码贡献，仍走下面的手动流程。如果你更习惯自己准备文件、
 要更新已经上线的固件，或想看清表单最终写出哪些文件，请继续往下读。
+
+外部工具或安装平台可以在同一个表单中选择「外链项目」，填写
+[完整申请说明](community-external-projects.zh-CN.md)，上传真实 Sticky 照片。
+提交服务会生成待维护者审核的社区草稿条目和 PR。
 
 英文指南请查看 [contributing-firmware.md](contributing-firmware.md)。
 两类贡献共用的审核与发布流程见 [CONTRIBUTING.zh-CN.md](../CONTRIBUTING.zh-CN.md)。
@@ -46,7 +53,7 @@ Playground 上已有固件包最常见的偏移（`0x0`、`0x8000`、`0xE000`、
 
 ## 贡献完成后，用户会得到什么
 
-一份正式发布的社区固件会形成下面这条用户流程：
+一份正式发布的 `mode: flash` 社区固件会形成下面这条用户流程：
 
 1. 用户打开 Sticky Playground。
 2. 用户点击社区固件卡片。
@@ -58,6 +65,7 @@ Playground 上已有固件包最常见的偏移（`0x0`、`0x8000`、`0xE000`、
 样式、USB 串口连接、烧录界面、域名和正式部署。
 
 一句话总结：贡献者交付完整固件，用户留在 Sticky 网站里直接烧录。
+`mode: external` 卡片则打开审核后的项目网站，用户按[外链项目指南](community-external-projects.zh-CN.md)中记录的流程使用工具。
 
 ## PR 必须提供的文件
 
@@ -154,6 +162,7 @@ cp -R firmwares/_template firmwares/my-firmware
 
 普通第三方贡献统一使用：`"group": "community"`、
 `"catalogSection": "community"`、`"mode": "flash"`。
+经过审核的外部使用流程使用 `"mode": "external"`，并按照[社区外链申请指南](community-external-projects.zh-CN.md)填写资料。
 
 ```json
 {
@@ -234,7 +243,7 @@ cp -R firmwares/_template firmwares/my-firmware
 | `group` | 字符串 | 是 | `official`、`partner`、`community` | `community` |
 | `catalogSection` | 字符串 | 是 | `official`、`platform`、`community`、`draft` | `community`。`draft` 的卡片不会发布 |
 | `category` | 字符串 | `community` 必填 | `ereader`、`productivity`、`writing`、`personal`、`health`、`weather`、`finance`、`tools`、`fun`、`smart-home`、`other` | 决定卡片出现在哪个筛选项下，见下表 |
-| `mode` | 字符串 | 是 | `flash`、`external`、`template`、`download` | `flash`（浏览器烧录）。其余模式保留给协调维护的条目 |
+| `mode` | 字符串 | 是 | `flash`、`external`、`template`、`download` | `flash` 用于站内烧录，`external` 用于经过审核的社区外部使用流程；其他模式由维护者协调 |
 | `status` | 字符串 | 是 | `experimental`、`beta`、`stable` | 项目成熟度，显示为徽标 |
 | `summary` | 字符串 | 是 | 1–140 字符 | 标题下方的一句话 |
 | `description` | 字符串 | 是 | 1–800 字符 | 两三句话：做什么、需要哪些服务、用户会得到什么 |
@@ -587,7 +596,7 @@ npm run validate
 - manifest 结构正确；
 - 每个已提交固件文件存在，大小和 SHA-256 一致；
 - 不同固件分区的烧录地址没有重叠；
-- 社区条目满足本站直接烧录的全部要求。
+- 社区条目满足所选交付路径的要求：完整刷写包或外链申请资料。
 - Sticky 最新官方固件使用仓库内的标准版本目录。
 
 一句话总结：这一步负责提前发现“少文件、固件不匹配、烧录地址错误”等问题。
