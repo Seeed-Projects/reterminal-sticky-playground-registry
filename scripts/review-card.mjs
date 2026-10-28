@@ -199,7 +199,7 @@ function assessRisk({ entries, secrets, modelFiles, linkChecks, reservedCatalogT
   if (reservedCatalogTouches.length > 0) reasons.push('an official or partner firmware entry changed');
   if (reasons.length > 0) return { level: 'needs a close look', reasons };
 
-  if (entries.firmwares.length > 0) reasons.push('a Sticky workflow needs its device evidence and delivery review');
+  if (entries.firmwares.length > 0) reasons.push('a Sticky workflow needs its delivery and usage conditions reviewed');
   if (linkChecks.some((check) => check.state === 'broken')) reasons.push('a link did not answer');
   if (reasons.length > 0) return { level: 'normal review', reasons };
 
