@@ -7,7 +7,7 @@ For Sticky with CrossPoint Reader: convert comics and PDFs to XTC in your browse
 - License: MIT
 - Destination: https://xtcjs.app/
 - Destination domain: xtcjs.app
-- Status: draft, awaiting maintainer review
+- Catalog: Community Firmwares / Tools
 
 ## Why a usable .bin cannot be supplied
 
