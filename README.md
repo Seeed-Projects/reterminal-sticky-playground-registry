@@ -5,7 +5,7 @@ two kinds of content, published on two pages of the Sticky website:
 
 | Content | Website page | Directory | Guide |
 |---|---|---|---|
-| Firmware users flash from the browser | [Firmware](https://www.seeedstudio.com/sticky/playground/firmware/) | `firmwares/` | [Contributing firmware](docs/contributing-firmware.md) |
+| Firmware and reviewed Sticky companion projects | [Firmware](https://www.seeedstudio.com/sticky/playground/firmware/) | `firmwares/` | [Contributing firmware](docs/contributing-firmware.md) |
 | Community 3D printable cases, stands, mounts, and accessories | [3D Printables](https://www.seeedstudio.com/sticky/playground/3d-printables/) | `printables/` | [Contributing a 3D printable design](docs/contributing-printables.md) |
 
 Start with [CONTRIBUTING.md](CONTRIBUTING.md) ([中文](CONTRIBUTING.zh-CN.md)),
@@ -34,8 +34,9 @@ Contributor PR
   -> Sticky website deployment
 ```
 
-Firmware cards are direct-flash entries: users stay on the Sticky website and
-install through the browser. Printable cards store metadata and one preview
+Firmware cards offer browser installation or a reviewed external project workflow.
+External community projects follow the [application and review requirements](docs/community-external-projects.md).
+Printable cards store metadata and one preview
 photo here and link users to the author's download page.
 
 Partner firmware is coordinated with the platform owner and uses official

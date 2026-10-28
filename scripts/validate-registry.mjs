@@ -13,6 +13,7 @@ import {
 } from 'node:fs';
 import { basename, dirname, extname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isIP } from 'node:net';
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const REPOSITORY_ROOT = process.env.REGISTRY_ROOT
@@ -491,15 +492,33 @@ function validateInstructions(value, scope) {
   });
 }
 
+function validateExternalUrl(value, scope) {
+  if (!validateHttpsUrl(value, scope)) return;
+  const url = new URL(value);
+  if (url.username || url.password || isIP(url.hostname.replace(/^\[|\]$/g, ''))
+    || !url.hostname.includes('.') || /\.(localhost|local|internal|test|invalid)$/i.test(url.hostname)) {
+    addError(scope, 'must identify a public website hostname without embedded credentials');
+  }
+}
+
 function validateExternalMode(value, scope) {
-  const allowedKeys = new Set(['label', 'url', 'description']);
+  const allowedKeys = new Set(['label', 'url', 'description', 'submission']);
   if (!validateObjectKeys(value, ['label', 'url', 'description'], allowedKeys, scope)) {
     return;
   }
 
   validateString(value.label, `${scope}.label`, { max: 60 });
-  validateHttpsUrl(value.url, `${scope}.url`);
+  validateExternalUrl(value.url, `${scope}.url`);
   validateString(value.description, `${scope}.description`, { max: 400 });
+  if (value.submission !== undefined) {
+    const fields = ['hostingReason', 'userFlow', 'siteRequirements'];
+    if (validateObjectKeys(value.submission, fields, new Set(fields), `${scope}.submission`)) {
+      for (const field of fields) {
+        const answer = value.submission[field];
+        validateString(typeof answer === 'string' ? answer.trim() : answer, `${scope}.submission.${field}`, { min: field === 'siteRequirements' ? 1 : 20, max: 2000 });
+      }
+    }
+  }
 }
 
 function validateTemplateMode(value, integrationDir, scope) {
@@ -848,13 +867,22 @@ function validateFirmware(integrationDir, directoryName, seenIds) {
     if (integration.group !== 'community') {
       addError(`${scope}.group`, 'must be "community" for the community catalog section');
     }
-    if (integration.mode !== 'flash') {
-      addError(`${scope}.mode`, 'must be "flash" for the community catalog section');
+    if (!['flash', 'external'].includes(integration.mode)) {
+      addError(`${scope}.mode`, 'must be "flash" or "external" for the community catalog section');
     }
     if (integration.category === undefined) {
       addError(`${scope}.category`, 'is required for community firmware entries');
     }
-    validateDirectFlashPackage(integration, integrationDir, scope);
+    if (integration.mode === 'flash') {
+      validateDirectFlashPackage(integration, integrationDir, scope);
+    } else if (integration.mode === 'external') {
+      if (!isObject(integration.external?.submission)) {
+        addError(`${scope}.external.submission`, 'is required for community external entries');
+      }
+      if (integration.source?.path !== undefined || integration.build !== undefined) {
+        addError(scope, 'external entries use source.url and an external installation workflow');
+      }
+    }
   }
 
   if (integration.group === 'partner') {

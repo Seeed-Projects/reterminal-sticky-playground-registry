@@ -299,6 +299,16 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 400
+        },
+        "submission": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["hostingReason", "userFlow", "siteRequirements"],
+          "properties": {
+            "hostingReason": { "$ref": "#/$defs/submissionText" },
+            "userFlow": { "$ref": "#/$defs/submissionText" },
+            "siteRequirements": { "type": "string", "minLength": 1, "maxLength": 2000, "pattern": "\\S" }
+          }
         }
       }
     },
@@ -428,9 +438,6 @@
     {
       "if": {
         "properties": {
-          "mode": {
-            "const": "flash"
-          },
           "catalogSection": {
             "const": "community"
           }
@@ -443,7 +450,27 @@
       "then": {
         "required": [
           "category"
-        ]
+        ],
+        "properties": {
+          "group": { "const": "community" },
+          "mode": { "enum": ["flash", "external"] }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "catalogSection": { "const": "community" },
+          "mode": { "const": "external" }
+        },
+        "required": ["catalogSection", "mode"]
+      },
+      "then": {
+        "properties": {
+          "external": { "required": ["submission"] },
+          "source": { "not": { "required": ["path"] } }
+        },
+        "not": { "required": ["build"] }
       }
     },
     {
@@ -580,6 +607,12 @@
     }
   ],
   "$defs": {
+    "submissionText": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 2000,
+      "pattern": "\\S"
+    },
     "httpsUrl": {
       "type": "string",
       "format": "uri",

@@ -36,7 +36,11 @@ file, template, and detailed guide.
 - A **firmware** contribution ships either buildable ESP-IDF, PlatformIO, or
   Arduino source that GitHub Actions compiles, or a verified `.bin` package with
   a manifest. It needs a physical-device test before review. Expect to spend an
-  hour or two on the first submission.
+  hour or two on the first submission. Projects whose useful Sticky workflow runs
+  on an external website can apply through the [external community project route](docs/community-external-projects.md).
+  The PR explains why a `.bin` cannot be supplied, the complete Sticky workflow,
+  and the website's accounts, costs, permissions, and data handling. Maintainers
+  review both the project and its destination before publication.
 - A **printable** contribution is a card: one JSON file, one photo, one short
   README. The model files stay on your Printables / MakerWorld / Thingiverse /
   GrabCAD / GitHub page. Expect 15–30 minutes.
@@ -49,10 +53,13 @@ and no JSON, and it takes about five minutes. The form links you to the pull
 request it created so you can follow the review. Use the manual route below when
 you prefer working in git, or when you update a design that is already listed.
 
-**Firmware-only packages have the same shortcut.** The **Submit with the form**
+**Firmware packages and external projects have the same shortcut.** The **Submit with the form**
 button on the [Firmware page](https://www.seeedstudio.com/sticky/playground/firmware/)
 accepts a compiled `.bin` (one merged image, or separate files with offsets)
-plus the card details. Source contributions that GitHub Actions compiles still
+plus the card details. Choose **External project** for a tool or installer hosted
+by its author, and complete the [external application](docs/community-external-projects.md).
+External submissions become community drafts pending maintainer review.
+Source contributions that GitHub Actions compiles still
 use the manual route in [contributing-firmware.md](docs/contributing-firmware.md).
 
 This page covers everything the two kinds have in common. Read it once, then
@@ -300,9 +307,9 @@ Registry commit, so maintainers release in batches:
 2. For source-built firmware, wait for the Registry `main` workflow to publish
    the firmware Release.
 3. Update the pinned Registry commit in the Sticky website repository.
-4. Build the website locally and confirm the new card (and flashing page, for
-   firmware).
-5. For firmware, flash it from the local page to a physical device.
+4. Build the website locally and confirm the new card and the flashing page for
+   `mode: flash`, or the reviewed destination for `mode: external`.
+5. Verify the selected installation or companion-tool workflow on a physical Sticky.
 6. Merge into the Sticky website `main` and deploy.
 
 Your card appears on <https://www.seeedstudio.com/sticky/playground/> after
