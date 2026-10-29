@@ -7,8 +7,8 @@
   "category": "productivity",
   "mode": "flash",
   "status": "stable",
-  "summary": "Ultra-low-power digital signage client with 8MB PSRAM caching, multi-zone layouts, System Menu, and captive portal.",
-  "description": "ScreenTinker turns your reTerminal Sticky into an ultra-low-power, wireless digital signage display. Features direct 1-bit SSD1677 bitstream streaming, 8MB PSRAM in-memory frame cache for instant button browsing, multi-zone layout rendering, interactive on-screen System Menu (Status & Info diagnostics, Wi-Fi TX Power toggle, Language switch), hardware power-off latch release, shutdown screen with scannable QR Code, adaptive deep sleep (~15 µA) with RTC hardware button interrupts, and smartphone Captive Portal.",
+  "summary": "Ultra-low-power digital signage client with capacitive touch menu navigation, 8MB PSRAM caching, telemetry, OTA updates, and captive portal.",
+  "description": "ScreenTinker turns your reTerminal Sticky into an ultra-low-power, wireless digital signage display. Features direct 1-bit and Gray4 e-paper rendering, 8MB PSRAM in-memory frame cache, capacitive touchscreen navigation for System Menu and Status screens, battery charging via TI BQ25616, hardware power-off latch release, shutdown screen with scannable QR Code, adaptive deep sleep (~15 µA) with RTC hardware button interrupts, dual-partition OTA updates with rollback protection, SHT40 environmental & BQ27220 fuel gauge telemetry, and smartphone Captive Portal.",
   "author": {
     "name": "René Bohne",
     "url": "https://github.com/renebohne"
@@ -46,6 +46,11 @@
   "flash": {
     "versions": [
       {
+        "version": "1.3.1",
+        "channel": "stable",
+        "manifestPath": "firmware/1.3.1/manifest.json"
+      },
+      {
         "version": "1.1.0",
         "channel": "stable",
         "manifestPath": "firmware/1.1.0/manifest.json"
@@ -61,8 +66,8 @@
         "description": "After flashing, connect your smartphone to the 'ScreenTinker-Setup' Wi-Fi hotspot to configure Wi-Fi, Server URL, and Layout Mode via the popup setup portal, or use tools/sticky-installer.html via USB with WebSerial Config Protocol (WSCP) v1.0."
       },
       {
-        "title": "Interactive System Menu & Wi-Fi Power",
-        "description": "Hold the OK button for 1.5 seconds to open the on-screen System Menu (Status & Info, Wi-Fi TX Power level, Language EN/DE, Unpair Device, Power Off, Factory Reset). Navigate with UP/DOWN and confirm with OK."
+        "title": "Interactive System Menu & Capacitive Touch",
+        "description": "Hold the OK button for 1.5 seconds to open the on-screen System Menu (Status & Info, Wi-Fi TX Power level, Language EN/DE, Unpair Device, Power Off, Factory Reset). Navigate using the physical UP/DOWN/OK buttons or capacitive touchscreen tap navigation."
       },
       {
         "title": "6-Digit Pairing Code",
