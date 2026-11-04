@@ -46,9 +46,9 @@
   "flash": {
     "versions": [
       {
-        "version": "1.45.0",
+        "version": "1.62.3",
         "channel": "stable",
-        "manifestPath": "firmware/1.45.0/manifest.json"
+        "manifestPath": "firmware/1.62.3/manifest.json"
       }
     ],
     "notes": [

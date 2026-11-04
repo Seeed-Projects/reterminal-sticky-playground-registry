@@ -28,38 +28,54 @@ frame over Wi-Fi as a 4-level grayscale buffer, paints it and sleeps again.
 A Tesserae server on the local network is required. Install it with Docker or
 the Home Assistant App: <https://docs.tesserae.ink/install/server/>.
 
-## New since 1.35.0
+## New since 1.45.0
 
-- Touch wake has a gesture option (1.44.0). With it, the touch controller
-  sits in its low-power gesture mode during deep sleep instead of scanning,
-  and a double tap or a swipe wakes the Sticky. Tap wake stays the default.
-- Setup over USB (1.43.0). The browser flasher at tesserae.ink/flash can set
-  Wi-Fi and the server address right after flashing, with no hotspot step.
-  The setup hotspot is still there and gains a Cloud tab beside Local and
-  Relay.
-- Lower sleep current (1.40.0, 1.42.0). The microSD slot power stays off
-  through deep sleep, with the pin pull-ups switched off before each hold.
-- The server can ask for the device log and is told about failed paints,
-  brownouts and crashes on the next wake (1.41.0). A failed paint is retried
-  on the next wake instead of being skipped.
-- Touch buttons bound to a Home Assistant entity show its on/off state, and
-  switches confirm their new state within a second or two of a tap (1.38.0,
-  1.39.0).
-- The logo splash after a cold boot is always replaced by the dashboard on
-  the next poll (1.37.0).
+- Touch off now powers the digitiser down (1.57.0). With touch disabled the
+  GT911 used to stay on its rail in its last mode through every sleep, at
+  about 2.5 mA average; it is now switched off, so a Sticky with touch off
+  sleeps as low as one that never had it.
+- Wi-Fi names in Chinese and other non-Latin scripts work in the setup
+  portal (1.62.2), and a network picked from the portal's list is joined by
+  its exact broadcast bytes, so a router that broadcasts a GBK name can be
+  joined.
+- A set-up Sticky waiting out a Wi-Fi outage no longer reopens the setup
+  hotspot on every retry (1.51.0). The portal opens once after about 12
+  minutes of retries; if it expires unused, the panel paints a "Wi-Fi
+  unavailable" screen once and retries the stored network from deep sleep
+  every 12 minutes (30 minutes after about two hours).
+- Bluetooth setup from the setup portal works on the Sticky (1.53.0). The
+  Wi-Fi, Bluetooth and lwIP buffers moved to PSRAM, leaving about 90 KB of
+  internal RAM free with the portal up, which also stops the portal splash
+  failing to paint.
+- Tapping a device-drawn control to wake the Sticky no longer erases the
+  other controls (1.46.0). The wake fetches the full frame instead of
+  repainting a blank buffer, and taps in the linger window animate again.
+- microSD cards that refuse CMD59 or time out reading the SD status register
+  now mount instead of being reported absent (1.51.0).
+- Serial setup gained a `bootloader` command (1.59.0): the Sticky restarts
+  into the ROM download mode so esptool can flash it without holding BOOT.
+- The boot and setup splashes show the new Tesserae mark (1.55.0), and the
+  cold-boot splash paints before the Wi-Fi driver starts (1.56.0).
+
+The other releases in this range add boards that do not share the Sticky
+build (Inkplate 13SPECTRA, CrowPanel 5.79", epdiy v7, Huessen 13.3", M5Stack
+PaperDIY, LILYGO T5 S3 Pro, Waveshare RLCD 4.2) and fix the M5Paper's battery
+behaviour.
 
 ## Package origin
 
-Version 1.45.0 was built by the tesserae-device-firmware GitHub Actions
+Version 1.62.3 was built by the tesserae-device-firmware GitHub Actions
 release pipeline from tag
-[`v1.45.0`](https://github.com/dmellok/tesserae-device-firmware/releases/tag/v1.45.0)
-(commit `fab26cb70188cf633492bda43eac3850220d8770`), PlatformIO environment
+[`v1.62.3`](https://github.com/dmellok/tesserae-device-firmware/releases/tag/v1.62.3)
+(commit `8368b78d11410506415f17f31080e47e9913d75f`), PlatformIO environment
 `seeed-reterminal-sticky`, ESP-IDF via PlatformIO `espressif32`. The four
-files under `firmware/1.45.0/` are byte-identical to the images the pipeline
+files under `firmware/1.62.3/` are byte-identical to the images the pipeline
 publishes for the tesserae.ink browser flasher
-(`https://tesserae.ink/firmware/seeed-reterminal-sticky/v1.45.0/`), and the
-SHA-256 values in `manifest.json` match that catalog. The firmware is
-distributed under the upstream AGPL-3.0 licence.
+(`https://tesserae.ink/firmware/seeed-reterminal-sticky/v1.62.3/`), and the
+SHA-256 values in `manifest.json` match that catalog. `partitions.bin` and
+`ota_data_initial.bin` are byte-identical to the 1.45.0 and 1.35.0 packages;
+`bootloader.bin` is a new image. The firmware is distributed under the
+upstream AGPL-3.0 licence.
 
 | File | Offset | Purpose |
 |---|---|---|
@@ -86,14 +102,15 @@ live on the device card in the server UI.
 
 ## Physical-device test record
 
-- Device: Seeed reTerminal Sticky (production unit), October 2026
-- Installation: over the air from a Tesserae server, as most Sticky users
-  will receive it. The application image is the `firmware.bin` committed
-  here (same SHA-256). OTA does not rewrite the bootloader or partition
-  table; `partitions.bin` is unchanged from 1.35.0, whose full USB package
-  was written and verified on this unit
-- Result: booted 1.45.0 and ran its normal cycle (Wi-Fi, status report to the
-  server, dashboard paints, deep sleep and wake) with no issues
+- Device: Seeed reTerminal Sticky (production unit)
+- Status: pending. The 1.62.3 package has not yet been installed on this
+  unit; this record will be updated with the result before review. The most
+  recent build run on it is 1.53.0 (a release-environment build of the same
+  tree, 2026-10-23: boot, Wi-Fi, the setup portal with Bluetooth setup,
+  dashboard paints, deep sleep and wake).
+- `partitions.bin` and `ota_data_initial.bin` are byte-identical to the
+  1.35.0 package, whose full USB write at `0x0`, `0x8000`, `0x10000` and
+  `0x20000` was verified on this unit (PR #66).
 
 Project source, documentation and support are provided by the
 [tesserae-device-firmware repository](https://github.com/dmellok/tesserae-device-firmware),
