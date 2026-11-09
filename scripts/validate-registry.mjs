@@ -889,10 +889,19 @@ function validateFirmware(integrationDir, directoryName, seenIds) {
     if (integration.catalogSection !== 'platform') {
       addError(`${scope}.catalogSection`, 'must be "platform" for partner firmware');
     }
-    if (integration.mode !== 'flash') {
-      addError(`${scope}.mode`, 'must be "flash" for partner firmware');
+    if (!['flash', 'external'].includes(integration.mode)) {
+      addError(`${scope}.mode`, 'must be "flash" or "external" for partner firmware');
     }
-    validateDirectFlashPackage(integration, integrationDir, scope);
+    if (integration.mode === 'flash') {
+      validateDirectFlashPackage(integration, integrationDir, scope);
+    } else if (integration.mode === 'external') {
+      if (!isObject(integration.external?.submission)) {
+        addError(`${scope}.external.submission`, 'is required for partner external entries');
+      }
+      if (integration.source?.path !== undefined || integration.build !== undefined) {
+        addError(scope, 'external entries use source.url and an external installation workflow');
+      }
+    }
   }
 
   if (integration.id === 'sticky-factory') {

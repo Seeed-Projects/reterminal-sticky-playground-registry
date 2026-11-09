@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "id": "solar-os",
+  "name": "SolarOS",
+  "group": "partner",
+  "catalogSection": "platform",
+  "mode": "external",
+  "status": "stable",
+  "summary": "Turn reTerminal Sticky into a pocket computer with SolarOS: a terminal, Python and Lua scripting, and community applications.",
+  "description": "Turn your reTerminal Sticky into a pocket computer with SolarOS: a powerful terminal, Python and Lua scripting, and ready-to-run community applications.",
+  "origin": {
+    "name": "SolarOS",
+    "url": "https://solar-os.eu/"
+  },
+  "source": {
+    "url": "https://github.com/nilseuropa/solar_os",
+    "license": "Apache-2.0"
+  },
+  "support": {
+    "url": "https://github.com/nilseuropa/solar_os/issues"
+  },
+  "documentationUrl": "https://solar-os.eu/docs/manual/overview.html",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Tested on reTerminal Sticky by the Seeed contributor. The official external installer uses board seeed_reterminal_sticky, full flavor and OTA layout. Installation erases internal flash."
+  },
+  "assets": {
+    "logo": "assets/logo.jpg",
+    "preview": "assets/logo.jpg",
+    "previewAlt": "SolarOS logo"
+  },
+  "tags": [
+    "terminal",
+    "python",
+    "lua",
+    "apps"
+  ],
+  "external": {
+    "label": "Flash",
+    "url": "https://solar-os.eu/flasher.html?board=seeed_reterminal_sticky&flavor=full&layout=ota",
+    "description": "Install SolarOS using the official browser flasher, preselected for reTerminal Sticky, full flavor and OTA layout. Installation erases internal flash.",
+    "submission": {
+      "hostingReason": "Seeed-coordinated partner entry using the maintained SolarOS browser flasher. Upstream supplies firmware images; this entry deliberately links to its board, flavor and OTA layout selection rather than mirroring a fixed binary package in the Registry.",
+      "userFlow": "Back up device data, connect reTerminal Sticky with a USB data cable, open the linked flasher, verify board seeed_reterminal_sticky, flavor full and layout ota, prepare the image, accept the full-device erase warning, grant serial-port access and flash. After reboot, follow the manual to open the terminal, run applications and try Python or Lua. The Seeed contributor confirmed that this workflow was tested on reTerminal Sticky.",
+      "siteRequirements": "Desktop Chrome or Edge and USB serial-port permission are recommended. Installation erases all internal flash, including credentials and files; back up first. The flasher states that nothing is uploaded from the computer. The Seeed contributor confirmed review and testing of the external installation workflow and service requirements."
+    }
+  }
+}

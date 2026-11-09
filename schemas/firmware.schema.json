@@ -430,7 +430,7 @@
             "const": "platform"
           },
           "mode": {
-            "const": "flash"
+            "enum": ["flash", "external"]
           }
         }
       }
@@ -601,6 +601,43 @@
                 "download"
               ]
             }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "group": {
+            "const": "partner"
+          },
+          "mode": {
+            "const": "external"
+          }
+        },
+        "required": [
+          "group",
+          "mode"
+        ]
+      },
+      "then": {
+        "properties": {
+          "external": {
+            "required": [
+              "submission"
+            ]
+          },
+          "source": {
+            "not": {
+              "required": [
+                "path"
+              ]
+            }
+          }
+        },
+        "not": {
+          "required": [
+            "build"
           ]
         }
       }

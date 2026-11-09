@@ -718,6 +718,27 @@ test('accepts an external community entry with its review submission and no firm
   assert.equal(result.status, 0, result.stderr);
 });
 
+test('accepts coordinated partner external delivery and rejects missing review or build mixing', () => {
+  for (const variant of ['valid', 'submission', 'sourcePath', 'build', 'mode']) {
+    const root = createRegistry();
+    const integration = externalCommunity();
+    integration.group = 'partner';
+    integration.catalogSection = 'platform';
+    delete integration.author;
+    delete integration.category;
+    if (variant === 'submission') delete integration.external.submission;
+    if (variant === 'sourcePath') integration.source.path = 'source';
+    if (variant === 'build') integration.build = { system: 'platformio', environment: 'test', projectPath: 'source' };
+    if (variant === 'mode') integration.mode = 'download';
+    writeIntegration(root, integration);
+    const result = runValidator(root);
+    assert.equal(result.status, variant === 'valid' ? 0 : 1, result.stderr);
+    if (variant === 'submission') assert.match(result.stderr, /external.submission/);
+    if (['sourcePath', 'build'].includes(variant)) assert.match(result.stderr, /external installation workflow/);
+    if (variant === 'mode') assert.match(result.stderr, /for partner firmware/);
+  }
+});
+
 test('requires the external submission, category and author and accepts short usage conditions', () => {
   for (const field of ['hostingReason', 'userFlow', 'siteRequirements']) {
     const root = createRegistry();
