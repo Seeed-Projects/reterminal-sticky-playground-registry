@@ -323,7 +323,7 @@ cp -R firmwares/_template firmwares/my-firmware
 许可证和本地编译路径。
 
 `official` 和 `platform` 区域由 Seeed 或合作平台共同维护。合作伙伴条目使用
-`"group": "partner"`、`"catalogSection": "platform"`、`"mode": "flash"`、
+`"group": "partner"`、`"catalogSection": "platform"`、`"mode": "flash"` 或 `"mode": "external"`、
 官方项目链接和官方标识。平台身份已经由条目名称和官方链接明确表达，因此作者署名
 为可选项。普通外部 PR 统一进入 `community` 区域。维护者可以把历史迁移但资料尚未
 齐全的条目标记为 `draft`；草稿不会出现在 Sticky Playground。
@@ -731,3 +731,5 @@ Sticky 网站仓库闭源。
 - [ ] `npm test` 和 `npm run validate` 全部通过。
 - [ ] 这套固件已在真实 reTerminal Sticky 上完成测试。
 - [ ] PR 写明测试硬件、固件版本、测试结果，以及适用时的编译版本。
+
+合作伙伴外链条目需填写 `external.submission`，说明交付原因、完整流程和使用条件；使用上游 `source.url`，不包含 `source.path`、`build` 或烧录包。网站发布前需审核外部目标。

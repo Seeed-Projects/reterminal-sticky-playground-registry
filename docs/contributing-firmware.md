@@ -335,7 +335,7 @@ review and packaging.
 
 `official` and `platform` catalog sections are maintained through coordinated
 Seeed or partner work. Partner entries use `"group": "partner"`,
-`"catalogSection": "platform"`, `"mode": "flash"`, official project links,
+`"catalogSection": "platform"`, `"mode": "flash"` or `"mode": "external"`, official project links,
 and official identity assets. Author attribution is optional for partner and
 official cards because their platform identity is represented by the
 firmware name and official links. Normal community pull requests target the
@@ -757,3 +757,5 @@ For a new version:
 - [ ] `npm test` and `npm run validate` pass.
 - [ ] The packaged firmware was tested on a physical reTerminal Sticky.
 - [ ] The PR describes the hardware, firmware version, result, and build version when applicable.
+
+Coordinated partner external entries require `external.submission` with the delivery reason, full workflow and site requirements. They use upstream `source.url`, without `source.path`, `build` or flash packages. Review the external destination before website publication.
