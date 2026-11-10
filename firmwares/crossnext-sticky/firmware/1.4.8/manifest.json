@@ -1,0 +1,19 @@
+{
+  "name": "CrossNext for Sticky",
+  "version": "1.4.8",
+  "flashSize": "16MB",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "CrossNext-Sticky-v1.4.8-factory.bin",
+          "offset": 0,
+          "size": 7839168,
+          "sha256": "93cf26bf9ea15ab3aa2d3e5618b34fc0c4afa1d671281de1b9b777c04543ae94"
+        }
+      ]
+    }
+  ]
+}
