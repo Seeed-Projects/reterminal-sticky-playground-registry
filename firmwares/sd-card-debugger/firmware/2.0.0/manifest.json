@@ -1,0 +1,22 @@
+{
+  "name": "SD Card Debugger",
+  "version": "2.0.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "sd-card-debugger-v2.0.0.bin",
+          "offset": 0,
+          "size": 583472,
+          "sha256": "3d2c0b8a03f45858ea5dd9977731e1211de28ba21759449d665c99bb018981c1"
+        }
+      ]
+    }
+  ]
+}
