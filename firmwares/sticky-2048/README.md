@@ -10,7 +10,7 @@ LVGL, networking, cloud services, or a filesystem.
 ## Features
 
 - Native ESP-IDF implementation
-- Portrait 480 × 800 interface on the SSD1677 E-Ink display
+- Portrait 480 × 800 interface with automatic SSD1677 / SSD2677 detection
 - 2048 game logic implemented in C++
 - GT911 touch swipe control with an independent polling task
 - Partial refresh during gameplay with periodic full-refresh cleanup
@@ -38,48 +38,24 @@ LVGL, networking, cloud services, or a filesystem.
 
 ## Firmware package
 
-- Registry firmware version: `1.0.1`
-- Source: <https://github.com/Lukilyy/reterminal-sticky-2048-eink-game>
+- Registry firmware version: `2.0.0`
+- Source and release: <https://github.com/Lukilyy/reterminal-sticky-2048-eink-game/releases/tag/v2.0.0>
 - License: MIT
-- Build system: ESP-IDF `v5.4`
-- Build target: `esp32s3`
-- Package origin: GitHub Actions builds the submitted `source/` directory and
-  generates the flash manifest and firmware binaries for this Registry entry.
+- Target: ESP32-S3; 32 MB flash, DIO, 80 MHz
+- File: `firmware/2.0.0/sticky-2048-v2.0.0.bin` (429,152 bytes), flash at `0x0`.
+- SHA-256: `d3d553bc5c3bb6050ab91ece909a5a6ea93323a98d797cd3e48170b5fec5c8c1`
+- Package origin: author-provided merged BIN, byte-identical to the v2.0.0 Release asset. Includes the bootloader, partition table and application.
 
-## Build and flash locally
+## Changes in 2.0.0
 
-Install ESP-IDF v5.4, open a terminal in `source/`, and run:
+- Automatic SSD1677 / SSD2677 screen detection.
+- Fixed display startup with a MicroSD card inserted.
+- Fixed AI-button wake while USB power is connected.
+- Fixed I2C errors when entering sleep.
 
-```bash
-idf.py set-target esp32s3
-idf.py -D PROJECT_VER=1.0.1 build
-idf.py -p PORT flash monitor
-```
+## Installation
 
-Replace `PORT` with the serial port for the reTerminal Sticky. Project defaults
-are provided by `source/sdkconfig.defaults`; generated build files and
-`sdkconfig` are intentionally excluded from version control.
-
-## Project structure
-
-```text
-source/
-├── main/
-│   ├── game/          # 2048 game logic and NVS save state
-│   ├── hardware/      # Display, touch, battery, button, and buzzer adapters
-│   ├── ui/            # E-Ink framebuffer rendering and bitmap font
-│   ├── main.cpp       # Application entry and refresh management
-│   └── pin_config.h
-├── components/
-│   ├── bq27220/       # Battery fuel-gauge driver
-│   ├── button/        # Button driver
-│   ├── debug_logging/ # Logging dependency used by hardware drivers
-│   ├── gt911/         # Touch-controller driver
-│   └── seeed_epaper/  # E-Ink display driver
-├── CMakeLists.txt
-├── sdkconfig.defaults
-└── LICENSE
-```
+Select version `2.0.0` on the Playground flashing page and connect Sticky with a USB data cable. For manual installation, flash the merged BIN at `0x0` on ESP32-S3. Source code is maintained in the upstream project linked above.
 
 ## Hardware mapping
 
@@ -97,19 +73,7 @@ source/
 
 ## Physical-device test record
 
-Firmware version `1.0.1` was built with ESP-IDF `v5.4` and tested on physical
-reTerminal Sticky production hardware. All required tests passed.
-
-| Item | Result |
-|---|---|
-| Hardware | reTerminal Sticky production hardware |
-| Firmware version | `1.0.1` |
-| ESP-IDF version | `v5.4` |
-| Power-on and first boot | Passed |
-| Game workflow and touch swipes | Passed |
-| AI button short/long press | Passed |
-| Reboot and saved state | Passed |
-| USB reconnection and repeated installation | Passed |
+Firmware version `2.0.0` was tested on a physical reTerminal Sticky by the author, who confirmed that it works correctly.
 
 ## Scope
 
@@ -119,5 +83,4 @@ LVGL, or unrelated application features.
 
 ## License
 
-The submitted source is available under the MIT License. See
-[`source/LICENSE`](source/LICENSE).
+The upstream project is available under the [MIT License](https://github.com/Lukilyy/reterminal-sticky-2048-eink-game/blob/v2.0.0/LICENSE).

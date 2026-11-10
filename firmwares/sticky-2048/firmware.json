@@ -19,8 +19,7 @@
   },
   "source": {
     "url": "https://github.com/Lukilyy/reterminal-sticky-2048-eink-game",
-    "license": "MIT",
-    "path": "source"
+    "license": "MIT"
   },
   "support": {
     "url": "https://github.com/Lukilyy/reterminal-sticky-2048-eink-game/issues"
@@ -43,18 +42,12 @@
     "eink",
     "esp-idf"
   ],
-  "build": {
-    "system": "esp-idf",
-    "version": "v5.4",
-    "target": "esp32s3",
-    "projectPath": "source"
-  },
   "flash": {
     "versions": [
       {
-        "version": "1.0.1",
+        "version": "2.0.0",
         "channel": "experimental",
-        "sourceBuild": true
+        "manifestPath": "firmware/2.0.0/manifest.json"
       }
     ]
   }
