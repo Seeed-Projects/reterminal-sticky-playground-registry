@@ -29,7 +29,7 @@
     "devices": [
       "reterminal-sticky"
     ],
-    "notes": "Version 1.0.16 is tested on reTerminal Sticky production hardware. Requires a Bluetooth Low Energy keyboard and a microSD card. SD card via USB is not available on this board."
+    "notes": "Version 1.0.25 is tested on reTerminal Sticky production hardware. Requires a Bluetooth Low Energy keyboard and a microSD card. SD card via USB is not available on this board."
   },
   "assets": {
     "preview": "assets/preview.jpg",
@@ -46,9 +46,9 @@
   "flash": {
     "versions": [
       {
-        "version": "1.0.16",
+        "version": "1.0.25",
         "channel": "stable",
-        "manifestPath": "firmware/1.0.16/manifest.json"
+        "manifestPath": "firmware/1.0.25/manifest.json"
       }
     ],
     "notes": [
