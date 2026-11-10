@@ -1,0 +1,20 @@
+{
+  "name": "Sticky 2048",
+  "version": "2.0.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "sticky-2048-v2.0.0.bin",
+          "offset": 0,
+          "size": 429152,
+          "sha256": "d3d553bc5c3bb6050ab91ece909a5a6ea93323a98d797cd3e48170b5fec5c8c1"
+        }
+      ]
+    }
+  ]
+}
