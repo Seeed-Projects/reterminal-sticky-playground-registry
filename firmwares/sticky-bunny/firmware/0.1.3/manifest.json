@@ -1,0 +1,34 @@
+{
+  "name": "Sticky Bunny",
+  "version": "0.1.3",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "bootloader.bin",
+          "offset": 0,
+          "size": 22464,
+          "sha256": "aa2b0c40438ca25fc9924c4c63e7ee22cc487afd6d694c18495b23becce664d9"
+        },
+        {
+          "path": "partitions.bin",
+          "offset": 32768,
+          "size": 3072,
+          "sha256": "61058ba0d15dbbc7b8dd23f0247026a2be7614b99ec4143243458d00e454e18f"
+        },
+        {
+          "path": "firmware.bin",
+          "offset": 65536,
+          "size": 2139600,
+          "sha256": "db46e5094556e59e6ad805ddd8803774dde26d4681fff4a734943bfe57a550d3"
+        }
+      ]
+    }
+  ]
+}
