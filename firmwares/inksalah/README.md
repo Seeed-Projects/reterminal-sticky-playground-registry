@@ -3,6 +3,49 @@
 InkSalah turns reTerminal Sticky into an offline-first Salah companion with a
 persistent ePaper prayer-window display and native touch settings.
 
+## Latest Registry package: 0.1.2
+
+- Automatically detect SSD1677/SSD2677 and use the matching display, temperature-waveform, partial-refresh, and sleep paths.
+- Read panel identification through bidirectional GPIO14 at 2 MHz.
+- Initialize touch before network setup, bound startup retries, synchronize GT911 reset with the 60 ms INT-low phase, and require readable nonzero geometry.
+- Package the final normal release build, with temporary diagnostic instrumentation removed and both touch diagnostic macros disabled.
+
+### Package provenance
+
+- Source: [05afbcf7119357e799281847bd924a03a2e700ec](https://github.com/limengdu/reTerminal_Sticky_InkSalah/commit/05afbcf7119357e799281847bd924a03a2e700ec).
+- Build profile: `sticky-salah-release`, PlatformIO `espressif32@6.11.0`, ESP-IDF `5.4.1`.
+- Target: ESP32-S3, 32 MB flash, DIO, 80 MHz; USB serial flashing at 460800 baud.
+- Origin: the maintainer's local release build used for the physical checks below. All three files were copied byte-for-byte. Where available, CI independently verifies the source; its artifacts are not the source of these package bytes.
+- License: MIT.
+- All historical version directories, manifests, and binaries remain unchanged.
+
+Registry package `0.1.2` retains the exact hardware-tested bytes. The runtime application and ESP-IDF image descriptor still say `0.1.1`. The new Registry package number distinguishes this source snapshot from the historical `0.1.1` package without relabeling or rebuilding the tested image.
+
+This is a manifest-driven USB installation package. The Registry lists the newest package first in `flash.versions`; the manifest provides the flash offsets and file hashes. Embedded application labels are disclosed here and are not changed in the binary.
+
+| File | Offset | Bytes | SHA-256 |
+| --- | --- | --- | --- |
+| `bootloader.bin` | `0x0` | 22464 | `c13e1d0252ea8602ec898ebd7351f6f17c71959b5bf6bcb567619c8b25013d8b` |
+| `partitions.bin` | `0x8000` | 3072 | `61058ba0d15dbbc7b8dd23f0247026a2be7614b99ec4143243458d00e454e18f` |
+| `firmware.bin` | `0x10000` | 1858672 | `15253783d45b4d1e8ed50adb9758d7f9a8a7120b5747d9a92065ed90f589d6ba` |
+
+### Hardware and automated verification (2026-11-11)
+
+| Check | Evidence / scope |
+| --- | --- |
+| SSD1677, exact packaged release | Controller detection, first display, 480x800 touch startup, Wi-Fi setup, touch save, prayer screen, partial refresh, and full cleanup refresh passed; maintainer confirmed normal operation |
+| SSD2677, exact packaged release | Nine complete hardware resets passed touch startup on the first attempt with 480x800 geometry; an interrupted tenth attempt was not counted |
+| SSD2677 interaction | Successful touch interaction was observed on an earlier diagnostic build; it is not evidence of full interaction acceptance for this final package |
+| Source CI, exact commit | [CI run 42979916518](https://github.com/limengdu/reTerminal_Sticky_InkSalah/actions/runs/42979916518) passed host tests and release/debug builds |
+| Host coverage | 34 host tests, including production GT911 startup/reset and panel-driver regression coverage |
+| Package integrity | Every copied file matches the release output; application and bootloader ESP32-S3 checksums and validation hashes are valid |
+
+Full SSD2677 interaction acceptance of this exact final package remains pending. Reboot persistence, sleep/wake, USB reconnection, and repeated installation have not all been re-run for this package. The older version records below retain their original scope.
+
+### Upgrade notes
+
+Select `0.1.2` for this update. Save the current settings before upgrading. Keep the existing flash contents when updating the same project if you need its saved data; a full erase deletes that data. When switching from a different project, use a clean installation as described below. No partition layout is changed by this update.
+
 ## Version 0.1.1
 
 - Roboto typography, connected Arabic labels, and explicit AM/PM time badges.
@@ -65,9 +108,9 @@ Prayer times are calculated locally from the saved coordinates, civil date,
 fixed UTC offset, calculation method, and Asr school. Wi-Fi is not used to
 download a prayer timetable.
 
-## Firmware package
+## Historical 0.1.1 firmware package
 
-- Latest Registry firmware version: `0.1.1` (beta)
+- Historical Registry firmware version: `0.1.1` (beta)
 - Previous available version: `0.1.0`
 - Source: <https://github.com/limengdu/reTerminal_Sticky_InkSalah>
 - Source commit: `0e2bfb2c0eeb591a9d282987cea468a836048acd`

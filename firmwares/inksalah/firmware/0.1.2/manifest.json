@@ -1,0 +1,34 @@
+{
+  "name": "InkSalah",
+  "version": "0.1.2",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "bootloader.bin",
+          "offset": 0,
+          "size": 22464,
+          "sha256": "c13e1d0252ea8602ec898ebd7351f6f17c71959b5bf6bcb567619c8b25013d8b"
+        },
+        {
+          "path": "partitions.bin",
+          "offset": 32768,
+          "size": 3072,
+          "sha256": "61058ba0d15dbbc7b8dd23f0247026a2be7614b99ec4143243458d00e454e18f"
+        },
+        {
+          "path": "firmware.bin",
+          "offset": 65536,
+          "size": 1858672,
+          "sha256": "15253783d45b4d1e8ed50adb9758d7f9a8a7120b5747d9a92065ed90f589d6ba"
+        }
+      ]
+    }
+  ]
+}

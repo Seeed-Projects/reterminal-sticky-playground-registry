@@ -29,7 +29,7 @@
     "devices": [
       "reterminal-sticky"
     ],
-    "notes": "Targets reTerminal Sticky production hardware with ESP32-S3R8 and 32 MB flash. Package provenance and version-specific verification are recorded in the Registry README."
+    "notes": "Registry package 0.1.2 adds SSD1677/SSD2677 detection and GT911 startup fixes; the tested binary still reports application 0.1.1. Final-package SSD1677 setup/touch passed; SSD2677 had nine successful startup resets. Full new-screen interaction acceptance is still pending."
   },
   "assets": {
     "preview": "assets/preview.jpg",
@@ -45,6 +45,11 @@
   ],
   "flash": {
     "versions": [
+      {
+        "version": "0.1.2",
+        "channel": "beta",
+        "manifestPath": "firmware/0.1.2/manifest.json"
+      },
       {
         "version": "0.1.1",
         "channel": "beta",
@@ -72,6 +77,10 @@
       {
         "title": "Prayer settings",
         "description": "Confirm location and time zone on the device, then choose the calculation method, Asr school, per-time adjustments, reminder, and Qiyam display."
+      },
+      {
+        "title": "Screen compatibility update",
+        "description": "Install package 0.1.2 for automatic SSD1677/SSD2677 detection. The application still reports 0.1.1; package 0.1.2 identifies the tested screen/touch fixes. See the project README for the tested hardware and remaining acceptance checks."
       }
     ]
   }
