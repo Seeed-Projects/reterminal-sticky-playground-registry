@@ -1,0 +1,22 @@
+{
+  "name": "An Epaper Magic: The Gathering lifecounter for Seeedstudio reTerminal Sticky ",
+  "version": "1.1.6",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "sticky-lotus-v1.1.6.bin",
+          "offset": 0,
+          "size": 740592,
+          "sha256": "279dc5adc159b08b4002ec6cbee7cf2575cf8d2fc30e78c28b9b6a50cd4f2f6e"
+        }
+      ]
+    }
+  ]
+}
