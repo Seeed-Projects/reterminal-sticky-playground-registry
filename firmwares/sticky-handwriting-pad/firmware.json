@@ -29,7 +29,7 @@
     "devices": [
       "reterminal-sticky"
     ],
-    "notes": "Hardware-tested on reTerminal Sticky with ESP32-S3R8, 32 MB flash, SSD1677 e-paper, and GT911 touch. Use portrait orientation with the buttons on the right."
+    "notes": "Version 0.1.1 automatically detects SSD1677 and SSD2677 screens. The exact release package was exercised on both revisions with black and gray handwriting and refresh checks. ESP32-S3R8, 32 MB flash, GT911 touch; portrait orientation with buttons on the right."
   },
   "assets": {
     "preview": "assets/preview.jpg",
@@ -45,6 +45,11 @@
   ],
   "flash": {
     "versions": [
+      {
+        "version": "0.1.1",
+        "channel": "experimental",
+        "manifestPath": "firmware/0.1.1/manifest.json"
+      },
       {
         "version": "0.1.0",
         "channel": "experimental",
@@ -67,6 +72,10 @@
       {
         "title": "Save your notebook",
         "description": "Press the AI button to save and sleep before disconnecting power. Press again to wake. The notebook also saves and sleeps after one minute of inactivity."
+      },
+      {
+        "title": "Screen compatibility update",
+        "description": "Install package 0.1.1 for automatic SSD1677/SSD2677 detection. See the project README for the tested hardware and remaining acceptance checks."
       }
     ]
   }
