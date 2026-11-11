@@ -9,37 +9,49 @@ of focused offline ePaper apps.
 - Read panel identification through bidirectional GPIO14 at 2 MHz.
 - Reset partial-refresh state after standby resume, fixing repeated tutorial-page refreshes on SSD1677.
 - Keep the release profile, pet storage, onboarding, and existing app controls.
+- Align the Registry version, runtime version, and ESP-IDF application descriptor at `0.1.3`.
+- Add a host regression check that rejects inconsistent version declarations.
 
 ### Package provenance
 
-- Source: [32db65d681aabb407a62b6dde632f041171a4fa1](https://github.com/limengdu/reTerminal_Sticky_Bunny/commit/32db65d681aabb407a62b6dde632f041171a4fa1).
+- Source: [084ad9c0218544e250f11d96a1de9061db9f1f0c](https://github.com/limengdu/reTerminal_Sticky_Bunny/commit/084ad9c0218544e250f11d96a1de9061db9f1f0c).
+- Registry / runtime / ESP-IDF descriptor version: `0.1.3`.
 - Build profile: `sticky-release`, PlatformIO `espressif32@6.11.0`, ESP-IDF `5.4.1`.
 - Target: ESP32-S3, 32 MB flash, DIO, 80 MHz; USB serial flashing at 460800 baud.
-- Origin: the maintainer's local release build used for the physical checks below. All three files were copied byte-for-byte. Where available, CI independently verifies the source; its artifacts are not the source of these package bytes.
+- Origin: a new local release build after aligning version declarations. The files were copied byte-for-byte from that build, not from a CI artifact or a device flash dump.
 - License: MIT.
-- All historical version directories, manifests, and binaries remain unchanged.
-
-Registry package `0.1.3` retains the exact hardware-tested bytes. The runtime application version is `0.1.3`; its ESP-IDF image descriptor still says `0.1.2`.
-
-This is a manifest-driven USB installation package. The Registry lists the newest package first in `flash.versions`; the manifest provides the flash offsets and file hashes. Embedded application labels are disclosed here and are not changed in the binary.
+- Historical versions already present on Registry `main` remain unchanged. The earlier candidate package is retained in this PR's commit history and linked below.
 
 | File | Offset | Bytes | SHA-256 |
 | --- | --- | --- | --- |
 | `bootloader.bin` | `0x0` | 22464 | `aa2b0c40438ca25fc9924c4c63e7ee22cc487afd6d694c18495b23becce664d9` |
 | `partitions.bin` | `0x8000` | 3072 | `61058ba0d15dbbc7b8dd23f0247026a2be7614b99ec4143243458d00e454e18f` |
-| `firmware.bin` | `0x10000` | 2139600 | `db46e5094556e59e6ad805ddd8803774dde26d4681fff4a734943bfe57a550d3` |
+| `firmware.bin` | `0x10000` | 2139600 | `c7cca6f989b1d80d6d2a52b13bfdc448717f84d6433875140ee55a45014d9e03` |
 
-### Hardware and automated verification (2026-11-11)
+### Automated verification
 
-| Check | Evidence / scope |
+32 host tests plus real panel-driver tests, documentation links, version consistency checks, and release/debug/power-test builds passed.
+
+The consistency checker was also verified to reject a deliberately mismatched runtime/descriptor pair. Image inspection confirms version `0.1.3`, ESP32-S3, 32 MB flash, and valid checksums and validation hashes. All package sizes and SHA-256 values match the new build outputs; the partition table is unchanged.
+
+### Hardware acceptance of this rebuild
+
+**Pending: these newly rebuilt binaries have not been installed or re-tested on a physical device.** No device was flashed or reset while preparing this version-alignment update. The prior observations below apply only to the older source/hash, not these new bytes.
+
+Before acceptance, install the new manifest package and check boot/version, the main workflow, touch/buttons, reboot and saved state, sleep/wake, USB reconnection, and repeated installation on the relevant SSD1677 and SSD2677 devices.
+
+### Prior hardware evidence (2026-11-11)
+
+- Previously tested source: [32db65d681aabb407a62b6dde632f041171a4fa1](https://github.com/limengdu/reTerminal_Sticky_Bunny/commit/32db65d681aabb407a62b6dde632f041171a4fa1).
+- Previously tested application SHA-256: `db46e5094556e59e6ad805ddd8803774dde26d4681fff4a734943bfe57a550d3`.
+- [Exact earlier candidate package preserved in commit history](https://github.com/limengdu/reterminal-sticky-playground-registry/tree/38aa36ffb127e0341766e1076e0b0ca161c6a20a/firmwares/sticky-bunny/firmware/0.1.3).
+
+| Check | Prior evidence / scope |
 | --- | --- |
-| SSD1677, exact packaged release | Tutorial pages 1 through 6 and repeated entry/exit passed; maintainer confirmed the result |
+| SSD1677, previous tested release | Tutorial pages 1 through 6 and repeated entry/exit passed; maintainer confirmed the result |
 | SSD2677 | Hardware passed the preceding SPI-fix commit `2b2dccc1b0524409059b61577b98b7f369f86d54`; the final `32db65d` package was not re-tested on this revision |
-| Source CI, exact commit | [Build and test run 42973854684](https://github.com/limengdu/reTerminal_Sticky_Bunny/actions/runs/42973854684) passed |
-| Host coverage | 31 host tests and the real panel-driver regression suite, including six consecutive SSD1677 standby/partial cycles |
-| Package integrity | Every copied file matches the release output; application and bootloader ESP32-S3 checksums and validation hashes are valid |
 
-The earlier hardware checklist below describes version 0.1.2. It is not a claim that every pet/app, sleep, rotation, persistence, USB, or repeated-install workflow was re-run for 0.1.3. Final-package SSD2677 acceptance remains a review follow-up.
+These records do not certify the version-aligned rebuild above. Historical package records further below also retain their original version-specific scope.
 
 ### Upgrade notes
 

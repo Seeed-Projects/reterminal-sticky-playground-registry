@@ -29,7 +29,7 @@
     "devices": [
       "reterminal-sticky"
     ],
-    "notes": "Version 0.1.3 auto-detects SSD1677/SSD2677 and fixes repeated legacy-screen refresh after standby. The final package passed SSD1677 tutorial navigation; SSD2677 hardware passed the preceding SPI-fix build. See README for the exact coverage."
+    "notes": "Version 0.1.3 supports SSD1677/SSD2677 detection. Registry, runtime, and ESP-IDF image versions now agree. This version-aligned rebuild has not yet been re-tested on hardware; the README separates its automated checks from earlier hardware evidence."
   },
   "assets": {
     "preview": "assets/preview-launcher.jpg",
@@ -80,7 +80,7 @@
       },
       {
         "title": "Screen compatibility update",
-        "description": "Install package 0.1.3 for automatic SSD1677/SSD2677 detection. See the project README for the tested hardware and remaining acceptance checks."
+        "description": "Install version 0.1.3 for automatic SSD1677/SSD2677 detection. Registry, runtime, and image versions agree. This rebuild awaits physical-device acceptance; see the README for the exact source, hashes, and prior test scope."
       }
     ]
   }
