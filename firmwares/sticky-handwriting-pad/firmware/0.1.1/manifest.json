@@ -1,0 +1,34 @@
+{
+  "name": "Sticky Handwriting Pad",
+  "version": "0.1.1",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "bootloader.bin",
+          "offset": 0,
+          "size": 22464,
+          "sha256": "70eae3502cb3fc0d82e518329ad1c877816a506728c6b7e7b140eb5e4cd9826f"
+        },
+        {
+          "path": "partitions.bin",
+          "offset": 32768,
+          "size": 3072,
+          "sha256": "87c890a6a25424bf3c16606f8dfc63edfa88a535f562cc4a87b0768e704244c9"
+        },
+        {
+          "path": "firmware.bin",
+          "offset": 65536,
+          "size": 392528,
+          "sha256": "cd4059b3b4635695cf30af40944711cbb203ed71d05cfe51443e3a7dfb1db5db"
+        }
+      ]
+    }
+  ]
+}
