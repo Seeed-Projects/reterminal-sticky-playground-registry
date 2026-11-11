@@ -29,7 +29,7 @@
     "devices": [
       "reterminal-sticky"
     ],
-    "notes": "Version 0.1.2 uses the release profile tested on reTerminal Sticky production hardware with GT911 diagnostics enabled."
+    "notes": "Version 0.1.3 supports SSD1677/SSD2677 detection. Registry, runtime, and ESP-IDF image versions now agree. This version-aligned rebuild has not yet been re-tested on hardware; the README separates its automated checks from earlier hardware evidence."
   },
   "assets": {
     "preview": "assets/preview-launcher.jpg",
@@ -45,6 +45,11 @@
   ],
   "flash": {
     "versions": [
+      {
+        "version": "0.1.3",
+        "channel": "beta",
+        "manifestPath": "firmware/0.1.3/manifest.json"
+      },
       {
         "version": "0.1.2",
         "channel": "beta",
@@ -72,6 +77,10 @@
       {
         "title": "App launcher",
         "description": "Tap the AI key or swipe up to open the launcher. Choose by touch, rotate for Pomodoro or Status Board, shake for the Book of Answers, and double-tap the AI key to return to the pet."
+      },
+      {
+        "title": "Screen compatibility update",
+        "description": "Install version 0.1.3 for automatic SSD1677/SSD2677 detection. Registry, runtime, and image versions agree. This rebuild awaits physical-device acceptance; see the README for the exact source, hashes, and prior test scope."
       }
     ]
   }

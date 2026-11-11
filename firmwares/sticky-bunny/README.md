@@ -3,6 +3,60 @@
 Sticky Bunny turns reTerminal Sticky into a living virtual pet and a collection
 of focused offline ePaper apps.
 
+## Latest Registry package: 0.1.3
+
+- Automatically detect SSD1677/SSD2677 and use the matching full, partial, grayscale, temperature, and sleep paths.
+- Read panel identification through bidirectional GPIO14 at 2 MHz.
+- Reset partial-refresh state after standby resume, fixing repeated tutorial-page refreshes on SSD1677.
+- Keep the release profile, pet storage, onboarding, and existing app controls.
+- Align the Registry version, runtime version, and ESP-IDF application descriptor at `0.1.3`.
+- Add a host regression check that rejects inconsistent version declarations.
+
+### Package provenance
+
+- Source: [084ad9c0218544e250f11d96a1de9061db9f1f0c](https://github.com/limengdu/reTerminal_Sticky_Bunny/commit/084ad9c0218544e250f11d96a1de9061db9f1f0c).
+- Registry / runtime / ESP-IDF descriptor version: `0.1.3`.
+- Build profile: `sticky-release`, PlatformIO `espressif32@6.11.0`, ESP-IDF `5.4.1`.
+- Target: ESP32-S3, 32 MB flash, DIO, 80 MHz; USB serial flashing at 460800 baud.
+- Origin: a new local release build after aligning version declarations. The files were copied byte-for-byte from that build, not from a CI artifact or a device flash dump.
+- License: MIT.
+- Historical versions already present on Registry `main` remain unchanged. The earlier candidate package is retained in this PR's commit history and linked below.
+
+| File | Offset | Bytes | SHA-256 |
+| --- | --- | --- | --- |
+| `bootloader.bin` | `0x0` | 22464 | `aa2b0c40438ca25fc9924c4c63e7ee22cc487afd6d694c18495b23becce664d9` |
+| `partitions.bin` | `0x8000` | 3072 | `61058ba0d15dbbc7b8dd23f0247026a2be7614b99ec4143243458d00e454e18f` |
+| `firmware.bin` | `0x10000` | 2139600 | `c7cca6f989b1d80d6d2a52b13bfdc448717f84d6433875140ee55a45014d9e03` |
+
+### Automated verification
+
+32 host tests plus real panel-driver tests, documentation links, version consistency checks, and release/debug/power-test builds passed.
+
+The consistency checker was also verified to reject a deliberately mismatched runtime/descriptor pair. Image inspection confirms version `0.1.3`, ESP32-S3, 32 MB flash, and valid checksums and validation hashes. All package sizes and SHA-256 values match the new build outputs; the partition table is unchanged.
+
+### Hardware acceptance of this rebuild
+
+**Pending: these newly rebuilt binaries have not been installed or re-tested on a physical device.** No device was flashed or reset while preparing this version-alignment update. The prior observations below apply only to the older source/hash, not these new bytes.
+
+Before acceptance, install the new manifest package and check boot/version, the main workflow, touch/buttons, reboot and saved state, sleep/wake, USB reconnection, and repeated installation on the relevant SSD1677 and SSD2677 devices.
+
+### Prior hardware evidence (2026-11-11)
+
+- Previously tested source: [32db65d681aabb407a62b6dde632f041171a4fa1](https://github.com/limengdu/reTerminal_Sticky_Bunny/commit/32db65d681aabb407a62b6dde632f041171a4fa1).
+- Previously tested application SHA-256: `db46e5094556e59e6ad805ddd8803774dde26d4681fff4a734943bfe57a550d3`.
+- [Exact earlier candidate package preserved in commit history](https://github.com/limengdu/reterminal-sticky-playground-registry/tree/38aa36ffb127e0341766e1076e0b0ca161c6a20a/firmwares/sticky-bunny/firmware/0.1.3).
+
+| Check | Prior evidence / scope |
+| --- | --- |
+| SSD1677, previous tested release | Tutorial pages 1 through 6 and repeated entry/exit passed; maintainer confirmed the result |
+| SSD2677 | Hardware passed the preceding SPI-fix commit `2b2dccc1b0524409059b61577b98b7f369f86d54`; the final `32db65d` package was not re-tested on this revision |
+
+These records do not certify the version-aligned rebuild above. Historical package records further below also retain their original version-specific scope.
+
+### Upgrade notes
+
+Select `0.1.3` for this update. Save the pet state before upgrading. Keep the existing flash contents when updating the same project if you need its saved data; a full erase deletes that data. When switching from a different project, use a clean installation as described below. No partition layout is changed by this update.
+
 ## What it does
 
 - **Virtual pet.** Hatch, name, feed, pet, talk to, and play with a rabbit that
@@ -31,7 +85,7 @@ of focused offline ePaper apps.
 - Double-tap the AI key from any page to return to the pet.
 - Hold both non-AI side keys to enter deep sleep.
 
-## Package origin
+## Historical 0.1.2 package origin
 
 Version `0.1.2` was built from
 [reTerminal Sticky Bunny](https://github.com/limengdu/reTerminal_Sticky_Bunny)
@@ -51,7 +105,7 @@ six-page illustrated guide, followed by the egg-hatching and naming flow.
 Uploading without an erase keeps the existing NVS pet save. Accepting the erase
 prompt creates a fresh save and shows onboarding again.
 
-## Physical-device test
+## Historical 0.1.2 physical-device test
 
 The `sticky-release` profile has been exercised on reTerminal Sticky production
 hardware throughout development, including:
