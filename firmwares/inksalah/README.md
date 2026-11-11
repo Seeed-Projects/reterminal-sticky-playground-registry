@@ -3,6 +3,61 @@
 InkSalah turns reTerminal Sticky into an offline-first Salah companion with a
 persistent ePaper prayer-window display and native touch settings.
 
+## Latest Registry package: 0.1.2
+
+- Automatically detect SSD1677/SSD2677 and use the matching display, temperature-waveform, partial-refresh, and sleep paths.
+- Read panel identification through bidirectional GPIO14 at 2 MHz.
+- Initialize touch before network setup, bound startup retries, synchronize GT911 reset with the 60 ms INT-low phase, and require readable nonzero geometry.
+- Package the final normal release build, with temporary diagnostic instrumentation removed and both touch diagnostic macros disabled.
+- Align the Registry version, runtime version, and ESP-IDF application descriptor at `0.1.2`. The HTTP User-Agent also uses the runtime version macro.
+- Add a host regression check that rejects inconsistent version declarations.
+
+### Package provenance
+
+- Source: [69df6284c5ea41124a8f6ce00aa7133161f9fee4](https://github.com/limengdu/reTerminal_Sticky_InkSalah/commit/69df6284c5ea41124a8f6ce00aa7133161f9fee4).
+- Registry / runtime / ESP-IDF descriptor version: `0.1.2`.
+- Build profile: `sticky-salah-release`, PlatformIO `espressif32@6.11.0`, ESP-IDF `5.4.1`.
+- Target: ESP32-S3, 32 MB flash, DIO, 80 MHz; USB serial flashing at 460800 baud.
+- Origin: a new local release build after aligning version declarations. The files were copied byte-for-byte from that build, not from a CI artifact or a device flash dump.
+- License: MIT.
+- Historical versions already present on Registry `main` remain unchanged. The earlier candidate package is retained in this PR's commit history and linked below.
+
+| File | Offset | Bytes | SHA-256 |
+| --- | --- | --- | --- |
+| `bootloader.bin` | `0x0` | 22464 | `6fed1889c29589cd0a9fd3b072653929a5d48596aa3d2bc4488803c4819208e4` |
+| `partitions.bin` | `0x8000` | 3072 | `61058ba0d15dbbc7b8dd23f0247026a2be7614b99ec4143243458d00e454e18f` |
+| `firmware.bin` | `0x10000` | 1858672 | `9e118468182f8783829368e09161f797291e45ae705df5537b53ac61ac6c8f2e` |
+
+### Automated verification
+
+35 host tests including production GT911 and panel drivers, version consistency/User-Agent checks, and release/debug builds passed.
+
+The consistency checker was also verified to reject a deliberately mismatched runtime/descriptor pair. A stale hard-coded InkSalah HTTP User-Agent was rejected as well. Image inspection confirms version `0.1.2`, ESP32-S3, 32 MB flash, and valid checksums and validation hashes. All package sizes and SHA-256 values match the new build outputs; the partition table is unchanged.
+
+### Hardware acceptance of this rebuild
+
+**Pending: these newly rebuilt binaries have not been installed or re-tested on a physical device.** No device was flashed or reset while preparing this version-alignment update. The prior observations below apply only to the older source/hash, not these new bytes.
+
+Before acceptance, install the new manifest package and check boot/version, the main workflow, touch/buttons, reboot and saved state, sleep/wake, USB reconnection, and repeated installation on the relevant SSD1677 and SSD2677 devices.
+
+### Prior hardware evidence (2026-11-11)
+
+- Previously tested source: [05afbcf7119357e799281847bd924a03a2e700ec](https://github.com/limengdu/reTerminal_Sticky_InkSalah/commit/05afbcf7119357e799281847bd924a03a2e700ec).
+- Previously tested application SHA-256: `15253783d45b4d1e8ed50adb9758d7f9a8a7120b5747d9a92065ed90f589d6ba`.
+- [Exact earlier candidate package preserved in commit history](https://github.com/limengdu/reterminal-sticky-playground-registry/tree/2cab6ac8de2e7bacc82b0f0ebb70216f2ba98ab5/firmwares/inksalah/firmware/0.1.2).
+
+| Check | Prior evidence / scope |
+| --- | --- |
+| SSD1677, previous tested release | Controller detection, first display, 480x800 touch startup, Wi-Fi setup, touch save, prayer screen, partial refresh, and full cleanup refresh passed; maintainer confirmed normal operation |
+| SSD2677, previous tested release | Nine complete hardware resets passed touch startup on the first attempt with 480x800 geometry; an interrupted tenth attempt was not counted |
+| SSD2677 interaction | Successful touch interaction was observed on an earlier diagnostic build; it is not evidence of full interaction acceptance for the previous final package |
+
+These records do not certify the version-aligned rebuild above. Historical package records further below also retain their original version-specific scope.
+
+### Upgrade notes
+
+Select `0.1.2` for this update. Save the current settings before upgrading. Keep the existing flash contents when updating the same project if you need its saved data; a full erase deletes that data. When switching from a different project, use a clean installation as described below. No partition layout is changed by this update.
+
 ## Version 0.1.1
 
 - Roboto typography, connected Arabic labels, and explicit AM/PM time badges.
@@ -65,9 +120,9 @@ Prayer times are calculated locally from the saved coordinates, civil date,
 fixed UTC offset, calculation method, and Asr school. Wi-Fi is not used to
 download a prayer timetable.
 
-## Firmware package
+## Historical 0.1.1 firmware package
 
-- Latest Registry firmware version: `0.1.1` (beta)
+- Historical Registry firmware version: `0.1.1` (beta)
 - Previous available version: `0.1.0`
 - Source: <https://github.com/limengdu/reTerminal_Sticky_InkSalah>
 - Source commit: `0e2bfb2c0eeb591a9d282987cea468a836048acd`
