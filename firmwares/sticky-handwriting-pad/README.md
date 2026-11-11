@@ -14,36 +14,48 @@ An offline community handwriting notebook by [limengdu](https://github.com/limen
 - Automatically detect SSD1677 and SSD2677 and select the matching display driver.
 - Read panel identification through bidirectional GPIO14 at 2 MHz.
 - Add SSD2677 monochrome, partial, four-gray, temperature-waveform, and sleep support while preserving the existing notebook storage layout.
+- Align the Registry version, runtime version, and ESP-IDF application descriptor at `0.1.1`.
+- Add a host regression check that rejects inconsistent version declarations.
 
 ### Package provenance
 
-- Source: [b50abf3f0e5d553131026ef53a1f4810c1a2b9fa](https://github.com/limengdu/reterminal_sticky_handwriting_pad/commit/b50abf3f0e5d553131026ef53a1f4810c1a2b9fa).
+- Source: [c01e2d600dd691d9dd221fd15236c5e98e9f4731](https://github.com/limengdu/reterminal_sticky_handwriting_pad/commit/c01e2d600dd691d9dd221fd15236c5e98e9f4731).
+- Registry / runtime / ESP-IDF descriptor version: `0.1.1`.
 - Build profile: `sticky-release`, PlatformIO `espressif32@6.11.0`, ESP-IDF `5.4.1`.
 - Target: ESP32-S3, 32 MB flash, DIO, 80 MHz; USB serial flashing at 460800 baud.
-- Origin: the maintainer's local release build used for the physical checks below. All three files were copied byte-for-byte. Where available, CI independently verifies the source; its artifacts are not the source of these package bytes.
+- Origin: a new local release build after aligning version declarations. The files were copied byte-for-byte from that build, not from a CI artifact or a device flash dump.
 - License: MIT.
-- All historical version directories, manifests, and binaries remain unchanged.
-
-Registry package `0.1.1` retains the exact hardware-tested bytes. The runtime application version is `0.1.1`; its ESP-IDF image descriptor still says `0.1.0`.
-
-This is a manifest-driven USB installation package. The Registry lists the newest package first in `flash.versions`; the manifest provides the flash offsets and file hashes. Embedded application labels are disclosed here and are not changed in the binary.
+- Historical versions already present on Registry `main` remain unchanged. The earlier candidate package is retained in this PR's commit history and linked below.
 
 | File | Offset | Bytes | SHA-256 |
 | --- | --- | --- | --- |
 | `bootloader.bin` | `0x0` | 22464 | `70eae3502cb3fc0d82e518329ad1c877816a506728c6b7e7b140eb5e4cd9826f` |
 | `partitions.bin` | `0x8000` | 3072 | `87c890a6a25424bf3c16606f8dfc63edfa88a535f562cc4a87b0768e704244c9` |
-| `firmware.bin` | `0x10000` | 392528 | `f1622b8bdbf2477e283b80c6d01ff5be79ccc6e38578e8c091aa20f2056b253c` |
+| `firmware.bin` | `0x10000` | 392528 | `cd4059b3b4635695cf30af40944711cbb203ed71d05cfe51443e3a7dfb1db5db` |
 
-### Hardware and automated verification (2026-11-11)
+### Automated verification
 
-| Check | Evidence / scope |
+Host panel/SPI regression tests, version consistency checks, ASan/UBSan, and release/debug builds passed. This project has no GitHub Actions workflow.
+
+The consistency checker was also verified to reject a deliberately mismatched runtime/descriptor pair. Image inspection confirms version `0.1.1`, ESP32-S3, 32 MB flash, and valid checksums and validation hashes. All package sizes and SHA-256 values match the new build outputs; the partition table is unchanged.
+
+### Hardware acceptance of this rebuild
+
+**Pending: these newly rebuilt binaries have not been installed or re-tested on a physical device.** No device was flashed or reset while preparing this version-alignment update. The prior observations below apply only to the older source/hash, not these new bytes.
+
+Before acceptance, install the new manifest package and check boot/version, the main workflow, touch/buttons, reboot and saved state, sleep/wake, USB reconnection, and repeated installation on the relevant SSD1677 and SSD2677 devices.
+
+### Prior hardware evidence (2026-11-11)
+
+- Previously tested source: [b50abf3f0e5d553131026ef53a1f4810c1a2b9fa](https://github.com/limengdu/reterminal_sticky_handwriting_pad/commit/b50abf3f0e5d553131026ef53a1f4810c1a2b9fa).
+- Previously tested application SHA-256: `f1622b8bdbf2477e283b80c6d01ff5be79ccc6e38578e8c091aa20f2056b253c`.
+- [Exact earlier candidate package preserved in commit history](https://github.com/limengdu/reterminal-sticky-playground-registry/tree/e492438451d6033778c02a87caf3d040c2c29167/firmwares/sticky-handwriting-pad/firmware/0.1.1).
+
+| Check | Prior evidence / scope |
 | --- | --- |
-| SSD1677 and SSD2677, exact packaged release | Black and gray handwriting and display refresh passed; maintainer confirmed both revisions |
-| Host regression tests | Panel-driver integration and board SPI tests passed on 2026-11-11 |
-| Source CI | No GitHub Actions workflow is configured in this project |
-| Package integrity | Every copied file matches the release output; application and bootloader ESP32-S3 checksums and validation hashes are valid |
+| SSD1677 and SSD2677, previous tested release | Black and gray handwriting and display refresh passed; maintainer confirmed both revisions |
 
-This update does not claim that every pen style, sleep/wake path, USB reconnection, or repeated installation was re-tested on both revisions. The original 0.1.0 record below remains specific to that older package.
+These records do not certify the version-aligned rebuild above. Historical package records further below also retain their original version-specific scope.
 
 ### Upgrade notes
 
