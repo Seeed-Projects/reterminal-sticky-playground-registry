@@ -1,6 +1,6 @@
 # Draftling
 
-This community entry publishes the Draftling 1.0.16 build for reTerminal
+This community entry publishes the Draftling 1.0.25 build for reTerminal
 Sticky for installation from the browser.
 
 Draftling is a writerdeck firmware. Its minimalist interface lets you edit
@@ -9,12 +9,12 @@ Project homepage: [draftling.art](https://draftling.art/).
 
 ## Package origin
 
-The binaries come unchanged from the upstream web flasher (`_flasher`
-branch of [clackups/draftling](https://github.com/clackups/draftling),
-commit `6e2ae51c7ca2454c5ccf864ade023822649f72cb`,
-`firmware/v1.0.16/draftling-seeed_reterminal_sticky*.bin`). They were built
-from release tag `v1.0.16` (commit `17f11316ba3157eac452d1b22ac38a6a2903ede0`)
-and are distributed under the upstream MIT license.
+The binaries come unchanged from the upstream web flasher
+([clackups/draftling-flasher](https://github.com/clackups/draftling-flasher),
+`main` branch, commit `979b28ba24d7c35f4d84b5930cd78b344fffee2c`,
+`firmware/v1.0.25/draftling-seeed_reterminal_sticky*.bin`). They were built
+from [clackups/draftling](https://github.com/clackups/draftling) release tag
+`v1.0.25` (commit `05dd45ff11a7a494cb10949ecbbb2b5531642588`) and are distributed under the upstream MIT license.
 
 | Part | Offset | Upstream file |
 |---|---|---|
@@ -68,7 +68,7 @@ More hardware details are in the upstream
 ## Physical device test
 
 - Hardware: reTerminal Sticky production unit
-- Firmware version: 1.0.16
+- Firmware version: 1.0.25
 - Package: the four parts listed above, at the offsets in `manifest.json`
 - Result: passed. Tested first boot, Markdown editing with a BLE keyboard,
   touch and hardware buttons, deep sleep and wake, saved state after reboot,
