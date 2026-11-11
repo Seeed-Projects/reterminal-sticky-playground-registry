@@ -9,38 +9,50 @@ persistent ePaper prayer-window display and native touch settings.
 - Read panel identification through bidirectional GPIO14 at 2 MHz.
 - Initialize touch before network setup, bound startup retries, synchronize GT911 reset with the 60 ms INT-low phase, and require readable nonzero geometry.
 - Package the final normal release build, with temporary diagnostic instrumentation removed and both touch diagnostic macros disabled.
+- Align the Registry version, runtime version, and ESP-IDF application descriptor at `0.1.2`. The HTTP User-Agent also uses the runtime version macro.
+- Add a host regression check that rejects inconsistent version declarations.
 
 ### Package provenance
 
-- Source: [05afbcf7119357e799281847bd924a03a2e700ec](https://github.com/limengdu/reTerminal_Sticky_InkSalah/commit/05afbcf7119357e799281847bd924a03a2e700ec).
+- Source: [69df6284c5ea41124a8f6ce00aa7133161f9fee4](https://github.com/limengdu/reTerminal_Sticky_InkSalah/commit/69df6284c5ea41124a8f6ce00aa7133161f9fee4).
+- Registry / runtime / ESP-IDF descriptor version: `0.1.2`.
 - Build profile: `sticky-salah-release`, PlatformIO `espressif32@6.11.0`, ESP-IDF `5.4.1`.
 - Target: ESP32-S3, 32 MB flash, DIO, 80 MHz; USB serial flashing at 460800 baud.
-- Origin: the maintainer's local release build used for the physical checks below. All three files were copied byte-for-byte. Where available, CI independently verifies the source; its artifacts are not the source of these package bytes.
+- Origin: a new local release build after aligning version declarations. The files were copied byte-for-byte from that build, not from a CI artifact or a device flash dump.
 - License: MIT.
-- All historical version directories, manifests, and binaries remain unchanged.
-
-Registry package `0.1.2` retains the exact hardware-tested bytes. The runtime application and ESP-IDF image descriptor still say `0.1.1`. The new Registry package number distinguishes this source snapshot from the historical `0.1.1` package without relabeling or rebuilding the tested image.
-
-This is a manifest-driven USB installation package. The Registry lists the newest package first in `flash.versions`; the manifest provides the flash offsets and file hashes. Embedded application labels are disclosed here and are not changed in the binary.
+- Historical versions already present on Registry `main` remain unchanged. The earlier candidate package is retained in this PR's commit history and linked below.
 
 | File | Offset | Bytes | SHA-256 |
 | --- | --- | --- | --- |
-| `bootloader.bin` | `0x0` | 22464 | `c13e1d0252ea8602ec898ebd7351f6f17c71959b5bf6bcb567619c8b25013d8b` |
+| `bootloader.bin` | `0x0` | 22464 | `6fed1889c29589cd0a9fd3b072653929a5d48596aa3d2bc4488803c4819208e4` |
 | `partitions.bin` | `0x8000` | 3072 | `61058ba0d15dbbc7b8dd23f0247026a2be7614b99ec4143243458d00e454e18f` |
-| `firmware.bin` | `0x10000` | 1858672 | `15253783d45b4d1e8ed50adb9758d7f9a8a7120b5747d9a92065ed90f589d6ba` |
+| `firmware.bin` | `0x10000` | 1858672 | `9e118468182f8783829368e09161f797291e45ae705df5537b53ac61ac6c8f2e` |
 
-### Hardware and automated verification (2026-11-11)
+### Automated verification
 
-| Check | Evidence / scope |
+35 host tests including production GT911 and panel drivers, version consistency/User-Agent checks, and release/debug builds passed.
+
+The consistency checker was also verified to reject a deliberately mismatched runtime/descriptor pair. A stale hard-coded InkSalah HTTP User-Agent was rejected as well. Image inspection confirms version `0.1.2`, ESP32-S3, 32 MB flash, and valid checksums and validation hashes. All package sizes and SHA-256 values match the new build outputs; the partition table is unchanged.
+
+### Hardware acceptance of this rebuild
+
+**Pending: these newly rebuilt binaries have not been installed or re-tested on a physical device.** No device was flashed or reset while preparing this version-alignment update. The prior observations below apply only to the older source/hash, not these new bytes.
+
+Before acceptance, install the new manifest package and check boot/version, the main workflow, touch/buttons, reboot and saved state, sleep/wake, USB reconnection, and repeated installation on the relevant SSD1677 and SSD2677 devices.
+
+### Prior hardware evidence (2026-11-11)
+
+- Previously tested source: [05afbcf7119357e799281847bd924a03a2e700ec](https://github.com/limengdu/reTerminal_Sticky_InkSalah/commit/05afbcf7119357e799281847bd924a03a2e700ec).
+- Previously tested application SHA-256: `15253783d45b4d1e8ed50adb9758d7f9a8a7120b5747d9a92065ed90f589d6ba`.
+- [Exact earlier candidate package preserved in commit history](https://github.com/limengdu/reterminal-sticky-playground-registry/tree/2cab6ac8de2e7bacc82b0f0ebb70216f2ba98ab5/firmwares/inksalah/firmware/0.1.2).
+
+| Check | Prior evidence / scope |
 | --- | --- |
-| SSD1677, exact packaged release | Controller detection, first display, 480x800 touch startup, Wi-Fi setup, touch save, prayer screen, partial refresh, and full cleanup refresh passed; maintainer confirmed normal operation |
-| SSD2677, exact packaged release | Nine complete hardware resets passed touch startup on the first attempt with 480x800 geometry; an interrupted tenth attempt was not counted |
-| SSD2677 interaction | Successful touch interaction was observed on an earlier diagnostic build; it is not evidence of full interaction acceptance for this final package |
-| Source CI, exact commit | [CI run 42979916518](https://github.com/limengdu/reTerminal_Sticky_InkSalah/actions/runs/42979916518) passed host tests and release/debug builds |
-| Host coverage | 34 host tests, including production GT911 startup/reset and panel-driver regression coverage |
-| Package integrity | Every copied file matches the release output; application and bootloader ESP32-S3 checksums and validation hashes are valid |
+| SSD1677, previous tested release | Controller detection, first display, 480x800 touch startup, Wi-Fi setup, touch save, prayer screen, partial refresh, and full cleanup refresh passed; maintainer confirmed normal operation |
+| SSD2677, previous tested release | Nine complete hardware resets passed touch startup on the first attempt with 480x800 geometry; an interrupted tenth attempt was not counted |
+| SSD2677 interaction | Successful touch interaction was observed on an earlier diagnostic build; it is not evidence of full interaction acceptance for the previous final package |
 
-Full SSD2677 interaction acceptance of this exact final package remains pending. Reboot persistence, sleep/wake, USB reconnection, and repeated installation have not all been re-run for this package. The older version records below retain their original scope.
+These records do not certify the version-aligned rebuild above. Historical package records further below also retain their original version-specific scope.
 
 ### Upgrade notes
 

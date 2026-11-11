@@ -14,7 +14,7 @@
           "path": "bootloader.bin",
           "offset": 0,
           "size": 22464,
-          "sha256": "c13e1d0252ea8602ec898ebd7351f6f17c71959b5bf6bcb567619c8b25013d8b"
+          "sha256": "6fed1889c29589cd0a9fd3b072653929a5d48596aa3d2bc4488803c4819208e4"
         },
         {
           "path": "partitions.bin",
@@ -26,7 +26,7 @@
           "path": "firmware.bin",
           "offset": 65536,
           "size": 1858672,
-          "sha256": "15253783d45b4d1e8ed50adb9758d7f9a8a7120b5747d9a92065ed90f589d6ba"
+          "sha256": "9e118468182f8783829368e09161f797291e45ae705df5537b53ac61ac6c8f2e"
         }
       ]
     }

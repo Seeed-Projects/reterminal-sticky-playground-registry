@@ -29,7 +29,7 @@
     "devices": [
       "reterminal-sticky"
     ],
-    "notes": "Registry package 0.1.2 adds SSD1677/SSD2677 detection and GT911 startup fixes; the tested binary still reports application 0.1.1. Final-package SSD1677 setup/touch passed; SSD2677 had nine successful startup resets. Full new-screen interaction acceptance is still pending."
+    "notes": "Version 0.1.2 supports SSD1677/SSD2677 detection. Registry, runtime, and ESP-IDF image versions now agree. This version-aligned rebuild has not yet been re-tested on hardware; the README separates its automated checks from earlier hardware evidence."
   },
   "assets": {
     "preview": "assets/preview.jpg",
@@ -80,7 +80,7 @@
       },
       {
         "title": "Screen compatibility update",
-        "description": "Install package 0.1.2 for automatic SSD1677/SSD2677 detection. The application still reports 0.1.1; package 0.1.2 identifies the tested screen/touch fixes. See the project README for the tested hardware and remaining acceptance checks."
+        "description": "Install version 0.1.2 for automatic SSD1677/SSD2677 detection. Registry, runtime, and image versions agree. This rebuild awaits physical-device acceptance; see the README for the exact source, hashes, and prior test scope."
       }
     ]
   }
