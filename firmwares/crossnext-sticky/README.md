@@ -38,7 +38,7 @@ quality and sleep current still need verification.
 ## Package origin
 
 - Release: [v1.4.11](https://github.com/loitq07/CrossNext-for-Sticky/releases/tag/v1.4.11).
-- Source reference: `e50ff900f0396d05099a99920110116ecd240ec7`.
+- Source reference: `43010fcdf81a08a281cd7642f42246c851100bb3`.
 - Build environment: PlatformIO `gh_release_sticky`.
 - Binary: `CrossNext-Sticky-v1.4.11-factory.bin`.
 - Size: **8,301,296 bytes**.
