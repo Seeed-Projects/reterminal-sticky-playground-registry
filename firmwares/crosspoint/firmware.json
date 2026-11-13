@@ -5,7 +5,7 @@
   "group": "partner",
   "catalogSection": "platform",
   "mode": "flash",
-  "status": "beta",
+  "status": "stable",
   "summary": "Transform your Sticky into a portable open-source e-reader.",
   "description": "Install the CrossPoint Reader firmware package prepared for reTerminal Sticky.",
   "author": {
@@ -24,7 +24,7 @@
     "devices": [
       "reterminal-sticky"
     ],
-    "notes": "Version 1.6.0 is tested on reTerminal Sticky production hardware."
+    "notes": "Version 2.0.0 was tested successfully on reTerminal Sticky by the Seeed contributor."
   },
   "assets": {
     "logo": "assets/logo.jpg",
@@ -38,6 +38,11 @@
   ],
   "flash": {
     "versions": [
+      {
+        "version": "2.0.0",
+        "channel": "stable",
+        "manifestPath": "firmware/2.0.0/manifest.json"
+      },
       {
         "version": "1.6.0",
         "channel": "stable",
