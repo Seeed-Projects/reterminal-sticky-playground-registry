@@ -10,10 +10,10 @@
       "chipFamily": "ESP32-S3",
       "parts": [
         {
-          "path": "pixel-sticky-full-v4.3.0T.bin",
+          "path": "pixel-sticky-full-1113.bin",
           "offset": 0,
           "size": 16777216,
-          "sha256": "5878f0b91392c78379526ee8db683e30750648d224182cde47c57cb01d40aeb1"
+          "sha256": "44e7e529599c6bc10522474e9db8890c9062736542f5e7b49a77e7b8119c995a"
         }
       ]
     }
