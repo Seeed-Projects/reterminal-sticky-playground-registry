@@ -7,7 +7,7 @@
   "mode": "flash",
   "status": "stable",
   "summary": "Self-hosted e-ink dashboards with widgets, Home Assistant, calendars and touch controls, rendered by your own server.",
-  "description": "Tesserae turns reTerminal Sticky into a battery-friendly dashboard panel for a Tesserae server you run at home (Docker, or the Home Assistant App). Compose pages from widgets such as weather, calendars, Home Assistant entities, transit and photos in the browser, then the Sticky wakes on a schedule, pulls the next frame over Wi-Fi as a ready-to-paint 4-level grayscale buffer, and goes back to deep sleep. The firmware supports partial refresh, touch controls drawn on the panel, wake on tap, battery reporting and signed over-the-air updates from the server. A Tesserae server on your network is required.",
+  "description": "Tesserae turns reTerminal Sticky into a battery-friendly dashboard panel for a Tesserae server you run at home (Docker, or the Home Assistant App). Compose pages from widgets such as weather, calendars, Home Assistant entities, transit and photos in the browser, then the Sticky wakes on a schedule, pulls the next frame over Wi-Fi as a ready-to-paint 4-level grayscale buffer, and goes back to deep sleep. The firmware runs on both Sticky display controllers (SSD1677 and SSD2677), and supports touch controls drawn on the panel, wake on tap, battery reporting and signed over-the-air updates from the server. Partial refresh is used on SSD1677 units. A Tesserae server on your network is required.",
   "author": {
     "name": "Kayden D'Mello",
     "url": "https://github.com/dmellok"
@@ -28,7 +28,7 @@
     "devices": [
       "reterminal-sticky"
     ],
-    "notes": "Package built for reTerminal Sticky (ESP32-S3, 16 MB flash) by the tesserae-device-firmware release pipeline. 4-level grayscale, partial refresh and touch are supported. Requires a Tesserae server on the local network."
+    "notes": "Package built for reTerminal Sticky (ESP32-S3, 16 MB flash) by the tesserae-device-firmware release pipeline. Both display controllers (SSD1677 and SSD2677) are detected at boot. 4-level grayscale and touch are supported on both; partial refresh on SSD1677 units only. Requires a Tesserae server on the local network."
   },
   "assets": {
     "logo": "assets/logo.svg",
@@ -46,9 +46,9 @@
   "flash": {
     "versions": [
       {
-        "version": "1.62.3",
+        "version": "1.66.0",
         "channel": "stable",
-        "manifestPath": "firmware/1.62.3/manifest.json"
+        "manifestPath": "firmware/1.66.0/manifest.json"
       }
     ],
     "notes": [
