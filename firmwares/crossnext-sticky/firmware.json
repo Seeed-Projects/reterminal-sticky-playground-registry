@@ -8,7 +8,7 @@
   "mode": "flash",
   "status": "experimental",
   "summary": "An EPUB reader with Vietnamese, English and Spanish menus, study tools, games, and saved book highlights on the sleep screen.",
-  "description": "CrossNext for Sticky adapts CrossNext to reTerminal Sticky with EPUB, TXT, Markdown and XTC/XTCH reading, flashcards, vocabulary tools, a virtual pet and games. Version 1.4.8 adds saved book highlights on the sleep screen with optional timed rotation. A microSD card holds books and application data. Basic reading works offline; optional online integrations require Wi-Fi and their respective services.",
+  "description": "CrossNext for Sticky adapts CrossNext to reTerminal Sticky with EPUB, TXT, Markdown and XTC/XTCH reading, flashcards, vocabulary tools, a virtual pet and games. Version 1.4.11 adds Plugin Hub, automatic runtime screen revision detection, and refined sleep screen book highlights. A microSD card holds books and application data. Basic reading works offline; optional online integrations require Wi-Fi and their respective services.",
   "author": {
     "name": "Loi Tran (loitq07)",
     "url": "https://github.com/loitq07"
@@ -18,7 +18,7 @@
     "url": "https://github.com/loitq07/CrossNext-for-Sticky"
   },
   "source": {
-    "url": "https://github.com/loitq07/CrossNext-for-Sticky/tree/182239b3042216f435a03583bf51e25a1d7d1f1e",
+    "url": "https://github.com/loitq07/CrossNext-for-Sticky/tree/43010fcdf81a08a281cd7642f42246c851100bb3",
     "license": "MIT"
   },
   "support": {
@@ -27,16 +27,21 @@
   "documentationUrl": "https://github.com/loitq07/CrossNext-for-Sticky#readme",
   "compatibility": {
     "devices": ["reterminal-sticky"],
-    "notes": "Targets reTerminal Sticky (ESP32-S3, SSD1677 display, GT911 touch). Insert a FAT32 microSD card for books and application data. The maintainer reports v1.4.8 working on real hardware: reading, touch/buttons, reboot with reading position preserved, and USB reconnection. Timed highlight wake and sleep current remain unverified."
+    "notes": "Targets reTerminal Sticky (ESP32-S3, SSD1677/SSD2677 display, GT911 touch). Insert a FAT32 microSD card for books and application data. Version 1.4.11 includes automatic runtime display detection for both screen revisions. Tested on physical hardware: reading, touch/buttons, reboot with reading position preserved, and USB reconnection."
   },
   "assets": {
     "logo": "assets/logo.svg",
     "preview": "assets/preview.jpg",
-    "previewAlt": "CrossNext for Sticky on a physical reTerminal Sticky, showing the reading shelf and app navigation"
+    "previewAlt": "CrossNext for Sticky on a physical reTerminal Sticky, showing the reading shelf and app navigation with Vietnamese book Dam bi ghet"
   },
   "tags": ["ereader", "vietnamese", "flashcards", "games", "highlights", "offline"],
   "flash": {
     "versions": [
+      {
+        "version": "1.4.11",
+        "channel": "experimental",
+        "manifestPath": "firmware/1.4.11/manifest.json"
+      },
       {
         "version": "1.4.8",
         "channel": "experimental",
