@@ -38,11 +38,11 @@ quality and sleep current still need verification.
 ## Package origin
 
 - Release: [v1.4.11](https://github.com/loitq07/CrossNext-for-Sticky/releases/tag/v1.4.11).
-- Source reference: `43010fcdf81a08a281cd7642f42246c851100bb3`.
+- Source reference: `d5bb439c24bb403cb32025e5f864283a4e28007d`.
 - Build environment: PlatformIO `gh_release_sticky`.
 - Binary: `CrossNext-Sticky-v1.4.11-factory.bin`.
-- Size: **8,301,296 bytes**.
-- SHA-256: `d3bf391eb75e9aef26720807c5d836a356aa8b9a2df9d26ee73fa8083724c740`.
+- Size: **8,301,568 bytes**.
+- SHA-256: `8a34aa0c9b18affe13d5f4afe34fc1e987ea4148be6ac3a9a8cb007873abbcc3`.
 - Flash offset: **0x0**; chip family: **ESP32-S3**.
 
 The source license is MIT. The included LICENSE preserves the upstream notice.
