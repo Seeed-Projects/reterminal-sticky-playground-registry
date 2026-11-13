@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "id": "edc-sticky",
+  "name": "EDC Sticky",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "productivity",
+  "mode": "flash",
+  "status": "beta",
+  "summary": "Everyday-carry companion: clock, alarm, world time, calculator, level, ruler, QR cards – useful alone, smart with the app.",
+  "description": "Custom firmware plus an Android companion app. On its own the Sticky keeps working for days: alarm, world time, timer, calculator and unit converter, spirit level, ruler (mm/inch), QR cards, a scribble pad, single-stroke handwriting, voice notes buffered on microSD and a trip/climate logger. The app adds offline speech-to-text, weather, new pages and sync. Pages turn with the device (motion sensor) and follow a Braun ET66-inspired design. Settings on the device: 12/24 h, metric/US, set the clock.",
+  "author": {
+    "name": "markussstaub-dot",
+    "url": "https://github.com/markussstaub-dot"
+  },
+  "source": {
+    "url": "https://github.com/markussstaub-dot/reterminal-sticky",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/markussstaub-dot/reterminal-sticky/issues"
+  },
+  "documentationUrl": "https://github.com/markussstaub-dot/reterminal-sticky#readme",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Needs a microSD card. Pages, widgets and settings are set up once by the Android companion app (APK in the GitHub releases); afterwards the Sticky works without the phone."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "reTerminal Sticky with the EDC firmware: timer page in portrait with Braun-style keys on e-paper"
+  },
+  "tags": [
+    "edc",
+    "productivity",
+    "calculator",
+    "alarm",
+    "handwriting",
+    "offline"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "0.31.1",
+        "channel": "beta",
+        "manifestPath": "firmware/0.31.1/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Back up the factory firmware first",
+        "description": "It contains device-specific data: esptool read-flash 0 0x2000000 backup.bin. Restore with write-flash 0 backup.bin."
+      },
+      {
+        "title": "Companion app",
+        "description": "Install the Android app from the GitHub releases and connect once: it sets the clock and copies pages, widgets and settings to the microSD card."
+      },
+      {
+        "title": "First boot without the app",
+        "description": "Shows a card with a QR code to the project page. Keys: AI = Home, ▲/▼ = pages, ▲+▼ = help."
+      }
+    ]
+  }
+}
