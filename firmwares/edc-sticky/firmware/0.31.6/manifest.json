@@ -1,0 +1,40 @@
+{
+  "name": "EDC Sticky",
+  "version": "0.31.6",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "bootloader.bin",
+          "offset": 0,
+          "size": 19968,
+          "sha256": "6ca3000286a37da6936168f9484b54ed51b24a8c2ea8b3ffb3a77e9bb8dba645"
+        },
+        {
+          "path": "partitions.bin",
+          "offset": 32768,
+          "size": 3072,
+          "sha256": "249be733dbd4f7771e64289781704beffd441f459f16d701f71ffbce3a65240c"
+        },
+        {
+          "path": "boot_app0.bin",
+          "offset": 57344,
+          "size": 8192,
+          "sha256": "f94c5d786a7a8fab06ac5d10e33bf37711a6697636dc037559ea19cc410a17f0"
+        },
+        {
+          "path": "edc-sticky.bin",
+          "offset": 65536,
+          "size": 1017888,
+          "sha256": "605a380c9c2680a9f4384eaed4c90a08724c0cb46534d7813fc19ffce0a9ee14"
+        }
+      ]
+    }
+  ]
+}
