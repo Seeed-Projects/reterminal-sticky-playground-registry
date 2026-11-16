@@ -2,7 +2,7 @@
 
 **A workbench for your reTerminal Sticky: find out what it can do – and where e-ink and the small battery set limits.**
 
-Ten stations, each one measures something and logs it to `/lab/messungen.csv` on the microSD:
+Eleven stations, each one measures something and logs it to `/lab/messungen.csv` on the microSD:
 
 1. **Refresh** – partial, partial-awake, full; timings and a ghosting probe
 2. **Fonts** – the built-in fonts side by side, 4× magnifier
@@ -12,8 +12,9 @@ Ten stations, each one measures something and logs it to `/lab/messungen.csv` on
 6. **Touch** – aim at 9 targets, feedback latency, scribble with spiral and maze templates
 7. **Gauges** – climate with dew point, spirit level, clock, battery
 8. **Energy** – current while idle, per partial/full refresh and in light sleep, with an estimate per charge
-9. **Castle duel** – a turn-based artillery game for two players or against the Sticky
+9. **Castle duel** – a turn-based artillery game for two players or against the Sticky (hidden since 0.9 – it has no tile; find it on the overview)
 10. **Keyboard** – QWERTY/QWERTZ on e-ink, typing speed and errors
+11. **Pins & restarts** – live level, edges per second and interrupt/wake setup of every button and sensor pin; reset reason of the last starts, how long the previous start ran, restarts in a row and an interrupt-storm detector (> 50 interrupts/ms). After three crashes in a row the Lab opens this station by itself, so a crash loop is visible without a USB log
 
 English and German (▲ on the overview). The **Sticky Console**
 (<https://markussstaub-dot.github.io/sticky-lab/console/>) mirrors the screen at actual size – you can even draw
@@ -32,10 +33,13 @@ AI short = overview · AI hold = screenshot to microSD · ▲/▼ = page or choo
 
 ## Hardware test record
 - Hardware: two reTerminal Sticky units (SSD1677 each), ESP32-S3 32 MB flash, 8 MB PSRAM, microSD 32 GB.
-- Build: Arduino core esp32 3.3.12, Seeed_GFX2, firmware 0.7.6.
+- Build: Arduino core esp32 3.3.12, Seeed_GFX2, firmware 0.9.1 (earlier: 0.7.6).
 - Tested: first boot and overview, all ten stations (by touch, keys and over USB), language switch kept after
   reboot, battery operation (unplugging, keys, stations), light sleep with wake (30 cycles without reset, on USB),
   USB reconnection and repeated installation with arduino-cli, measurements written to microSD.
+- 0.9.x: installed on one unit (app0, as the Playground does): boot, overview, station 11 with reset history
+  and restart counter, the hidden castle duel, repeated installation over USB. 0.9.1 only changes the label of the
+  slot-switch button (neutral when not running in its own slot) and drops debug logging against 0.9.0.
 - Result: works; see the lab log in the project repository.
 
 Status: beta. Hobby project, MIT license, feedback via

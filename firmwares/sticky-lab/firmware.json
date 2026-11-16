@@ -7,8 +7,8 @@
   "category": "tools",
   "mode": "flash",
   "status": "beta",
-  "summary": "Workbench: measure what your Sticky can do – refresh, ghosting, dithering, touch, sensors, energy – plus a game and a keyboard.",
-  "description": "Ten stations that probe the reTerminal Sticky and its 3.97-inch e-ink: refresh types and ghosting with timings, a font catalogue with magnifier, six dithering methods, Braun-style controls drawn on the panel, animation frame rates, touch accuracy and feedback latency (with spiral and maze templates), live gauges for climate, level, clock and battery, energy per refresh and in light sleep, a castle-duel game against a friend or the Sticky, and an on-screen keyboard (QWERTY/QWERTZ) with typing speed. Every station logs to /lab/messungen.csv on the microSD. English and German. The browser Sticky Console mirrors the screen at actual size, remote-controls the device and shows a live tech inventory.",
+  "summary": "Workbench: measure what your Sticky can do – refresh, dithering, touch, sensors, energy, pins and restarts – plus a hidden game.",
+  "description": "Eleven stations that probe the reTerminal Sticky and its 3.97-inch e-ink: refresh types and ghosting with timings, fonts with magnifier, six dithering methods, Braun-style controls, animation frame rates, touch accuracy and latency, gauges for climate, level, clock and battery, energy per refresh and in sleep, an on-screen keyboard with typing speed, and a pins & restarts diagnosis that makes a crash loop visible on the device (pin levels and interrupts, reset reasons, interrupt-storm detector). Plus a hidden castle-duel game. Logs to /lab/messungen.csv on the microSD. English and German. The browser Sticky Console mirrors and remote-controls the device.",
   "author": {
     "name": "markussstaub-dot",
     "url": "https://github.com/markussstaub-dot"
@@ -41,6 +41,11 @@
   ],
   "flash": {
     "versions": [
+      {
+        "version": "0.9.1",
+        "channel": "beta",
+        "manifestPath": "firmware/0.9.1/manifest.json"
+      },
       {
         "version": "0.7.6",
         "channel": "beta",
