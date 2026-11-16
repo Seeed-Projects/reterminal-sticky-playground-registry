@@ -24,7 +24,7 @@
     "devices": [
       "reterminal-sticky"
     ],
-    "notes": "Version 1.6.0 is tested on reTerminal Sticky production hardware."
+    "notes": "Version 2.0.0 was tested successfully on reTerminal Sticky by the contributor."
   },
   "assets": {
     "logo": "assets/logo.png",
@@ -41,6 +41,11 @@
   ],
   "flash": {
     "versions": [
+      {
+        "version": "2.0.0",
+        "channel": "stable",
+        "manifestPath": "firmware/2.0.0/manifest.json"
+      },
       {
         "version": "1.6.0",
         "channel": "stable",
