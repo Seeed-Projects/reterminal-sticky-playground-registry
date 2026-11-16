@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-lab",
+  "name": "Sticky Lab",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "tools",
+  "mode": "flash",
+  "status": "beta",
+  "summary": "Workbench: measure what your Sticky can do – refresh, ghosting, dithering, touch, sensors, energy – plus a game and a keyboard.",
+  "description": "Ten stations that probe the reTerminal Sticky and its 3.97-inch e-ink: refresh types and ghosting with timings, a font catalogue with magnifier, six dithering methods, Braun-style controls drawn on the panel, animation frame rates, touch accuracy and feedback latency (with spiral and maze templates), live gauges for climate, level, clock and battery, energy per refresh and in light sleep, a castle-duel game against a friend or the Sticky, and an on-screen keyboard (QWERTY/QWERTZ) with typing speed. Every station logs to /lab/messungen.csv on the microSD. English and German. The browser Sticky Console mirrors the screen at actual size, remote-controls the device and shows a live tech inventory.",
+  "author": {
+    "name": "markussstaub-dot",
+    "url": "https://github.com/markussstaub-dot"
+  },
+  "source": {
+    "url": "https://github.com/markussstaub-dot/sticky-lab",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/markussstaub-dot/sticky-lab/issues"
+  },
+  "documentationUrl": "https://github.com/markussstaub-dot/sticky-lab#readme",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "microSD optional (measurements and screenshots go to /lab/). Works with both display controllers (SSD1677/SSD2677). Leaves data of other firmwares in flash and on the card alone."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "reTerminal Sticky running Sticky Lab: the same lit sphere dithered four ways on e-paper"
+  },
+  "tags": [
+    "tools",
+    "e-ink",
+    "benchmark",
+    "touch",
+    "battery",
+    "game"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "0.7.6",
+        "channel": "beta",
+        "manifestPath": "firmware/0.7.6/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Back up the factory firmware first",
+        "description": "It contains device-specific data: esptool read-flash 0 0x2000000 backup.bin. Restore with write-flash 0 backup.bin."
+      },
+      {
+        "title": "Controls",
+        "description": "AI short = overview, AI hold = screenshot to microSD, ▲/▼ = page or choose, tap = action, tap the status line = help. On the overview ▲ switches English/German."
+      },
+      {
+        "title": "Sticky Console",
+        "description": "Open https://markussstaub-dot.github.io/sticky-lab/console/ in Edge or Chrome and connect over USB: mirror at actual size, remote control, measurements and a live tech inventory."
+      }
+    ]
+  }
+}
