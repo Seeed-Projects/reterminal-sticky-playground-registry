@@ -1,17 +1,17 @@
 # CrossMux
 
-This entry provides the CrossMux firmware package for browser-based installation from the reTerminal Sticky Playground.
+This partner entry provides CrossMux firmware for browser-based installation
+from the reTerminal Sticky Playground.
 
-Version 1.6.0 is stored under `firmware/1.6.0/` as a local four-part flash package for reTerminal Sticky.
+Version `2.0.0` is stored under `firmware/2.0.0/` as a complete four-part
+ESP32-S3 package. The contributor supplied the BINs downloaded from the official
+website; all four match the Sticky package in the official
+[2.0.0 release](https://github.com/0x1abin/crossmux/releases/tag/2.0.0).
+The upstream license is MIT.
 
-The package comes from the official CrossMux 1.6.0 GitHub release at:
+The package writes the bootloader at `0x0`, partition table at `0x8000`, OTA
+selector at `0xe000`, and application at `0x10000`, using DIO / 80 MHz / 16 MB
+settings. File sizes and SHA-256 values are recorded in the manifest.
 
-<https://github.com/0x1abin/crossmux/releases/tag/1.6.0>
-
-It was built from CrossMux commit:
-
-`c92edca422bc2a3087e22c2d47956e562ae1006e`
-
-using the PlatformIO `sticky-gh_release` environment.
-
-The packaged firmware was flashed to a physical reTerminal Sticky and verified for successful installation, boot, serial output, and normal operation.
+The contributor flashed this package to a physical reTerminal Sticky and
+confirmed successful operation. Version `1.6.0` remains available unchanged.
