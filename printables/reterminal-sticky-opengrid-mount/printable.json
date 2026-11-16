@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "reterminal-sticky-opengrid-mount",
+  "name": "reTerminal Sticky openGrid Mount",
+  "category": "mount",
+  "summary": "A wall mount that attaches without adhesive and can be repositioned using OpenGrid.",
+  "author": {
+    "name": "dustin",
+    "url": "https://makerworld.com/en/@dlsspy"
+  },
+  "download": {
+    "platform": "MakerWorld",
+    "url": "https://makerworld.com/en/models/3574117-reterminal-sticky-opengrid-mount#profileId-4091555"
+  },
+  "preview": {
+    "image": "assets/preview.jpg",
+    "alt": "A wall mount that attaches without adhesive and can be repositioned using OpenGrid."
+  }
+}
