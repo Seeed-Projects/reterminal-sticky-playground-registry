@@ -42,6 +42,11 @@
   "flash": {
     "versions": [
       {
+        "version": "0.31.6",
+        "channel": "beta",
+        "manifestPath": "firmware/0.31.6/manifest.json"
+      },
+      {
         "version": "0.31.1",
         "channel": "beta",
         "manifestPath": "firmware/0.31.1/manifest.json"
@@ -53,12 +58,16 @@
         "description": "It contains device-specific data: esptool read-flash 0 0x2000000 backup.bin. Restore with write-flash 0 backup.bin."
       },
       {
+        "title": "microSD card needed",
+        "description": "Menu, widgets, help and handwriting live on a FAT32 microSD card. Without the app, copy the \"soll\" folder from edc-sticky-sd-basekit.zip (GitHub release) to the card."
+      },
+      {
         "title": "Companion app",
         "description": "Install the Android app from the GitHub releases and connect once: it sets the clock and copies pages, widgets and settings to the microSD card."
       },
       {
         "title": "First boot without the app",
-        "description": "Shows a card with a QR code to the project page. Keys: AI = Home, ▲/▼ = pages, ▲+▼ = help."
+        "description": "Shows a card with a QR code to the project page. With the microSD base kit: AI short on Home opens the menu; ▲/▼ = pages, ▲+▼ = help."
       }
     ]
   }
