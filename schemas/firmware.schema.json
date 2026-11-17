@@ -395,6 +395,15 @@
             "$ref": "#/$defs/flashVersion"
           }
         },
+        "variants": {
+          "type": "array",
+          "description": "Variants of this firmware, such as language packs. The first variant is the default and also covers versions without their own variant list.",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": {
+            "$ref": "#/$defs/flashVariant"
+          }
+        },
         "notes": {
           "$ref": "#/$defs/instructions"
         }
@@ -791,6 +800,15 @@
           "type": "boolean",
           "const": true,
           "description": "Build and publish this version from the submitted source with GitHub Actions."
+        },
+        "variants": {
+          "type": "array",
+          "description": "One firmware package per variant offered by this version. Each id must be declared in flash.variants.",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": {
+            "$ref": "#/$defs/flashVariantPackage"
+          }
         }
       },
       "oneOf": [
@@ -810,8 +828,56 @@
           "required": [
             "sourceBuild"
           ]
+        },
+        {
+          "required": [
+            "variants"
+          ]
         }
       ]
+    },
+    "flashVariant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "maxLength": 40
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      }
+    },
+    "flashVariantPackage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "manifestPath"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "maxLength": 40
+        },
+        "manifestPath": {
+          "$ref": "#/$defs/localPath"
+        }
+      }
     }
   }
 }

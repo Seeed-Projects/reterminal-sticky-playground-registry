@@ -11,6 +11,7 @@ import { basename, join, resolve } from 'node:path';
 
 const DEFAULT_FLASH_SIZE = '16MB';
 const CHIP_FAMILY = 'ESP32-S3';
+const VARIANT_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 // Reads "<file>.bin@<offset>" pairs and ESP-IDF flasher_args.json into one offset table.
 // 把 "<file>.bin@<offset>" 参数和 ESP-IDF 的 flasher_args.json 合并成一张偏移表。
@@ -49,12 +50,22 @@ export function listBinaries(versionDir) {
     .sort();
 }
 
+// Returns the package directory of one version, or of one variant inside that version.
+// 返回某个版本的固件包目录；指定变体时返回该版本下这个变体的目录。
+export function packagePathFor(version, variant) {
+  if (variant !== undefined && !VARIANT_PATTERN.test(variant)) {
+    throw new Error(`Invalid variant "${variant}". Use lowercase letters, digits, and single hyphens, for example chinese`);
+  }
+  return variant ? `firmware/${version}/${variant}` : `firmware/${version}`;
+}
+
 // Builds the manifest the browser flasher reads, with byte sizes and SHA-256 filled in.
 // 生成浏览器烧录页读取的 manifest，自动填入文件大小和 SHA-256。
 export function createFlashManifest({
   rootDir,
   firmwareId,
   version,
+  variant,
   offsets = new Map(),
   flashSize = DEFAULT_FLASH_SIZE,
 }) {
@@ -65,14 +76,15 @@ export function createFlashManifest({
   }
   const firmware = JSON.parse(readFileSync(metadataPath, 'utf8'));
 
-  const versionDir = join(firmwareDir, 'firmware', version);
+  const packagePath = packagePathFor(version, variant);
+  const versionDir = join(firmwareDir, packagePath);
   if (!existsSync(versionDir)) {
-    throw new Error(`Create firmwares/${firmwareId}/firmware/${version}/ and copy the .bin files into it first`);
+    throw new Error(`Create firmwares/${firmwareId}/${packagePath}/ and copy the .bin files into it first`);
   }
 
   const binaries = listBinaries(versionDir);
   if (binaries.length === 0) {
-    throw new Error(`No .bin files found in firmwares/${firmwareId}/firmware/${version}/`);
+    throw new Error(`No .bin files found in firmwares/${firmwareId}/${packagePath}/`);
   }
 
   const resolvedOffsets = new Map(offsets);
@@ -88,7 +100,7 @@ export function createFlashManifest({
 
   for (const name of resolvedOffsets.keys()) {
     if (!binaries.includes(name)) {
-      throw new Error(`${name} is not in firmwares/${firmwareId}/firmware/${version}/`);
+      throw new Error(`${name} is not in firmwares/${firmwareId}/${packagePath}/`);
     }
   }
   for (const name of binaries) {
@@ -123,8 +135,9 @@ export function createFlashManifest({
     }
   }
 
+  const variantLabel = firmware.flash?.variants?.find((entry) => entry.id === variant)?.label || variant;
   const manifest = {
-    name: firmware.name,
+    name: variant ? `${firmware.name} ${variantLabel}` : firmware.name,
     version,
     flashSize,
     ...carriedFlasherSettings(previous),
@@ -174,6 +187,8 @@ function parseArguments(argv) {
       options.flasherArgsPath = argv[++index];
     } else if (argument === '--flash-size') {
       options.flashSize = argv[++index];
+    } else if (argument === '--variant') {
+      options.variant = argv[++index];
     } else if (argument.startsWith('--')) {
       throw new Error(`Unknown option ${argument}`);
     } else {
@@ -184,7 +199,7 @@ function parseArguments(argv) {
   const [firmwareId, version] = positional;
   if (!firmwareId || !version) {
     throw new Error(
-      'Usage: npm run create:manifest -- <firmware-id> <version> '
+      'Usage: npm run create:manifest -- <firmware-id> <version> [--variant <variant-id>] '
       + '[--part <file>.bin@<offset>]... [--flasher-args <path>] [--flash-size 16MB]',
     );
   }
@@ -206,6 +221,7 @@ function main() {
     rootDir,
     firmwareId: options.firmwareId,
     version: options.version,
+    variant: options.variant,
     offsets: parseOffsets({ parts: options.parts, flasherArgs }),
     flashSize: options.flashSize,
   });
@@ -215,11 +231,20 @@ function main() {
     console.log(`  ${toHex(part.offset).padStart(8)}  ${String(part.size).padStart(9)} bytes  ${part.path}`);
   }
   console.log('');
+  const manifestPathEntry = `${packagePathFor(options.version, options.variant)}/manifest.json`;
+  if (options.variant) {
+    console.log(
+      `Add this package to the variants list of version ${options.version} `
+      + `in firmwares/${options.firmwareId}/firmware.json, and declare "${options.variant}" in flash.variants:`,
+    );
+    console.log(`${JSON.stringify({ id: options.variant, manifestPath: manifestPathEntry }, null, 2)}`);
+    return;
+  }
   console.log(`Add this version to firmwares/${options.firmwareId}/firmware.json under flash.versions:`);
   console.log(`${JSON.stringify({
     version: options.version,
     channel: 'stable',
-    manifestPath: `firmware/${options.version}/manifest.json`,
+    manifestPath: manifestPathEntry,
   }, null, 2)}`);
 }
 

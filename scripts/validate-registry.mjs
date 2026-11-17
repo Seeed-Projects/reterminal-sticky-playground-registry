@@ -44,6 +44,8 @@ const BUILD_SYSTEMS = new Map([
   ['arduino', { fields: ['system', 'profile', 'projectPath'], marker: 'sketch.yaml' }],
 ]);
 const BUILD_NAME_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
+const MAX_FLASH_VARIANTS = 12;
+const VARIANT_GROUPS = new Set(['community', 'partner']);
 const ALLOWED_ASSET_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.svg']);
 const ALLOWED_PHOTO_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp']);
 const PRINTABLE_FIELDS = new Set([
@@ -283,9 +285,12 @@ function validateDirectFlashPackage(integration, integrationDir, scope) {
   if (hasLocalSource && versions[0]?.sourceBuild !== true) {
     addError(`${scope}.flash.versions[0].sourceBuild`, 'must be true for a source contribution');
   }
+  if (hasLocalSource && integration.flash?.variants !== undefined) {
+    addError(`${scope}.flash.variants`, 'is available for firmware-only packages');
+  }
   if (!hasLocalSource) {
     for (const [index, version] of versions.entries()) {
-      if (!version.manifestPath) {
+      if (!version.manifestPath && version.variants === undefined) {
         addError(`${scope}.flash.versions[${index}].manifestPath`, 'is required for a firmware-only package');
       }
     }
@@ -695,8 +700,73 @@ function validateLocalFlashManifest(manifestPath, integrationDir, version, scope
   }
 }
 
+// Validates the variants a firmware offers, such as language packs, and returns their IDs.
+// 校验固件提供的变体（例如不同语言包），并返回全部变体 ID。
+function validateFlashVariants(value, scope) {
+  const ids = new Set();
+  if (!Array.isArray(value) || value.length === 0 || value.length > MAX_FLASH_VARIANTS) {
+    addError(scope, `must contain between 1 and ${MAX_FLASH_VARIANTS} variants`);
+    return ids;
+  }
+
+  value.forEach((entry, index) => {
+    const variantScope = `${scope}[${index}]`;
+    if (!validateObjectKeys(entry, ['id', 'label'], new Set(['id', 'label', 'description']), variantScope)) {
+      return;
+    }
+    if (validateString(entry.id, `${variantScope}.id`, { max: 40, pattern: ID_PATTERN })) {
+      if (ids.has(entry.id)) {
+        addError(`${variantScope}.id`, `duplicates variant "${entry.id}"`);
+      }
+      ids.add(entry.id);
+    }
+    validateString(entry.label, `${variantScope}.label`, { max: 40 });
+    if (entry.description !== undefined) {
+      validateString(entry.description, `${variantScope}.description`, { max: 200 });
+    }
+  });
+  return ids;
+}
+
+// Validates the per-variant firmware packages of one version.
+// 校验某一个版本下每个变体各自的固件包。
+function validateVersionVariants(value, declaredVariants, integrationDir, version, scope) {
+  if (!declaredVariants) {
+    addError(scope, 'requires flash.variants to declare each variant');
+    return [];
+  }
+  if (!Array.isArray(value) || value.length === 0) {
+    addError(scope, 'must contain at least one variant package');
+    return [];
+  }
+
+  const ids = [];
+  const manifestPaths = new Set();
+  value.forEach((entry, index) => {
+    const packageScope = `${scope}[${index}]`;
+    if (!validateObjectKeys(entry, ['id', 'manifestPath'], new Set(['id', 'manifestPath']), packageScope)) {
+      return;
+    }
+    if (validateString(entry.id, `${packageScope}.id`, { max: 40, pattern: ID_PATTERN })) {
+      if (!declaredVariants.has(entry.id)) {
+        addError(`${packageScope}.id`, `"${entry.id}" is not declared in flash.variants`);
+      }
+      if (ids.includes(entry.id)) {
+        addError(`${packageScope}.id`, `duplicates variant "${entry.id}" in this version`);
+      }
+      ids.push(entry.id);
+    }
+    if (manifestPaths.has(entry.manifestPath)) {
+      addError(`${packageScope}.manifestPath`, 'is already used by another variant of this version');
+    }
+    manifestPaths.add(entry.manifestPath);
+    validateLocalFlashManifest(entry.manifestPath, integrationDir, version, `${packageScope}.manifestPath`);
+  });
+  return ids;
+}
+
 function validateFlashMode(value, integrationDir, scope) {
-  const allowedKeys = new Set(['versions', 'notes']);
+  const allowedKeys = new Set(['versions', 'variants', 'notes']);
   if (!validateObjectKeys(value, ['versions'], allowedKeys, scope)) {
     return;
   }
@@ -705,6 +775,14 @@ function validateFlashMode(value, integrationDir, scope) {
     addError(`${scope}.versions`, 'must contain at least one firmware version');
     return;
   }
+
+  const declaredVariants = value.variants !== undefined
+    ? validateFlashVariants(value.variants, `${scope}.variants`)
+    : null;
+  // A version without its own variant list ships the first declared variant.
+  // 没有单独列出变体的版本，视为提供第一个声明的变体。
+  const offeredVariants = new Set();
+  const defaultVariant = Array.isArray(value.variants) ? value.variants[0]?.id : undefined;
 
   const versions = new Set();
   value.versions.forEach((entry, index) => {
@@ -717,6 +795,7 @@ function validateFlashMode(value, integrationDir, scope) {
       'releaseUrl',
       'manifestPath',
       'sourceBuild',
+      'variants',
     ]);
     const requiredVersionKeys = ['version', 'channel'];
     if (!validateObjectKeys(entry, requiredVersionKeys, allowedVersionKeys, versionScope)) {
@@ -735,13 +814,26 @@ function validateFlashMode(value, integrationDir, scope) {
       entry.manifestPath !== undefined,
       entry.manifestUrl !== undefined || entry.manifestSha256 !== undefined || entry.releaseUrl !== undefined,
       entry.sourceBuild === true,
+      entry.variants !== undefined,
     ].filter(Boolean).length;
     if (deliveryFields !== 1) {
       addError(versionScope, 'must use exactly one firmware delivery method');
       return;
     }
 
-    if (entry.manifestPath !== undefined) {
+    if (entry.variants === undefined && defaultVariant) {
+      offeredVariants.add(defaultVariant);
+    }
+
+    if (entry.variants !== undefined) {
+      validateVersionVariants(
+        entry.variants,
+        declaredVariants,
+        integrationDir,
+        entry.version,
+        `${versionScope}.variants`,
+      ).forEach((id) => offeredVariants.add(id));
+    } else if (entry.manifestPath !== undefined) {
       validateLocalFlashManifest(entry.manifestPath, integrationDir, entry.version, `${versionScope}.manifestPath`);
     } else if (entry.sourceBuild === true) {
       // GitHub Actions creates the manifest and firmware release from source.
@@ -756,6 +848,14 @@ function validateFlashMode(value, integrationDir, scope) {
       validateHttpsUrl(entry.releaseUrl, `${versionScope}.releaseUrl`);
     }
   });
+
+  if (Array.isArray(value.variants)) {
+    value.variants.forEach((variant, index) => {
+      if (typeof variant?.id === 'string' && !offeredVariants.has(variant.id)) {
+        addError(`${scope}.variants[${index}].id`, `"${variant.id}" is not offered by any firmware version`);
+      }
+    });
+  }
 
   if (value.notes !== undefined) {
     validateInstructions(value.notes, `${scope}.notes`);
@@ -906,6 +1006,10 @@ function validateFirmware(integrationDir, directoryName, seenIds) {
 
   if (integration.id === 'sticky-factory') {
     validateStickyOfficialFirmwarePackage(integration, integrationDir, scope);
+  }
+
+  if (integration.flash?.variants !== undefined && !VARIANT_GROUPS.has(integration.group)) {
+    addError(`${scope}.flash.variants`, 'is available for community and partner firmware');
   }
 
   for (const modeField of MODE_FIELDS) {

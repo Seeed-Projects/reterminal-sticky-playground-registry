@@ -56,6 +56,7 @@ Shared review and release steps live in [CONTRIBUTING.md](../CONTRIBUTING.md).
 - [Pull request review and automation](#pull-request-review-and-automation)
 - [What happens after merge](#what-happens-after-merge)
 - [Updating an existing firmware](#updating-an-existing-firmware)
+- [Firmware variants](#firmware-variants)
 - [Pull request checklist](#pull-request-checklist)
 
 ## Contribution result
@@ -324,10 +325,15 @@ Omit the whole `build` object for firmware-only packages.
 | `flash.versions[].sourceBuild` | boolean | Source contributions: `true` on the newest version | — | GitHub Actions builds this version from `source/` |
 | `flash.versions[].manifestPath` | string | Firmware-only: required on every version | `firmware/<version>/manifest.json` | Path to the committed manifest |
 | `flash.versions[].manifestUrl`, `manifestSha256`, `releaseUrl` | string | Maintainer use | — | Used for versions that already live in a Registry GitHub Release |
+| `flash.versions[].variants` | array | Firmware with [variants](#firmware-variants) | 1–12 items, each `{ "id", "manifestPath" }` | One package per variant this version offers |
+| `flash.variants` | array | Firmware with [variants](#firmware-variants) | 1–12 items, first is the default | Variants users choose between, such as language packs |
+| `flash.variants[].id` | string | Yes | ≤ 40 chars, `^[a-z0-9]+(?:-[a-z0-9]+)*$`, unique | Stable variant ID, for example `chinese` |
+| `flash.variants[].label` | string | Yes | 1–40 chars | Name shown in the variant menu, for example `Chinese` |
+| `flash.variants[].description` | string | No | 1–200 chars | One line shown under the menus, for example the keyboard layouts included |
 | `flash.notes` | array | No | 1–12 items | Installation notes shown on the flashing page; each item has `title` (≤ 100) and `description` (≤ 500) |
 
 Each version uses exactly one delivery method: `sourceBuild: true`, or
-`manifestPath`, or the Release triplet.
+`manifestPath`, or the Release triplet, or `variants`.
 
 `author` and `origin` are website attribution fields. The `source` object keeps
 the technical source repository, license, and local build path used during
@@ -645,6 +651,8 @@ against the files committed in the PR.
 | `...flash.versions[0]: must use exactly one firmware delivery method` | `sourceBuild` and `manifestPath` both set, or neither | Keep one |
 | `...manifestPath: must be inside the firmware/ directory` | Manifest stored elsewhere | Move to `firmware/<version>/manifest.json` |
 | `...manifestPath: version must match firmware version "1.0.0"` | Manifest `version` differs from `flash.versions[].version` | Make them identical |
+| `...variants[0].id: "chinese" is not declared in flash.variants` | A version lists a variant that `flash.variants` lacks | Add the variant to `flash.variants` |
+| `...flash.variants[1].id: "korean" is not offered by any firmware version` | A declared variant has no package yet | Add its package to a version, or remove the declaration |
 | `...parts[0].path: must be one .bin filename beside the manifest` | Path contains a directory or wrong extension | Put the file next to the manifest and use its bare name |
 | `...parts[0].size: expected 1523712 bytes but found 1523700` | Wrong `size` | Re-run `wc -c` and update |
 | `...parts[0].sha256: does not match the firmware file` | Wrong hash or file changed after hashing | Re-run `shasum -a 256` and update |
@@ -744,6 +752,54 @@ For a new version:
 4. Keep older firmware directories referenced by `firmware.json`.
 5. Run validation and repeat the physical device test.
 6. Describe user-visible changes and upgrade behavior in the pull request.
+
+## Firmware variants
+
+Use variants when one firmware ships several images for the same version, for
+example one image per language pack. The firmware keeps one card on
+Playground. Its flashing page offers a variant menu on the left and a version
+menu on the right; the version menu lists the versions of the selected
+variant.
+
+Variants apply to firmware-only packages of community and partner firmware.
+Declare every variant once in `flash.variants`, then list the package of each
+variant under the version that offers it:
+
+```json
+"flash": {
+  "variants": [
+    { "id": "default", "label": "Default", "description": "US, UA, DE, FR, and HE keyboard layouts" },
+    { "id": "chinese", "label": "Chinese", "description": "US and Simplified Chinese input" }
+  ],
+  "versions": [
+    {
+      "version": "1.0.28",
+      "channel": "stable",
+      "variants": [
+        { "id": "default", "manifestPath": "firmware/1.0.28/default/manifest.json" },
+        { "id": "chinese", "manifestPath": "firmware/1.0.28/chinese/manifest.json" }
+      ]
+    },
+    { "version": "1.0.25", "channel": "stable", "manifestPath": "firmware/1.0.25/manifest.json" }
+  ]
+}
+```
+
+- The first variant in `flash.variants` is the default. The flashing page opens
+  on it, and a version with a plain `manifestPath` belongs to it. Earlier
+  single-package versions therefore stay as they are.
+- Each variant package lives in `firmware/<version>/<variant>/` with its own
+  `manifest.json` and `.bin` files. Its manifest `version` matches the version
+  it belongs to.
+- A version may offer a subset of the variants. Every declared variant is
+  offered by at least one version.
+
+Write each variant manifest with `--variant`; the command prints the package
+entry to paste into the version's `variants` list:
+
+```bash
+npm run create:manifest -- draftling 1.0.28 --variant chinese
+```
 
 ## Pull request checklist
 

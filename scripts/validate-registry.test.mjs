@@ -635,6 +635,125 @@ test('accepts a firmware-only community contribution with verified binaries', ()
   assert.equal(result.status, 0, result.stderr);
 });
 
+function writeFlashPackage(integrationDir, packageDir, version, binary = Buffer.from([0xe9, 0x01, 0x02, 0x03])) {
+  mkdirSync(join(integrationDir, packageDir), { recursive: true });
+  const sha256 = createHash('sha256').update(binary).digest('hex');
+  writeFileSync(join(integrationDir, packageDir, 'firmware.bin'), binary);
+  writeFileSync(
+    join(integrationDir, packageDir, 'manifest.json'),
+    `${JSON.stringify({
+      name: 'Variant firmware',
+      version,
+      builds: [{
+        chipFamily: 'ESP32-S3',
+        parts: [{ path: 'firmware.bin', offset: 0, size: binary.length, sha256 }],
+      }],
+    }, null, 2)}\n`,
+  );
+}
+
+function variantFirmware(id) {
+  const integration = validBase(id, 'flash');
+  integration.catalogSection = 'community';
+  integration.flash = {
+    variants: [
+      { id: 'default', label: 'Default', description: 'US, UA, DE, FR, and HE layouts' },
+      { id: 'chinese', label: 'Chinese' },
+    ],
+    versions: [
+      {
+        version: '1.1.0',
+        channel: 'stable',
+        variants: [
+          { id: 'default', manifestPath: 'firmware/1.1.0/default/manifest.json' },
+          { id: 'chinese', manifestPath: 'firmware/1.1.0/chinese/manifest.json' },
+        ],
+      },
+      {
+        version: '1.0.0',
+        channel: 'stable',
+        manifestPath: 'firmware/1.0.0/manifest.json',
+      },
+    ],
+  };
+  return integration;
+}
+
+function writeVariantFirmware(root, integration) {
+  const integrationDir = writeIntegration(root, integration);
+  writeFileSync(join(integrationDir, 'README.md'), '# Variant firmware\n');
+  writeFlashPackage(integrationDir, 'firmware/1.1.0/default', '1.1.0');
+  writeFlashPackage(integrationDir, 'firmware/1.1.0/chinese', '1.1.0', Buffer.from([0xe9, 0x04, 0x05]));
+  writeFlashPackage(integrationDir, 'firmware/1.0.0', '1.0.0');
+  return integrationDir;
+}
+
+test('accepts firmware variants beside an earlier single-package version', () => {
+  const root = createRegistry();
+  writeVariantFirmware(root, variantFirmware('variant-firmware'));
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 0, result.stderr);
+});
+
+test('rejects variant packages that are undeclared, repeated, or mixed with another delivery method', () => {
+  const root = createRegistry();
+  const integration = variantFirmware('variant-mistakes');
+  integration.flash.versions[0].variants.push(
+    { id: 'japanese', manifestPath: 'firmware/1.1.0/chinese/manifest.json' },
+    { id: 'chinese', manifestPath: 'firmware/1.1.0/chinese/manifest.json' },
+  );
+  integration.flash.versions[1].variants = [{ id: 'default', manifestPath: 'firmware/1.0.0/manifest.json' }];
+  writeVariantFirmware(root, integration);
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /versions\[0\]\.variants\[2\]\.id: "japanese" is not declared in flash\.variants/);
+  assert.match(result.stderr, /versions\[0\]\.variants\[3\]\.id: duplicates variant "chinese" in this version/);
+  assert.match(result.stderr, /versions\[0\]\.variants\[3\]\.manifestPath: is already used by another variant of this version/);
+  assert.match(result.stderr, /versions\[1\]: must use exactly one firmware delivery method/);
+});
+
+test('rejects a declared variant that no version offers and version variants without declarations', () => {
+  const root = createRegistry();
+  const unused = variantFirmware('variant-unused');
+  unused.flash.variants.push({ id: 'korean', label: 'Korean' });
+  writeVariantFirmware(root, unused);
+  const undeclared = variantFirmware('variant-undeclared');
+  delete undeclared.flash.variants;
+  writeVariantFirmware(root, undeclared);
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /variant-unused\/firmware\.json\.flash\.variants\[2\]\.id: "korean" is not offered by any firmware version/);
+  assert.match(result.stderr, /variant-undeclared\/firmware\.json\.flash\.versions\[0\]\.variants: requires flash\.variants to declare each variant/);
+});
+
+test('keeps variants to community and partner firmware-only packages', () => {
+  const root = createRegistry();
+  const official = variantFirmware('variant-official');
+  official.group = 'official';
+  official.catalogSection = 'official';
+  writeVariantFirmware(root, official);
+  const source = variantFirmware('variant-source');
+  source.source.path = 'source';
+  source.build = { system: 'platformio', environment: 'sticky', projectPath: 'source' };
+  source.flash.versions.unshift({ version: '1.2.0', channel: 'stable', sourceBuild: true });
+  const sourceDir = writeVariantFirmware(root, source);
+  mkdirSync(join(sourceDir, 'source'), { recursive: true });
+  writeFileSync(join(sourceDir, 'source', 'platformio.ini'), '[env:sticky]\n');
+  writeFileSync(join(sourceDir, 'source', 'LICENSE'), 'MIT\n');
+
+  const result = runValidator(root);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /variant-official\/firmware\.json\.flash\.variants: is available for community and partner firmware/);
+  assert.match(result.stderr, /variant-source\/firmware\.json\.flash\.variants: is available for firmware-only packages/);
+});
+
 test('rejects a firmware-only community contribution without a source license', () => {
   const root = createRegistry();
   const integration = validBase('firmware-only-no-license', 'flash');

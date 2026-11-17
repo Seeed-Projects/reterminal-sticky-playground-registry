@@ -108,6 +108,40 @@ test('uses offset 0 when the version directory holds one merged image', () => {
   }
 });
 
+test('writes a variant manifest inside its version directory', () => {
+  const root = mkdtempSync(join(tmpdir(), 'sticky-manifest-variant-test-'));
+  try {
+    const firmwareDir = join(root, 'firmwares', 'example-firmware');
+    const variantDir = join(firmwareDir, 'firmware', '1.0.0', 'chinese');
+    mkdirSync(variantDir, { recursive: true });
+    writeFileSync(join(firmwareDir, 'firmware.json'), `${JSON.stringify({
+      id: 'example-firmware',
+      name: 'Example Firmware',
+      flash: { variants: [{ id: 'chinese', label: 'Chinese' }] },
+    }, null, 2)}\n`);
+    writeFileSync(join(variantDir, 'merged.bin'), application);
+
+    const { manifest, manifestPath } = createFlashManifest({
+      rootDir: root,
+      firmwareId: 'example-firmware',
+      version: '1.0.0',
+      variant: 'chinese',
+    });
+    assert.equal(manifestPath, join(variantDir, 'manifest.json'));
+    assert.equal(manifest.name, 'Example Firmware Chinese');
+    assert.deepEqual(manifest.builds[0].parts.map((part) => [part.path, part.offset]), [['merged.bin', 0]]);
+
+    assert.throws(() => createFlashManifest({
+      rootDir: root,
+      firmwareId: 'example-firmware',
+      version: '1.0.0',
+      variant: 'Chinese Pack',
+    }), /Invalid variant "Chinese Pack"/);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test('asks for offsets when several files could go anywhere', () => {
   const { root } = createRegistry();
   try {

@@ -49,6 +49,7 @@ Playground 上已有固件包最常见的偏移（`0x0`、`0x8000`、`0xE000`、
 - [PR 审核和自动编译](#pr-审核和自动编译)
 - [合并后如何进入 Sticky 官网](#合并后如何进入-sticky-官网)
 - [更新已有固件](#更新已有固件)
+- [固件变体](#固件变体)
 - [PR 提交前清单](#pr-提交前清单)
 
 ## 贡献完成后，用户会得到什么
@@ -315,9 +316,14 @@ cp -R firmwares/_template firmwares/my-firmware
 | `flash.versions[].sourceBuild` | 布尔 | 源码模式：最新版本填 `true` | — | 由 GitHub Actions 从 `source/` 编译这个版本 |
 | `flash.versions[].manifestPath` | 字符串 | 仅固件包：每个版本必填 | `firmware/<version>/manifest.json` | 已提交的 manifest 路径 |
 | `flash.versions[].manifestUrl`、`manifestSha256`、`releaseUrl` | 字符串 | 维护者使用 | — | 用于已经存放在 Registry GitHub Release 里的版本 |
+| `flash.versions[].variants` | 数组 | 有[变体](#固件变体)的固件 | 1–12 项，每项为 `{ "id", "manifestPath" }` | 这个版本提供的每个变体各一个固件包 |
+| `flash.variants` | 数组 | 有[变体](#固件变体)的固件 | 1–12 项，第一项为默认变体 | 用户可选择的变体，例如不同语言包 |
+| `flash.variants[].id` | 字符串 | 是 | ≤ 40 字符，`^[a-z0-9]+(?:-[a-z0-9]+)*$`，不重复 | 固定的变体 ID，例如 `chinese` |
+| `flash.variants[].label` | 字符串 | 是 | 1–40 字符 | 变体菜单里显示的名称，例如 `Chinese` |
+| `flash.variants[].description` | 字符串 | 否 | 1–200 字符 | 显示在菜单下方的一句说明，例如包含哪些键盘布局 |
 | `flash.notes` | 数组 | 否 | 1–12 项 | 烧录页上显示的安装提示；每项含 `title`（≤ 100）和 `description`（≤ 500） |
 
-每个版本只能用一种交付方式：`sourceBuild: true`，或 `manifestPath`，或 Release 三元组。
+每个版本只能用一种交付方式：`sourceBuild: true`，或 `manifestPath`，或 Release 三元组，或 `variants`。
 
 `author` 和 `origin` 用于网站署名展示；`source` 保存审核与固件打包使用的源码仓库、
 许可证和本地编译路径。
@@ -622,6 +628,8 @@ PR 中提交的文件。
 | `...flash.versions[0]: must use exactly one firmware delivery method` | `sourceBuild` 和 `manifestPath` 同时出现，或都没有 | 只保留一种 |
 | `...manifestPath: must be inside the firmware/ directory` | manifest 放错位置 | 移到 `firmware/<version>/manifest.json` |
 | `...manifestPath: version must match firmware version "1.0.0"` | manifest 的 `version` 与 `flash.versions[].version` 不一致 | 改成一样 |
+| `...variants[0].id: "chinese" is not declared in flash.variants` | 版本里列出的变体没有在 `flash.variants` 中声明 | 在 `flash.variants` 中加上这个变体 |
+| `...flash.variants[1].id: "korean" is not offered by any firmware version` | 声明的变体还没有任何固件包 | 在某个版本下加入它的固件包，或删除这条声明 |
 | `...parts[0].path: must be one .bin filename beside the manifest` | 路径带目录或后缀不对 | 文件放在 manifest 旁边，只写文件名 |
 | `...parts[0].size: expected 1523712 bytes but found 1523700` | `size` 写错 | 重新 `wc -c` 后更新 |
 | `...parts[0].sha256: does not match the firmware file` | 哈希写错，或算完哈希后文件又变了 | 重新 `shasum -a 256` 后更新 |
@@ -718,6 +726,49 @@ Sticky 网站仓库闭源。
 6. 在 PR 中说明用户能看到的变化和升级后的行为。
 
 一句话总结：每个版本保留测试结果；源码模式的历史固件保存在对应 GitHub Release。
+
+## 固件变体
+
+同一个版本需要发布多个固件镜像时（例如每种语言包一个镜像），使用变体。这个固件在
+Playground 上仍然只有一张卡片；烧录页左边是变体菜单，右边是版本菜单，版本菜单列出所选
+变体的全部版本。
+
+变体适用于社区固件和合作伙伴固件的仅固件包。在 `flash.variants` 中声明每个变体，再在
+提供该变体的版本下列出它的固件包：
+
+```json
+"flash": {
+  "variants": [
+    { "id": "default", "label": "Default", "description": "US, UA, DE, FR, and HE keyboard layouts" },
+    { "id": "chinese", "label": "Chinese", "description": "US and Simplified Chinese input" }
+  ],
+  "versions": [
+    {
+      "version": "1.0.28",
+      "channel": "stable",
+      "variants": [
+        { "id": "default", "manifestPath": "firmware/1.0.28/default/manifest.json" },
+        { "id": "chinese", "manifestPath": "firmware/1.0.28/chinese/manifest.json" }
+      ]
+    },
+    { "version": "1.0.25", "channel": "stable", "manifestPath": "firmware/1.0.25/manifest.json" }
+  ]
+}
+```
+
+- `flash.variants` 的第一项是默认变体。烧录页默认选中它，只写 `manifestPath` 的版本也
+  归属于它，所以已上线的单包版本保持原样即可。
+- 每个变体的固件包放在 `firmware/<version>/<variant>/`，包含自己的 `manifest.json` 和
+  `.bin` 文件；manifest 的 `version` 与所属版本一致。
+- 一个版本可以只提供部分变体；每个声明的变体至少由一个版本提供。
+
+用 `--variant` 生成变体的 manifest，命令会打印出要粘贴到该版本 `variants` 列表中的条目：
+
+```bash
+npm run create:manifest -- draftling 1.0.28 --variant chinese
+```
+
+一句话总结：一张卡片对应一个固件；变体在每个版本下分别存放，烧录页用两个菜单组合选择。
 
 ## PR 提交前清单
 

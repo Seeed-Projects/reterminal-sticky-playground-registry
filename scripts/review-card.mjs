@@ -56,21 +56,45 @@ export function readPrintableEntry(rootDir, id) {
   };
 }
 
-export function readFirmwareEntry(rootDir, id) {
+export function readFirmwareEntry(rootDir, id, changedFiles = []) {
   const metadataPath = join(rootDir, 'firmwares', id, 'firmware.json');
   if (!existsSync(metadataPath)) return { id, removed: true };
 
   const firmware = JSON.parse(readFileSync(metadataPath, 'utf8'));
   const versions = firmware.flash?.versions || [];
+  const variants = firmware.flash?.variants || [];
+  const variantLabel = (variantId) => variants.find((variant) => variant.id === variantId)?.label || variantId;
+  const authorReviews = [];
+  // Reads contributor-review records for packages changed in this pull request.
+  // 读取当前拉取请求中变更的固件包投稿者审核记录。
+  for (const path of changedFiles) {
+    const segments = path.split('/');
+    if (segments[0] !== 'firmwares' || segments[1] !== id || segments[2] !== 'firmware'
+      || segments.at(-1) !== 'submission.json' || segments.some((segment) => !segment || segment === '.' || segment === '..')) continue;
+    const submissionPath = join(rootDir, ...segments);
+    if (!existsSync(submissionPath)) continue;
+    try {
+      const submission = JSON.parse(readFileSync(submissionPath, 'utf8'));
+      if (submission.requiresAuthorReview === true) authorReviews.push(submission);
+    } catch {
+      authorReviews.push({ invalid: true });
+    }
+  }
   return {
     id,
     firmware,
+    authorReviews,
     versions: versions.map((version) => ({
       version: version.version,
       channel: version.channel,
       delivery: version.sourceBuild === true
         ? 'source build'
-        : (version.manifestPath ? 'firmware package' : 'registry release'),
+        : (version.manifestPath || version.variants ? 'firmware package' : 'registry release'),
+      // A version without its own variant list ships the first declared variant.
+      // 没有单独列出变体的版本，视为提供第一个声明的变体。
+      ...(variants.length > 0 ? {
+        variants: (version.variants || [{ id: variants[0].id }]).map((entry) => variantLabel(entry.id)),
+      } : {}),
     })),
     hasSourceLicense: existsSync(join(rootDir, 'firmwares', id, 'source', 'LICENSE')),
   };
@@ -303,13 +327,37 @@ function firmwareSection(entry, rawBaseUrl, linkChecks) {
     '',
   ];
 
-  if (entry.versions.length > 0) {
+  if (entry.versions.length > 0 && entry.versions.some((version) => version.variants)) {
+    lines.push(
+      '| Version | Channel | Delivery | Variants |',
+      '| --- | --- | --- | --- |',
+      ...entry.versions.map((version) => (
+        `| ${version.version} | ${version.channel} | ${version.delivery} | ${(version.variants || []).map(reviewText).join(', ')} |`
+      )),
+      '',
+    );
+  } else if (entry.versions.length > 0) {
     lines.push(
       '| Version | Channel | Delivery |',
       '| --- | --- | --- |',
       ...entry.versions.map((version) => `| ${version.version} | ${version.channel} | ${version.delivery} |`),
       '',
     );
+  }
+
+  const differingAuthors = (entry.authorReviews || []).filter((submission) => !submission.invalid);
+  if (differingAuthors.length) {
+    lines.push(
+      '#### Contributor differs from project author — author review required',
+      '',
+      ...differingAuthors.map((submission) => (
+        `- ${reviewText(submission.version) || 'unknown version'} / ${reviewText(submission.variant?.label) || 'standard'}: ${reviewText(submission.submitter?.name) || 'unknown contributor'}`
+      )),
+      '',
+    );
+  }
+  if (entry.authorReviews?.some((submission) => submission.invalid)) {
+    lines.push('#### Submission record could not be read — maintainer review required', '');
   }
 
   if (firmware.mode === 'external') {
@@ -448,7 +496,7 @@ async function main() {
 
   const entries = collectChangedEntries(changedFiles);
   const printableEntries = entries.printables.map((id) => readPrintableEntry(rootDir, id));
-  const firmwareEntries = entries.firmwares.map((id) => readFirmwareEntry(rootDir, id));
+  const firmwareEntries = entries.firmwares.map((id) => readFirmwareEntry(rootDir, id, changedFiles));
   const baseRootDir = process.env.BASE_REGISTRY_ROOT
     ? resolve(process.env.BASE_REGISTRY_ROOT)
     : '';

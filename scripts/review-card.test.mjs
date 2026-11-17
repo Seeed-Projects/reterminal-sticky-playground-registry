@@ -102,6 +102,73 @@ test('reads a firmware entry with its version delivery methods', () => {
   }
 });
 
+test('lists the variants each firmware version offers on the review card', () => {
+  const root = mkdtempSync(join(tmpdir(), 'sticky-review-variant-test-'));
+  try {
+    const firmwareDir = join(root, 'firmwares', 'draftling');
+    mkdirSync(firmwareDir, { recursive: true });
+    const firmware = {
+      id: 'draftling',
+      name: 'Draftling',
+      group: 'community',
+      catalogSection: 'community',
+      author: { name: 'clackups' },
+      source: { url: 'https://github.com/clackups/draftling', license: 'MIT' },
+      flash: {
+        variants: [{ id: 'default', label: 'Default' }, { id: 'chinese', label: 'Chinese' }],
+        versions: [
+          {
+            version: '1.0.28',
+            channel: 'stable',
+            variants: [
+              { id: 'default', manifestPath: 'firmware/1.0.28/default/manifest.json' },
+              { id: 'chinese', manifestPath: 'firmware/1.0.28/chinese/manifest.json' },
+            ],
+          },
+          { version: '1.0.25', channel: 'stable', manifestPath: 'firmware/1.0.25/manifest.json' },
+        ],
+      },
+    };
+    writeFileSync(join(firmwareDir, 'firmware.json'), `${JSON.stringify(firmware, null, 2)}\n`);
+
+    const entry = readFirmwareEntry(root, 'draftling');
+    assert.deepEqual(entry.versions, [
+      { version: '1.0.28', channel: 'stable', delivery: 'firmware package', variants: ['Default', 'Chinese'] },
+      { version: '1.0.25', channel: 'stable', delivery: 'firmware package', variants: ['Default'] },
+    ]);
+
+    const card = buildReviewCard({
+      entries: collectChangedEntries(['firmwares/draftling/firmware.json']),
+      firmwareEntries: [entry],
+    });
+    assert.match(card, /\| Version \| Channel \| Delivery \| Variants \|/);
+    assert.match(card, /\| 1\.0\.28 \| stable \| firmware package \| Default, Chinese \|/);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('flags changed packages submitted by someone other than the project author', () => {
+  const root = mkdtempSync(join(tmpdir(), 'sticky-review-contributor-test-'));
+  const firmwareDir = join(root, 'firmwares', 'draftling');
+  const submissionDir = join(firmwareDir, 'firmware', '1.0.0', 'chinese');
+  mkdirSync(submissionDir, { recursive: true });
+  writeFileSync(join(firmwareDir, 'firmware.json'), JSON.stringify({
+    id: 'draftling', name: 'Draftling', group: 'community', catalogSection: 'community',
+    author: { name: 'Original Author' }, source: { url: 'https://example.com', license: 'MIT' },
+    flash: { versions: [{ version: '1.0.0', channel: 'stable', manifestPath: 'firmware/1.0.0/manifest.json' }] },
+  }));
+  const path = 'firmwares/draftling/firmware/1.0.0/chinese/submission.json';
+  writeFileSync(join(submissionDir, 'submission.json'), JSON.stringify({
+    version: '1.0.0', variant: { label: 'Chinese' }, submitter: { name: 'Other Contributor' }, requiresAuthorReview: true,
+  }));
+  const entry = readFirmwareEntry(root, 'draftling', [path]);
+  const card = buildReviewCard({ entries: collectChangedEntries([path]), firmwareEntries: [entry] });
+  assert.match(card, /Contributor differs from project author — author review required/);
+  assert.match(card, /1\.0\.0 \/ Chinese: Other Contributor/);
+  assert.equal(readFirmwareEntry(root, 'draftling').authorReviews.length, 0);
+});
+
 test('reports reachable, blocked, and broken links', async () => {
   const responses = {
     'https://ok.example': { HEAD: 200 },
