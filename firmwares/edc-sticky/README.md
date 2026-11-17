@@ -16,6 +16,13 @@ clock.
 Offline speech-to-text (whisper.cpp), weather, manuals and cheat sheets, new widgets, sync of notes, recordings and
 logs, "find each other", two Stickys at one phone.
 
+## Emergency mode (0.43)
+An emergency page with name, ICE contacts and vital medical info that stays visible with a dead battery (e-paper needs
+no power to keep the image), SOS in Morse via the buzzer, a power-save mode, PIN-protected documents (AES-256-GCM, key
+wrapped with your PIN inside the device), offline maps of your own places (OpenStreetMap via OpenFreeMap) and a sun
+compass. Fill it in without Python in the [Sticky Console](https://markussstaub-dot.github.io/sticky-lab/console/)
+(tab "Notfall") or with the tools in the repo – guide: `docs/NOTFALL.md`. Not a replacement for a first-aid course.
+
 ## Setup
 1. Back up the factory firmware (device-specific data): `esptool read-flash 0 0x2000000 backup.bin`.
 2. Flash this firmware, insert a microSD card.
