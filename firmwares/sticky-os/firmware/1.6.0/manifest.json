@@ -1,0 +1,22 @@
+{
+  "name": "Sticky OS",
+  "version": "1.6.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "sticky-os-full.bin",
+          "offset": 0,
+          "size": 3970112,
+          "sha256": "64983206e439349c1e08fc218048571d399626d80c4805c9d387632313d0527f"
+        }
+      ]
+    }
+  ]
+}
