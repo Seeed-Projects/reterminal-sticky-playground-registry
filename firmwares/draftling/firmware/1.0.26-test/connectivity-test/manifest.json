@@ -1,0 +1,22 @@
+{
+  "name": "Draftling",
+  "version": "1.0.26-test",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "draftling-variant-test.bin",
+          "offset": 0,
+          "size": 5,
+          "sha256": "3ed7057f346f70e0f50151762450716755a0667fb45590ae5fd530c6876c3794"
+        }
+      ]
+    }
+  ]
+}

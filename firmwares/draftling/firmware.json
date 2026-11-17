@@ -46,6 +46,16 @@
   "flash": {
     "versions": [
       {
+        "version": "1.0.26-test",
+        "channel": "stable",
+        "variants": [
+          {
+            "id": "connectivity-test",
+            "manifestPath": "firmware/1.0.26-test/connectivity-test/manifest.json"
+          }
+        ]
+      },
+      {
         "version": "1.0.25",
         "channel": "stable",
         "manifestPath": "firmware/1.0.25/manifest.json"
@@ -63,6 +73,18 @@
       {
         "title": "Storage and keyboard",
         "description": "Insert a microSD card for your documents. Press F1 on a paired Bluetooth keyboard to open the menu; holding the Power button for 2 seconds forgets all stored keyboards."
+      }
+    ],
+    "variants": [
+      {
+        "id": "default",
+        "label": "Standard",
+        "description": "Original firmware package."
+      },
+      {
+        "id": "connectivity-test",
+        "label": "Connectivity Test",
+        "description": "Connectivity test only. This is not a usable firmware image."
       }
     ]
   }

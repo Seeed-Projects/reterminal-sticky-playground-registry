@@ -1,0 +1,14 @@
+{
+  "version": "1.0.26-test",
+  "variant": {
+    "id": "connectivity-test",
+    "label": "Connectivity Test",
+    "description": "Connectivity test only. This is not a usable firmware image."
+  },
+  "submitter": {
+    "name": "limengdu"
+  },
+  "requiresAuthorReview": true,
+  "reviewStatus": "author_review_required",
+  "packageKind": "merged"
+}
