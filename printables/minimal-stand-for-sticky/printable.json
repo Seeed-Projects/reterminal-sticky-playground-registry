@@ -3,7 +3,7 @@
   "id": "minimal-stand-for-sticky",
   "name": "Minimal Stand for Sticky",
   "category": "stand",
-  "summary": "A minimal, cable-free vertical stand for Sticky, with a weighted base and optional double-si",
+  "summary": "A minimal, cable-free vertical stand for Sticky with a weighted base.",
   "author": {
     "name": "user_323503234",
     "url": "https://makerworld.com/en/@user_323503234"
@@ -14,6 +14,6 @@
   },
   "preview": {
     "image": "assets/preview.jpg",
-    "alt": "A minimal, cable-free vertical stand for Sticky, with a weighted base and optional double-si"
+    "alt": "A reTerminal Sticky fitted into the Minimal Stand for Sticky."
   }
 }

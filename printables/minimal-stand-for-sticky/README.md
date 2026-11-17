@@ -2,7 +2,7 @@
 
 ## What it is
 
-A minimal, cable-free vertical stand for Sticky, with a weighted base and optional double-si
+A minimal, cable-free vertical stand for Sticky with a weighted base.
 
 ## Files
 
