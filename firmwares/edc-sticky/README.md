@@ -5,19 +5,24 @@
 Custom firmware and an Android companion app that turn the reTerminal Sticky into an everyday-carry companion.
 
 ## Without the phone
-Clock and status line · alarm (rings even while dozing) · world time · timer · calculator and unit converter (Braun
-ET66-style keys, computed on the Sticky) · spirit level · ruler in mm or inch · order slips and QR cards (guest Wi-Fi,
-links, loyalty cards) · scribble pad · single-stroke handwriting · voice notes buffered on microSD · trip and climate
-logger · settings: 12/24 h, metric/US, set the clock.
+A menu with groups and tabs: **Time** (clock, alarm that rings even while dozing, world time with day/night map,
+timer) · **Measure** (spirit level, ruler in mm or inch) · **Capture** (voice recorder on microSD, on-screen keyboard
+and number pad, scribble pad, single-stroke handwriting) · **Calculate** (calculator and unit converter with Braun
+ET66-style keys, computed on the Sticky) · castle-duel game against the Sticky or for two · order slips and QR cards
+(guest Wi-Fi, links, loyalty cards) · trip and climate logger · settings: 12/24 h, metric/US, German/English, set the
+clock.
 
 ## With the app
-Offline speech-to-text (whisper.cpp), weather, logbook pages, new widgets, sync of notes and logs, "find each other".
+Offline speech-to-text (whisper.cpp), weather, manuals and cheat sheets, new widgets, sync of notes, recordings and
+logs, "find each other", two Stickys at one phone.
 
 ## Setup
 1. Back up the factory firmware (device-specific data): `esptool read-flash 0 0x2000000 backup.bin`.
 2. Flash this firmware, insert a microSD card.
 3. Install the Android app from the [releases](https://github.com/markussstaub-dot/reterminal-sticky/releases) and
-   connect once.
+   connect once – or, without the app, copy the `soll` folder of the microSD base kit from the same release to the card.
+4. Optional: put the [Sticky Lab](https://github.com/markussstaub-dot/sticky-lab) (0.8.1 or later) into the second
+   slot with `esptool write-flash 0x410000 sticky-lab.bin`; switch with the menu tile "Sticky Lab" or ▲ held at power-on.
 
 Keys: AI short = Home (on Home: menu), AI hold = dictate, ▲/▼ = pages, ▲+▼ = help.
 
