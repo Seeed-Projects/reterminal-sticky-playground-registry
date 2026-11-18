@@ -1,0 +1,21 @@
+{
+  "name": "CrossLink 2.0",
+  "version": "1.3.0",
+  "flashSize": "32MB",
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "flash-sticky-1.3.0.bin",
+          "offset": 0,
+          "size": 16777216,
+          "sha256": "2328ff0202e0f7780d6d76ce439c639b9950c9b58a5a4f758aedd72c30331f64"
+        }
+      ]
+    }
+  ],
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "new_install_prompt_erase": true
+}
