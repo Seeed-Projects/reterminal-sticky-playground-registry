@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "id": "microslate",
+  "name": "MicroSlate",
+  "group": "partner",
+  "catalogSection": "platform",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "A dedicated writing machine with Bluetooth keyboard support, microSD auto-save, and Wi-Fi note sharing and cloud sync.",
+  "description": "Turn your Sticky into a dedicated writing machine with Bluetooth keyboard support, letting you type distraction-free while auto-saving to microSD, and syncing notes to phones, OneDrive, Google Drive, or Dropbox over Wi-Fi.",
+  "author": {
+    "name": "Josh-writes",
+    "url": "https://github.com/Josh-writes"
+  },
+  "origin": {
+    "name": "TypeSlate",
+    "url": "https://typeslate.com/"
+  },
+  "source": {
+    "url": "https://github.com/Josh-writes/microslate-firmware",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/Josh-writes/microslate-firmware/issues"
+  },
+  "documentationUrl": "https://typeslate.com/tools/microslate/",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Requires a Bluetooth LE keyboard and a microSD card. Wi-Fi is needed for note transfers and optional cloud sync. Version 3.0.2 was flashed and tested successfully on reTerminal Sticky by the Seeed contributor."
+  },
+  "assets": {
+    "logo": "assets/logo.jpg",
+    "preview": "assets/logo.jpg",
+    "previewAlt": "MicroSlate official logo"
+  },
+  "tags": [
+    "writing",
+    "bluetooth",
+    "keyboard",
+    "microsd",
+    "wifi",
+    "partner"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "3.0.2",
+        "channel": "stable",
+        "manifestPath": "firmware/3.0.2/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge. Back up device data before installing."
+      },
+      {
+        "title": "Keyboard and storage",
+        "description": "Insert a microSD card and pair a Bluetooth LE keyboard in Settings to start writing."
+      },
+      {
+        "title": "Optional sync",
+        "description": "Use Wi-Fi to transfer notes to a phone or sync with OneDrive, Google Drive, or Dropbox. Cloud sync requires an account with the selected provider."
+      }
+    ]
+  }
+}
