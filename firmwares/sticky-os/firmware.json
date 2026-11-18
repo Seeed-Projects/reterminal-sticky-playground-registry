@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-os",
+  "name": "Sticky OS",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "productivity",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "Calm apps for the fridge door: clock, weather, calendar, notes, photos, books, games and a geometry tutor, in ten languages.",
+  "description": "Calm apps for the fridge door: clock, weather, calendar, notes, photos, books, games and a geometry tutor, in ten languages.",
+  "author": {
+    "name": "Sticky OS",
+    "url": "https://github.com/Sticky-OS/sticky-os"
+  },
+  "origin": {
+    "name": "Sticky OS",
+    "url": "https://github.com/Sticky-OS/sticky-os"
+  },
+  "source": {
+    "url": "https://github.com/Sticky-OS/sticky-os",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/Sticky-OS/sticky-os/issues"
+  },
+  "documentationUrl": "https://sticky-os.space.fast/blog/install-custom-firmware-reterminal-sticky/",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "For Seeed Studio reTerminal Sticky with ESP32-S3 and 32MB flash."
+  },
+  "assets": {
+    "preview": "assets/preview.png",
+    "previewAlt": "Calm apps for the fridge door: clock, weather, calendar, notes, photos, books, games and a geometry tutor, in ten languages."
+  },
+  "tags": [
+    "dashboard",
+    "calendar",
+    "weather",
+    "ereader",
+    "games"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "1.6.0",
+        "channel": "stable",
+        "manifestPath": "firmware/1.6.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "This package is a complete merged Sticky image. Use the erase option when replacing another firmware."
+      }
+    ]
+  }
+}
