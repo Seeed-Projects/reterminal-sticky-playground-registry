@@ -8,7 +8,7 @@ configuration are optional; reading does not require a cloud service.
 
 - Author: [mengxiyou](https://github.com/mengxiyou)
 - Project, documentation, and support: [edcbook.cn](https://edcbook.cn/)
-- Package: firmware-only, version **3.1.1**
+- Package: firmware-only, version **3.1.2**
 - License: **LicenseRef-EDCBook-Firmware**, described in [LICENSE.txt](LICENSE.txt)
 
 ## Source availability and distribution
@@ -42,7 +42,7 @@ provided by the author for this submission.
    browser flasher in desktop Chrome or Edge when this entry is published.
    The device connection and bootloader instructions are available in the
    [Sticky hardware guide](https://www.seeedstudio.com/sticky/docs/zh/device-guide/hardware-overview/).
-3. Write `firmware/3.1.1/edcbook_full.bin` at **0x0**. It is a merged image, so
+3. Write `firmware/3.1.2/3.1.2.bin` at **0x0**. It is a merged image, so
    do not write it at the application-only offset `0x10000`.
 4. Put DRM-free books on a microSD card with a card reader, insert the card,
    and restart the reader. Select a book in the file browser and use touch
@@ -56,7 +56,14 @@ this firmware does not provide USB mass-storage file transfer. The package
 uses the first 16 MiB of flash and includes its fonts and internal filesystem.
 DRM-protected books are not supported.
 
-## Package provenance and flash layout
+## Version 3.1.2
+
+The Seeed contributor supplied `3.1.2.bin` and confirmed successful flashing
+and operation on a physical reTerminal Sticky. The original bytes and filename
+are preserved; size and SHA-256 are recorded in
+[the manifest](firmware/3.1.2/manifest.json). Versions 3.1.1 and 3.1.0 remain unchanged.
+
+## Version 3.1.1 package provenance and flash layout
 
 This is the author's release artifact `edcbook_20261017.bin`, copied byte for
 byte to `edcbook_full.bin` for this Registry package. It was not rebuilt or
