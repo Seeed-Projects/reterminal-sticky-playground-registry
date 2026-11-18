@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "id": "crosslink",
+  "name": "CrossLink",
+  "group": "partner",
+  "catalogSection": "platform",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "E-reader firmware for reTerminal Sticky, with CrossLink Pixel and CrossLink 2.0 variants.",
+  "description": "CrossLink offers two e-reader firmware variants for reTerminal Sticky: CrossLink Pixel with a pixel-style reading interface and Chinese text layout, and CrossLink 2.0. Choose a variant and its version on the flashing page.",
+  "origin": {
+    "name": "CrossLink official website",
+    "url": "https://crosslink-reader.top/"
+  },
+  "source": {
+    "url": "https://crosslink-reader.top/",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://crosslink-reader.top/"
+  },
+  "documentationUrl": "https://crosslink-reader.top/",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Requires 32 MB flash. Both variants use complete images written at 0x0. The contributor flashed CrossLink Pixel 4.3.0 and CrossLink 2.0 version 1.3.0 to a physical reTerminal Sticky and confirmed normal operation."
+  },
+  "assets": {
+    "logo": "assets/logo.png",
+    "preview": "assets/logo.png",
+    "previewAlt": "CrossLink logo"
+  },
+  "tags": [
+    "ereader",
+    "partner",
+    "pixel",
+    "chinese",
+    "books"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "1.3.0",
+        "channel": "stable",
+        "variants": [
+          {
+            "id": "crosslink-2",
+            "manifestPath": "firmware/1.3.0/crosslink-2/manifest.json"
+          }
+        ]
+      },
+      {
+        "version": "4.3.0",
+        "channel": "stable",
+        "manifestPath": "firmware/4.3.0/manifest.json"
+      },
+      {
+        "version": "4.2.1",
+        "channel": "stable",
+        "manifestPath": "firmware/4.2.1/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Before installation",
+        "description": "Requires a reTerminal Sticky with 32 MB flash. Back up device data before installing either variant."
+      },
+      {
+        "title": "Installation",
+        "description": "Connect the device with a USB data cable and use desktop Chrome or Edge. Select a variant and version, then write its complete image at offset 0x0."
+      }
+    ],
+    "variants": [
+      {
+        "id": "pixel",
+        "label": "CrossLink Pixel"
+      },
+      {
+        "id": "crosslink-2",
+        "label": "CrossLink 2.0"
+      }
+    ]
+  }
+}
