@@ -7,8 +7,8 @@
   "category": "productivity",
   "mode": "flash",
   "status": "beta",
-  "summary": "Everyday-carry companion: clock, alarm, timer, calculator, level, ruler, keyboard, recorder, game – useful alone, smart with the app.",
-  "description": "Custom firmware plus an Android companion app. On its own the Sticky keeps working for days: a menu with groups and tabs – Time (timer, alarm, world time), Measure (spirit level, ruler mm/inch), Capture (voice recorder on microSD, on-screen keyboard and number pad, scribble pad, single-stroke handwriting), Calculate (calculator, unit converter) – plus QR cards, a castle-duel game and a trip/climate logger. German and English. The app adds offline speech-to-text, weather, manuals and cheat sheets, new pages and sync. Braun ET66-inspired design. A second firmware slot can hold the Sticky Lab.",
+  "summary": "Everyday-carry companion: clock, timer, calculator, level, recorder – useful alone, smart with the app, now with an emergency mode.",
+  "description": "Custom firmware plus an Android companion app. On its own the Sticky keeps working for days: a menu with groups and tabs – Time (timer, alarm, world time), Measure (spirit level, ruler mm/inch), Capture (voice recorder on microSD, on-screen keyboard and number pad, scribble pad, single-stroke handwriting), Calculate (calculator, unit converter) – plus QR cards, a castle-duel game and a trip/climate logger. German and English. The app adds offline speech-to-text, weather, manuals and cheat sheets, new pages and sync. Braun ET66-inspired design. New: emergency mode – an ICE sheet that stays visible with a dead battery, SOS, power save, PIN-protected documents, offline maps and a sun compass. A second firmware slot can hold the Sticky Lab.",
   "author": {
     "name": "markussstaub-dot",
     "url": "https://github.com/markussstaub-dot"
@@ -35,12 +35,17 @@
     "edc",
     "productivity",
     "calculator",
-    "alarm",
     "handwriting",
-    "offline"
+    "offline",
+    "emergency"
   ],
   "flash": {
     "versions": [
+      {
+        "version": "0.43.0",
+        "channel": "beta",
+        "manifestPath": "firmware/0.43.0/manifest.json"
+      },
       {
         "version": "0.39.2",
         "channel": "beta",
