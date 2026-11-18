@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "id": "pocketplay",
+  "name": "PocketPlay",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "fun",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "Games only firmware for the Seeed reTerminal Sticky",
+  "description": "Games only firmware for the Seeed reTerminal Sticky",
+  "author": {
+    "name": "Srijith"
+  },
+  "origin": {
+    "name": "PocketPlay",
+    "url": "https://github.com/jsrijith/pocketplay"
+  },
+  "source": {
+    "url": "https://github.com/jsrijith/pocketplay",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/jsrijith/pocketplay/issues"
+  },
+  "documentationUrl": "https://github.com/jsrijith/pocketplay/blob/main/README.md",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "For Seeed Studio reTerminal Sticky with ESP32-S3 and 32MB flash."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "PocketPlay 0.4.0 running on reTerminal Sticky, showing the splash screen and games home page."
+  },
+  "tags": [
+    "games",
+    "board game companion apps",
+    "puzzles"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "0.4.0",
+        "channel": "stable",
+        "manifestPath": "firmware/0.4.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "This package is a complete merged Sticky image. Use the erase option when replacing another firmware."
+      }
+    ]
+  }
+}
