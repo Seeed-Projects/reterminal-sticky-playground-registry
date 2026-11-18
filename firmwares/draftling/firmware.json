@@ -29,7 +29,7 @@
     "devices": [
       "reterminal-sticky"
     ],
-    "notes": "Version 1.0.25 is tested on reTerminal Sticky production hardware. Requires a Bluetooth Low Energy keyboard and a microSD card. SD card via USB is not available on this board."
+    "notes": "Requires a Bluetooth Low Energy keyboard and a microSD card. SD card via USB is not available on this board."
   },
   "assets": {
     "preview": "assets/preview.jpg",
@@ -44,11 +44,32 @@
     "wifi"
   ],
   "flash": {
+    "variants": [
+      {
+        "id": "default",
+        "label": "Default",
+        "description": "US English, UK, Ukrainian, Hebrew, Turkish Q, Crimean Tatar, Canadian French, and 16 European keyboard layouts"
+      },
+      {
+        "id": "chinese",
+        "label": "Chinese",
+        "description": "US English and Simplified Chinese pinyin input: type pinyin, then pick hanzi with Space or 1-9 from the status bar"
+      }
+    ],
     "versions": [
       {
-        "version": "1.0.25",
+        "version": "1.0.29",
         "channel": "stable",
-        "manifestPath": "firmware/1.0.25/manifest.json"
+        "variants": [
+          {
+            "id": "default",
+            "manifestPath": "firmware/1.0.29/default/manifest.json"
+          },
+          {
+            "id": "chinese",
+            "manifestPath": "firmware/1.0.29/chinese/manifest.json"
+          }
+        ]
       }
     ],
     "notes": [

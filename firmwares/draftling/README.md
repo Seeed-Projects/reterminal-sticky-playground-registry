@@ -1,7 +1,12 @@
 # Draftling
 
-This community entry publishes the Draftling 1.0.25 build for reTerminal
-Sticky for installation from the browser.
+This community entry publishes the Draftling 1.0.29 build for reTerminal
+Sticky for installation from the browser, in two variants:
+
+| Variant | Keyboard input |
+|---|---|
+| Default | US English, UK, Ukrainian, Hebrew, German, French, Swiss German, Swiss French, Italian, Portuguese, Spanish, Swedish / Finnish, Norwegian, Danish, Polish, Czech, Slovak, Hungarian, Romanian, Croatian / Slovenian, Turkish Q, Canadian French, and Crimean Tatar (two variants) |
+| Chinese | US English and Simplified Chinese pinyin |
 
 Draftling is a writerdeck firmware. Its minimalist interface lets you edit
 Markdown files with no distractions, using any Bluetooth Low Energy keyboard.
@@ -11,17 +16,19 @@ Project homepage: [draftling.art](https://draftling.art/).
 
 The binaries come unchanged from the upstream web flasher
 ([clackups/draftling-flasher](https://github.com/clackups/draftling-flasher),
-`main` branch, commit `979b28ba24d7c35f4d84b5930cd78b344fffee2c`,
-`firmware/v1.0.25/draftling-seeed_reterminal_sticky*.bin`). They were built
+`main` branch, commit `a39d7e26a1230736371e4ec555f7b4c426715a68`,
+`firmware/v1.0.29/draftling-seeed_reterminal_sticky*.bin`). They were built
 from [clackups/draftling](https://github.com/clackups/draftling) release tag
-`v1.0.25` (commit `05dd45ff11a7a494cb10949ecbbb2b5531642588`) and are distributed under the upstream MIT license.
+`v1.0.29` (commit `91447c7feef30f1dc546a9ea91b5be89ea2e914b`) and are distributed under the upstream MIT license.
 
-| Part | Offset | Upstream file |
-|---|---|---|
-| `bootloader.bin` | `0x0` | `draftling-seeed_reterminal_sticky-bootloader.bin` |
-| `partition-table.bin` | `0x8000` | `draftling-seeed_reterminal_sticky-partition-table.bin` |
-| `otadata.bin` | `0xd000` | `draftling-seeed_reterminal_sticky-otadata.bin` |
-| `draftling.bin` | `0x10000` | `draftling-seeed_reterminal_sticky.bin` |
+Each variant lives in its own directory under `firmware/1.0.29/`:
+
+| Part | Offset | Upstream file (`default/`) | Upstream file (`chinese/`) |
+|---|---|---|---|
+| `bootloader.bin` | `0x0` | `draftling-seeed_reterminal_sticky-bootloader.bin` | `draftling-seeed_reterminal_sticky-chinese-bootloader.bin` |
+| `partition-table.bin` | `0x8000` | `draftling-seeed_reterminal_sticky-partition-table.bin` | `draftling-seeed_reterminal_sticky-chinese-partition-table.bin` |
+| `otadata.bin` | `0xd000` | `draftling-seeed_reterminal_sticky-otadata.bin` | `draftling-seeed_reterminal_sticky-chinese-otadata.bin` |
+| `draftling.bin` | `0x10000` | `draftling-seeed_reterminal_sticky.bin` | `draftling-seeed_reterminal_sticky-chinese.bin` |
 
 The partition table uses the standard ESP-IDF dual-OTA layout. Draftling runs
 from `ota_0`, so the device can switch to other Sticky firmware that expects an
@@ -39,6 +46,9 @@ from `ota_0`, so the device can switch to other Sticky firmware that expects an
 - Built-in Git sync over Wi-Fi (commit, fetch, rebase or merge, push) with
   GitHub or any smart-HTTP Git server.
 - Cursor and scroll position saved for each file.
+- Chinese variant: type pinyin and pick hanzi with Space or 1-9 from the
+  status bar. See the upstream
+  [language pack guide](https://github.com/clackups/draftling/blob/main/docs/language-packs.md).
 
 ## Controls on reTerminal Sticky
 
@@ -68,8 +78,7 @@ More hardware details are in the upstream
 ## Physical device test
 
 - Hardware: reTerminal Sticky production unit
-- Firmware version: 1.0.25
-- Package: the four parts listed above, at the offsets in `manifest.json`
-- Result: passed. Tested first boot, Markdown editing with a BLE keyboard,
-  touch and hardware buttons, deep sleep and wake, saved state after reboot,
-  and USB reconnection with a repeated installation.
+- Firmware version: 1.0.29, Default and Chinese variants
+- Package: the four parts listed above for each variant, at the offsets in
+  its `manifest.json`
+- Result: TODO: fill in after testing both variants on the device.
