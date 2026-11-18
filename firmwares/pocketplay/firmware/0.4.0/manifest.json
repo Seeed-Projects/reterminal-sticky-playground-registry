@@ -1,0 +1,22 @@
+{
+  "name": "PocketPlay",
+  "version": "0.4.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "pocketplay-full.bin",
+          "offset": 0,
+          "size": 2830592,
+          "sha256": "aac0b1710ba118223709b29fb57605459a77dd7ddc1ae52177273598c3d13625"
+        }
+      ]
+    }
+  ]
+}
