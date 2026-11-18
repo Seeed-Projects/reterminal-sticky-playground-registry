@@ -8,7 +8,7 @@
   "mode": "flash",
   "status": "stable",
   "summary": "Ultra-low-power digital signage client with capacitive touch menu navigation, 8MB PSRAM caching, telemetry, OTA updates, and captive portal.",
-  "description": "ScreenTinker turns your reTerminal Sticky into an ultra-low-power, wireless digital signage display. Features direct 1-bit and Gray4 e-paper rendering, 8MB PSRAM in-memory frame cache, capacitive touchscreen navigation for System Menu and Status screens, battery charging via TI BQ25616, hardware power-off latch release, shutdown screen with scannable QR Code, adaptive deep sleep (~15 µA) with RTC hardware button interrupts, dual-partition OTA updates with rollback protection, SHT40 environmental & BQ27220 fuel gauge telemetry, and smartphone Captive Portal.",
+  "description": "ScreenTinker turns your reTerminal Sticky into an ultra-low-power, wireless digital signage display. Features direct 1-bit and Gray4 e-paper rendering with automatic SSD1677 and SSD2677 dual controller detection, 8MB PSRAM in-memory frame cache, capacitive touchscreen navigation for System Menu and Status screens, battery charging via TI BQ25616, hardware power-off latch release, shutdown screen with scannable QR Code, adaptive deep sleep (~15 µA) with RTC hardware button interrupts, dual-partition OTA updates with rollback protection, SHT40 environmental & BQ27220 fuel gauge telemetry, and smartphone Captive Portal.",
   "author": {
     "name": "René Bohne",
     "url": "https://github.com/renebohne"
@@ -29,7 +29,7 @@
     "devices": [
       "reterminal-sticky"
     ],
-    "notes": "Tested on Seeed Studio reTerminal Sticky production hardware with 3.97-inch E-Paper and ESP32-S3."
+    "notes": "Tested on Seeed Studio reTerminal Sticky production hardware with 3.97-inch E-Paper (supporting both SSD1677 and SSD2677 controller revisions via automatic runtime probing) and ESP32-S3."
   },
   "assets": {
     "preview": "assets/preview.jpg",
@@ -45,6 +45,11 @@
   ],
   "flash": {
     "versions": [
+      {
+        "version": "1.4.4",
+        "channel": "stable",
+        "manifestPath": "firmware/1.4.4/manifest.json"
+      },
       {
         "version": "1.3.1",
         "channel": "stable",
