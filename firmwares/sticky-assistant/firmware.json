@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "id": "sticky-assistant",
+  "name": "Sticky Assistant",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "productivity",
+  "mode": "flash",
+  "status": "beta",
+  "summary": "A push-to-talk voice assistant with calendar, to-dos and weather pages, using Claude, Gemini or any OpenAI-compatible model.",
+  "description": "Hold the AI button and ask: replies show on the e-paper screen, and the assistant can read and change your calendar and to-do list or search the web. Pages for calendar, to-dos and weather, plus plugins. Needs WiFi and the free sticky-assistant backend running on a computer at home (Docker or Python), which does the speech recognition and talks to your AI provider with your own API key, or a local model.",
+  "author": {
+    "name": "biggy-spoon",
+    "url": "https://github.com/biggy-spoon"
+  },
+  "origin": {
+    "name": "sticky-assistant",
+    "url": "https://github.com/biggy-spoon/sticky-assistant"
+  },
+  "source": {
+    "url": "https://github.com/biggy-spoon/sticky-assistant",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/biggy-spoon/sticky-assistant/issues"
+  },
+  "documentationUrl": "https://github.com/biggy-spoon/sticky-assistant#readme",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Tested on a reTerminal Sticky (ESP32-S3, 32MB flash used as 16MB). Needs 2.4GHz WiFi and the sticky-assistant backend on the same network; an AI provider API key (Claude, Gemini, OpenAI) or a local OpenAI-compatible server such as Ollama."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "Sticky Assistant's weather page on a reTerminal Sticky: current conditions, the next hours and a 7-day forecast."
+  },
+  "tags": [
+    "voice",
+    "assistant",
+    "calendar",
+    "weather",
+    "wifi",
+    "touch"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "1.0.0",
+        "channel": "stable",
+        "manifestPath": "firmware/1.0.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect the reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Erase on first install",
+        "description": "Use the erase option when replacing another firmware. Reinstalling without erasing keeps your WiFi and backend settings."
+      },
+      {
+        "title": "After installing",
+        "description": "The screen shows how to join the StickyAssistant-Setup WiFi network and enter your WiFi and your backend's address. Start the backend first: see the project README."
+      }
+    ]
+  }
+}
