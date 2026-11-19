@@ -1,6 +1,6 @@
 {
-  "name": "Draftling Default",
-  "version": "1.0.29",
+  "name": "Draftling Japanese",
+  "version": "1.0.30",
   "flashSize": "32MB",
   "flashMode": "dio",
   "flashFreq": "80m",
@@ -14,7 +14,7 @@
           "path": "bootloader.bin",
           "offset": 0,
           "size": 22560,
-          "sha256": "8737a6ef32136f3058c193333fb71558a049d8aa63eed829c35617cb39814a3f"
+          "sha256": "94311a97dd3ccc8a891d33b5e3d5f38979f729e52e9468d3cf5b2336ae04a298"
         },
         {
           "path": "partition-table.bin",
@@ -31,8 +31,8 @@
         {
           "path": "draftling.bin",
           "offset": 65536,
-          "size": 2445552,
-          "sha256": "1c3565c0f4dd84aa29df8c537dc8644608103fb04b09579949193f4feb657dd6"
+          "size": 4259664,
+          "sha256": "d34dcecfb0ef89e00ec1e1b4c034b5618ec23ff1d833b3912bbd834800cab7ce"
         }
       ]
     }
