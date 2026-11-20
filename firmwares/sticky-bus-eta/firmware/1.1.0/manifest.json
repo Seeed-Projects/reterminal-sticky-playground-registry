@@ -14,7 +14,7 @@
           "path": "bootloader.bin",
           "offset": 0,
           "size": 21008,
-          "sha256": "d5e002b374a12d1cd74cc169962a5f7f8a34645ab61a124f8ff9c77508e359ee"
+          "sha256": "774f076279c9f741d2ca475a3315b4b3c4b7cdaa705fd7580663162a5008a6ce"
         },
         {
           "path": "partition-table.bin",
@@ -26,7 +26,7 @@
           "path": "sticky_bus_eta.bin",
           "offset": 65536,
           "size": 1139904,
-          "sha256": "983f2f165691f389e65793613fb0b326ec9030dc5036f9ff13b5479982ca2974"
+          "sha256": "a0a0baf026bda1101aca064d570c0eeea6f1e978105f6103560316b40e0a81f0"
         }
       ]
     }
