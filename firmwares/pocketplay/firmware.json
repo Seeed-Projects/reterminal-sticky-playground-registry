@@ -18,7 +18,7 @@
   },
   "source": {
     "url": "https://github.com/jsrijith/pocketplay",
-    "license": "MIT"
+    "license": "GPL-2.0-or-later"
   },
   "support": {
     "url": "https://github.com/jsrijith/pocketplay/issues"
@@ -41,6 +41,11 @@
   ],
   "flash": {
     "versions": [
+      {
+        "version": "0.7.0",
+        "channel": "stable",
+        "manifestPath": "firmware/0.7.0/manifest.json"
+      },
       {
         "version": "0.4.0",
         "channel": "stable",
