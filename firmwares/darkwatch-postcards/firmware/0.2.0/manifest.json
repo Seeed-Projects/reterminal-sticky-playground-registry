@@ -1,0 +1,22 @@
+{
+  "name": "Darkwatch Postcards",
+  "version": "0.2.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "Darkwatch-Postcards-Sticky-v0.2.0.bin",
+          "offset": 0,
+          "size": 722304,
+          "sha256": "705dcc79a931cca0ca08876cca376dfddc29cb3ae2928920c4bc85cf4f819de5"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "id": "darkwatch-postcards",
+  "name": "Darkwatch Postcards",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "tools",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "Receive Robot 36, PD90, or PD120 SSTV pictures through the built-in microphone of a Seeed Studio reTerminal Sticky and display it on e-paper",
+  "description": "Receive Robot 36, PD90, or PD120 SSTV pictures through the built-in microphone of a Seeed Studio reTerminal Sticky and display it on e-paper",
+  "author": {
+    "name": "Anubis Darkwatch",
+    "url": "https://www.anubisdarkwatch.com"
+  },
+  "origin": {
+    "name": "Darkwatch Postcards",
+    "url": "https://anubisdarkwatch.github.io/darkwatch-postcards/"
+  },
+  "source": {
+    "url": "https://anubisdarkwatch.github.io/darkwatch-postcards/",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://anubisdarkwatch.github.io/darkwatch-postcards/"
+  },
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "For Seeed Studio reTerminal Sticky with ESP32-S3 and 32MB flash."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "Receive Robot 36, PD90, or PD120 SSTV pictures through the built-in microphone of a Seeed Studio reTerminal Sticky and display it on e-paper"
+  },
+  "flash": {
+    "versions": [
+      {
+        "version": "0.2.0",
+        "channel": "stable",
+        "manifestPath": "firmware/0.2.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "This package is a complete merged Sticky image. Use the erase option when replacing another firmware."
+      }
+    ]
+  }
+}
