@@ -1,0 +1,34 @@
+{
+  "name": "Bus ETA",
+  "version": "1.1.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "bootloader.bin",
+          "offset": 0,
+          "size": 21008,
+          "sha256": "d5e002b374a12d1cd74cc169962a5f7f8a34645ab61a124f8ff9c77508e359ee"
+        },
+        {
+          "path": "partition-table.bin",
+          "offset": 32768,
+          "size": 3072,
+          "sha256": "5295e8c42d6fb5f95e4e8a185932c6191d27cfc5078322475347e40e71af815a"
+        },
+        {
+          "path": "sticky_bus_eta.bin",
+          "offset": 65536,
+          "size": 1139904,
+          "sha256": "983f2f165691f389e65793613fb0b326ec9030dc5036f9ff13b5479982ca2974"
+        }
+      ]
+    }
+  ]
+}
