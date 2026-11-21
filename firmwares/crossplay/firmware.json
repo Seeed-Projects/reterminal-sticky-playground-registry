@@ -8,7 +8,7 @@
   "mode": "flash",
   "status": "beta",
   "summary": "Games, puzzles and flashcards for e-ink, on top of a full CrossPoint e-reader.",
-  "description": "CrossPlay is a fork of CrossPoint that keeps the whole e-reader and adds the other things a screen that holds still is good at: nineteen games you think about rather than react to, among them chess, solitaire, sudoku, minesweeper, connect four and yahtzee; spaced-repetition flashcards that review Anki decks offline; the xkcd archive; Hacker News; an OPDS book browser; and a read-later queue. Nine of the games can also be played between two nearby devices over PLAY NEARBY, with nothing to set up. The same build runs on reTerminal Sticky and the Xteink X4 Pro.",
+  "description": "CrossPlay is a fork of CrossPoint that keeps the whole e-reader and adds the other things a screen that holds still is good at: 25 games you think about rather than react to, among them chess, go, solitaire, sudoku, wordle and yahtzee, and 11 apps, among them Anki flashcards that work offline, offline Wikipedia, weather, notes, RSS and the xkcd archive. Eleven of the games can also be played between two devices side by side, with nothing to set up. The same build runs on reTerminal Sticky and the Xteink X4 Pro.",
   "author": {
     "name": "Mario Alejandro Ruiz",
     "url": "https://github.com/ma-r-s"
@@ -29,7 +29,7 @@
     "devices": [
       "reterminal-sticky"
     ],
-    "notes": "A microSD card is required; without one the device stops at an SD card error screen. Version 1.12.11 has been flashed to reTerminal Sticky production hardware by the project maintainer, run, driven with the physical buttons, and restarted."
+    "notes": "A microSD card is required; without one the device stops at an SD card error screen. Version 1.16.1 has been installed on a reTerminal Sticky by the project maintainer, run, used with touch and the buttons, and restarted."
   },
   "assets": {
     "logo": "assets/logo.svg",
@@ -45,6 +45,11 @@
   "flash": {
     "versions": [
       {
+        "version": "1.16.1",
+        "channel": "beta",
+        "manifestPath": "firmware/1.16.1/manifest.json"
+      },
+      {
         "version": "1.12.11",
         "channel": "beta",
         "manifestPath": "firmware/1.12.11/manifest.json"
@@ -54,6 +59,10 @@
       {
         "title": "Device connection",
         "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "After installing",
+        "description": "When the flasher says it is done, press the reset button with a pin: the small hole on the bottom, first on the left. The Sticky then starts CrossPlay."
       },
       {
         "title": "microSD card required",

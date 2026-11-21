@@ -12,19 +12,19 @@ The same build runs on reTerminal Sticky and the Xteink X4 Pro.
 
 ## What it adds
 
-Nineteen games you think about rather than react to: Chess, Checkers, Connect
-Four, Yahtzee, Knucklebones, Battleship, Solitaire, Sudoku, Minesweeper,
-Connections, Murdle, Jaipur, Sea Salt, Toy Battle, D&Diagrams, Insider,
-Forehead, Trivia and Wavelength.
+25 games you think about rather than react to: Chess, Go, Hex, Checkers,
+Connect Four, Yahtzee, Knucklebones, Battleship, Hearts, Solitaire, Sudoku,
+Minesweeper, Picross, Wordle, Connections, Murdle, D&Diagrams, Jaipur, Sea
+Salt, Toy Battle, Underhand, Insider, Forehead, Trivia and Wavelength.
 
-Five apps: Study (Anki decks reviewed offline on the device, scheduled with
-FSRS-5 and Anki's learning steps), Hacker News, the xkcd archive, Get Books (an
-OPDS catalog browser that downloads straight to the card) and Instapaper.
+11 apps: Study (Anki decks reviewed offline), Wikipedia (fifty thousand
+articles on the card, in English or German), Weather, Notes, RSS, Reading
+Stats, Hacker News, the xkcd archive, Instapaper, Wallpapers and a Calculator.
 
-Nine of the games (Chess, Checkers, Connect Four, Yahtzee, Knucklebones,
-Battleship, Jaipur, Sea Salt and Toy Battle) can be played between two nearby
-devices over PLAY NEARBY, which finds the other device by itself over ESP-NOW.
-There is nothing to pair, no account and no network.
+Eleven of the games (Chess, Checkers, Connect Four, Yahtzee, Knucklebones,
+Battleship, Jaipur, Sea Salt, Toy Battle, Go and Hex) can be played between two
+devices side by side over PLAY NEARBY. They find each other by themselves:
+nothing to pair, no account and no network.
 
 Reading is unchanged. The EPUB engine, sync and file browser are CrossPoint's.
 
@@ -38,18 +38,28 @@ not a button. The games are driven by touch and do not use the side keys.
 ## Setup
 
 1. Flash from the Playground card.
-2. Insert a microSD card before first boot. Saves, player identity, books and
+2. When the flasher says it is done, press the reset button with a pin: the
+   small hole on the bottom, first on the left. The Sticky then starts CrossPlay.
+3. Insert a microSD card before first boot. Saves, player identity, books and
    flashcard decks all live on the card, and the Sticky does not ship with one.
    Without a card the firmware stops at a full-screen "SD card error" and goes
    no further.
-3. Open the shelf and pick an app.
+4. Open the shelf and pick an app.
 
 ## Package origin
 
-The `firmware/1.12.11/` package is the published release artifact for
-[v1.12.11](https://github.com/ma-r-s/crossplay/releases/tag/v1.12.11), built by
-the project's GitHub Actions release workflow. It is a single merged image
-written at offset 0, not a four-part package.
+The `firmware/1.16.1/` package is the published release artifact for
+[v1.16.1](https://github.com/ma-r-s/crossplay/releases/tag/v1.16.1), the image
+the project's own installer writes. It is a single merged image written at
+offset 0, not a four-part package.
+
+- File: `crossplay-v1.16.1-sticky-full.bin`
+- Origin: https://github.com/ma-r-s/crossplay/releases/download/v1.16.1/crossplay-v1.16.1-sticky-full.bin
+- Size: 7,444,976 bytes
+- SHA-256: `6c1626e40dbb1fb56e982835db2c6fa2b8c5a8a9fc17b9594cedad34315c676e`
+- MD5: `16a939604c9fbc23bd37d3123b6c0744`
+
+`firmware/1.12.11/` stays as it was, the earlier release:
 
 - File: `crossplay-v1.12.11-sticky-full.bin`
 - Origin: https://github.com/ma-r-s/crossplay/releases/download/v1.12.11/crossplay-v1.12.11-sticky-full.bin
