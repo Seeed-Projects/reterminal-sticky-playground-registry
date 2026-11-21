@@ -42,6 +42,11 @@
   "flash": {
     "versions": [
       {
+        "version": "0.45.0",
+        "channel": "beta",
+        "manifestPath": "firmware/0.45.0/manifest.json"
+      },
+      {
         "version": "0.43.0",
         "channel": "beta",
         "manifestPath": "firmware/0.43.0/manifest.json"
@@ -69,11 +74,11 @@
       },
       {
         "title": "microSD card needed",
-        "description": "Menu, widgets, help and handwriting live on a FAT32 microSD card. Without the app, copy the \"soll\" folder from edc-sticky-sd-basekit-0.39.2.zip (GitHub release, English; -de.zip German) to the card."
+        "description": "Menu, widgets, help and handwriting live on a FAT32 microSD card. Without the app, copy the \"soll\" folder from edc-sticky-sd-basekit-0.45.0.zip (GitHub release, English; -de.zip German) to the card."
       },
       {
         "title": "Companion app",
-        "description": "Install the Android app from the GitHub releases and connect once: it sets the clock and copies pages, widgets and settings to the microSD card."
+        "description": "Install the Android app from the GitHub releases and connect once: it sets the clock and copies pages, widgets and settings to the microSD card. Update the app together with the firmware (same version)."
       },
       {
         "title": "First boot without the app",
