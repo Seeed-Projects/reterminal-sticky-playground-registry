@@ -1,0 +1,34 @@
+{
+  "name": "Sticky Assistant",
+  "version": "1.0.0",
+  "flashSize": "16MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "bootloader.bin",
+          "offset": 0,
+          "size": 21088,
+          "sha256": "0f0eb59998cd531a3afef307c55cba2a10a484065ed50c627b96356cbae5ee46"
+        },
+        {
+          "path": "partition-table.bin",
+          "offset": 32768,
+          "size": 3072,
+          "sha256": "bfa84b5dc0c1e00941ef7742a786436f1f795541911593cd3c431b47f7cce362"
+        },
+        {
+          "path": "sticky-assistant.bin",
+          "offset": 65536,
+          "size": 1412256,
+          "sha256": "a07be33d278a1b8c0b28393c284bfdc1617187562e78afb811dc3aed44ce717b"
+        }
+      ]
+    }
+  ]
+}
