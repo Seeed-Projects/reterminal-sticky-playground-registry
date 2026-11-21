@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "variant": null,
+  "submitter": {
+    "name": "Anubis Darkwatch",
+    "url": "https://www.anubisdarkwatch.com"
+  },
+  "requiresAuthorReview": false,
+  "reviewStatus": "maintainer_review_required",
+  "packageKind": "merged",
+  "photo": "submission-preview.jpg"
+}
