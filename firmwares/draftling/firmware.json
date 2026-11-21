@@ -54,20 +54,56 @@
         "id": "chinese",
         "label": "Chinese",
         "description": "US English and Simplified Chinese pinyin input: type pinyin, then pick hanzi with Space or 1-9 from the status bar"
+      },
+      {
+        "id": "japanese",
+        "label": "Japanese",
+        "description": "US English and Japanese romaji input with kana-kanji conversion: type romaji, then convert with Space and pick kanji from the status bar"
+      },
+      {
+        "id": "korean",
+        "label": "Korean",
+        "description": "US English and Korean 2-set Hangul (Dubeolsik): jamo join into syllable blocks as you type"
+      },
+      {
+        "id": "vietnamese",
+        "label": "Vietnamese",
+        "description": "US English and Vietnamese Telex input: type the letters, then the tone and vowel marks"
+      },
+      {
+        "id": "indic",
+        "label": "Indic",
+        "description": "US English plus Devanagari (Hindi, Marathi, Nepali), Bengali, and Tamil layouts, including InScript, Probhat, Tamil 99, and Taravinyas"
       }
     ],
     "versions": [
       {
-        "version": "1.0.29",
+        "version": "1.0.30",
         "channel": "stable",
         "variants": [
           {
             "id": "default",
-            "manifestPath": "firmware/1.0.29/default/manifest.json"
+            "manifestPath": "firmware/1.0.30/default/manifest.json"
           },
           {
             "id": "chinese",
-            "manifestPath": "firmware/1.0.29/chinese/manifest.json"
+            "manifestPath": "firmware/1.0.30/chinese/manifest.json"
+          },
+          {
+            "id": "japanese",
+            "manifestPath": "firmware/1.0.30/japanese/manifest.json"
+          },
+          {
+            "id": "korean",
+            "manifestPath": "firmware/1.0.30/korean/manifest.json"
+          },
+          {
+            "id": "vietnamese",
+            "manifestPath": "firmware/1.0.30/vietnamese/manifest.json"
+          },
+          {
+            "id": "indic",
+            "manifestPath": "firmware/1.0.30/indic/manifest.json"
           }
         ]
       }

@@ -1,0 +1,40 @@
+{
+  "name": "Draftling Vietnamese",
+  "version": "1.0.30",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 460800,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "bootloader.bin",
+          "offset": 0,
+          "size": 22560,
+          "sha256": "77b43624cb6222d1b80c4ceb0e693297afefff9384cf95a6e777886a1b3b5ade"
+        },
+        {
+          "path": "partition-table.bin",
+          "offset": 32768,
+          "size": 3072,
+          "sha256": "dd46f8c28cfa1d5383f756166531fd25f1d62ae55772b3f506ab6d6764aa3da3"
+        },
+        {
+          "path": "otadata.bin",
+          "offset": 53248,
+          "size": 8192,
+          "sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f"
+        },
+        {
+          "path": "draftling.bin",
+          "offset": 65536,
+          "size": 2360144,
+          "sha256": "1135e161e531e4bb45a15f511f31b1d0eb9cf120b987bfe885ed22a12802b276"
+        }
+      ]
+    }
+  ]
+}
