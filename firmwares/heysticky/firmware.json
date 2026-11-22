@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "id": "heysticky",
+  "name": "HeySticky",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "productivity",
+  "mode": "flash",
+  "status": "beta",
+  "summary": "Personal assistant dashboard: clock, weather, indoor climate, to-dos and notes you add by voice, in English and Vietnamese.",
+  "description": "HeySticky turns Sticky into an e-paper home dashboard with a big clock, Open-Meteo weather, indoor temperature and humidity, and today's to-dos. Hold the top button and talk: an AI turns what you say into to-dos with deadlines or a note, using your own OpenAI-compatible API key (OpenRouter by default). To-dos and notes are plain Markdown on the microSD card, and a phone page on the Sticky's hotspot lets you set up Wi-Fi and add or edit them. Updates install over Wi-Fi from GitHub Releases.",
+  "author": {
+    "name": "Duy Ta",
+    "url": "https://github.com/TaDuy2005"
+  },
+  "origin": {
+    "name": "HeySticky",
+    "url": "https://github.com/TaDuy2005/heysticky"
+  },
+  "source": {
+    "url": "https://github.com/TaDuy2005/heysticky",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/TaDuy2005/heysticky/issues"
+  },
+  "documentationUrl": "https://github.com/TaDuy2005/heysticky#readme",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "Needs a FAT32 microSD card for to-dos and notes. Voice input needs Wi-Fi and an OpenAI-compatible API key (OpenRouter by default)."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "HeySticky Home on reTerminal Sticky: greeting, 6:57 PM clock, weather, indoor climate and 3 tasks today"
+  },
+  "tags": [
+    "dashboard",
+    "todo",
+    "notes",
+    "voice",
+    "weather",
+    "vietnamese"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "1.2.0",
+        "channel": "beta",
+        "manifestPath": "firmware/1.2.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "The package writes the bootloader, partition table, OTA selector, and HeySticky application. Later versions install over Wi-Fi from Settings › Software Update."
+      },
+      {
+        "title": "First setup",
+        "description": "Insert a FAT32 microSD card. With no saved Wi-Fi, Sticky opens Web setup: scan the QR code, open 192.168.4.1, and set your name, city, and Wi-Fi. Add an AI key there to use voice."
+      }
+    ]
+  }
+}
