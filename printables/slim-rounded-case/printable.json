@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "slim-rounded-case",
+  "name": "Slim Rounded Case",
+  "category": "case",
+  "summary": "A slim rounded case for the sticky, to make it easy to hold.",
+  "author": {
+    "name": "Jan Tielens"
+  },
+  "download": {
+    "platform": "MakerWorld",
+    "url": "https://makerworld.com/en/models/3675743-seeed-reterminal-sticky-slim-rounded-case"
+  },
+  "preview": {
+    "image": "assets/preview.jpg",
+    "alt": "A slim rounded case for the sticky, to make it easy to hold."
+  }
+}
