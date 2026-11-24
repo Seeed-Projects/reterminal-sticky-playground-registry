@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "id": "brainos",
+  "name": "BrainOS",
+  "group": "community",
+  "catalogSection": "community",
+  "category": "productivity",
+  "mode": "flash",
+  "status": "stable",
+  "summary": "Hold a button, speak, get a note. Voice notebook with OpenRouter transcription, chat, pinned notes and QR export.",
+  "description": "A voice notebook for reTerminal Sticky. Hold OK, say the idea, let go: the board keeps the recording and turns it into text through OpenRouter when it has Wi-Fi. Chat notes ask an assistant, Tidy cleans up a note, up to three pinned notes stay on the lock screen, and the notes travel to a phone as QR codes or download from a password-protected page on your network (brain.local). It needs Wi-Fi and your own OpenRouter API key; you pay OpenRouter directly, usually a fraction of a US cent per note.",
+  "author": {
+    "name": "Carcará Livre",
+    "url": "https://github.com/carcaralivre"
+  },
+  "origin": {
+    "name": "BrainOS",
+    "url": "https://github.com/carcaralivre/brainos"
+  },
+  "source": {
+    "url": "https://github.com/carcaralivre/brainos",
+    "license": "MIT"
+  },
+  "support": {
+    "url": "https://github.com/carcaralivre/brainos/issues"
+  },
+  "documentationUrl": "https://github.com/carcaralivre/brainos#first-steps",
+  "compatibility": {
+    "devices": [
+      "reterminal-sticky"
+    ],
+    "notes": "For Seeed Studio reTerminal Sticky with ESP32-S3 and 32MB flash. Needs a 2.4 GHz Wi-Fi network and an OpenRouter API key."
+  },
+  "assets": {
+    "preview": "assets/preview.jpg",
+    "previewAlt": "BrainOS lock screen with the weekday and date on a reTerminal Sticky held in a hand"
+  },
+  "tags": [
+    "notes",
+    "voice",
+    "transcription",
+    "openrouter",
+    "qr-code"
+  ],
+  "flash": {
+    "versions": [
+      {
+        "version": "1.0.0",
+        "channel": "stable",
+        "manifestPath": "firmware/1.0.0/manifest.json"
+      }
+    ],
+    "notes": [
+      {
+        "title": "Device connection",
+        "description": "Connect reTerminal Sticky with a USB data cable and use desktop Chrome or Edge."
+      },
+      {
+        "title": "Installation",
+        "description": "This package is a complete merged image. Use the erase option when replacing another firmware. After installing, follow First steps in the documentation: Wi-Fi, the brain.local password, and the OpenRouter key."
+      }
+    ]
+  }
+}
