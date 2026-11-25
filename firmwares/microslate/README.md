@@ -21,3 +21,13 @@ cloud sync are optional; cloud sync requires a OneDrive, Google Drive, or Dropbo
 
 The Seeed contributor flashed this package to a physical reTerminal Sticky
 and confirmed successful operation.
+
+## Version 3.0.5
+
+Adds improved Bluetooth keyboard pairing, update checks, and support for both
+Sticky screen controllers. The application matches the official
+[v3.0.5 release](https://github.com/Josh-writes/microslate-firmware/releases/tag/v3.0.5)
+by SHA-256. Bootloader, partitions, and OTA initialization files are retained
+from 3.0.2; the upstream partition layout is unchanged. Version 3.0.2 remains
+available. The Seeed contributor flashed the 3.0.5 package to a physical
+reTerminal Sticky and confirmed successful operation.

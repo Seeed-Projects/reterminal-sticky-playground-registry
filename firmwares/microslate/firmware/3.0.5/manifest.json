@@ -1,0 +1,39 @@
+{
+  "name": "MicroSlate",
+  "version": "3.0.5",
+  "flashSize": "16MB",
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "bootloader.bin",
+          "offset": 0,
+          "size": 18720,
+          "sha256": "15f88ae11793eddc5b7e1f770fba54b10a6f59809c14d7c51cfbf0db8d2fa3ca"
+        },
+        {
+          "path": "partitions.bin",
+          "offset": 32768,
+          "size": 3072,
+          "sha256": "bd0f7954aca2ef7d925ee21aaa1f3dc8822d1d6ce5cbbd26a135e5886bfff6ce"
+        },
+        {
+          "path": "boot_app0.bin",
+          "offset": 57344,
+          "size": 8192,
+          "sha256": "f94c5d786a7a8fab06ac5d10e33bf37711a6697636dc037559ea19cc410a17f0"
+        },
+        {
+          "path": "microslate-sticky-v3.0.5.bin",
+          "offset": 65536,
+          "size": 3756416,
+          "sha256": "ef10f8bbee43191000058c3820a15abd8e6a634f9a080fdc1a9baefa49fd1117"
+        }
+      ]
+    }
+  ],
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "new_install_prompt_erase": true
+}
