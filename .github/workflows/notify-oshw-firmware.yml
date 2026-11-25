@@ -1,0 +1,48 @@
+name: Notify OSHW Firmware Sync
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "firmwares/sticky-factory/**"
+  release:
+    types:
+      - published
+      - edited
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: notify-oshw-firmware
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    name: Dispatch firmware sync in OSHW-reTerminal-Sticky
+    if: >-
+      github.event_name != 'release' ||
+      startsWith(github.event.release.tag_name, 'sticky-official-') ||
+      startsWith(github.event.release.tag_name, 'registry-sticky-factory-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Trigger Sync Official Firmware workflow
+        env:
+          GH_TOKEN: ${{ secrets.OSHW_SYNC_TOKEN }}
+          TARGET_REPO: Seeed-Projects/OSHW-reTerminal-Sticky
+          TARGET_WORKFLOW: sync-official-firmware.yml
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::warning::Secret OSHW_SYNC_TOKEN is not configured; skipping cross-repo firmware sync dispatch."
+            exit 0
+          fi
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            "/repos/${TARGET_REPO}/actions/workflows/${TARGET_WORKFLOW}/dispatches" \
+            -f ref=main
+          echo "Dispatched ${TARGET_WORKFLOW} on ${TARGET_REPO}@main."
