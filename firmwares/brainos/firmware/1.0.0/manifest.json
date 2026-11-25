@@ -1,0 +1,22 @@
+{
+  "name": "BrainOS",
+  "version": "1.0.0",
+  "flashSize": "32MB",
+  "flashMode": "dio",
+  "flashFreq": "80m",
+  "baudRate": 115200,
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "parts": [
+        {
+          "path": "brainos-full.bin",
+          "offset": 0,
+          "size": 1794960,
+          "sha256": "125cb0c5e86afd3f32e05399978f7ade2b3c73c74517e7546d58054b3aa7fa3e"
+        }
+      ]
+    }
+  ]
+}
