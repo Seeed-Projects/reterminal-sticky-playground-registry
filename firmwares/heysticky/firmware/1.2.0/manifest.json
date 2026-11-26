@@ -20,7 +20,7 @@
           "path": "partition-table.bin",
           "offset": 32768,
           "size": 3072,
-          "sha256": "82c24e8dc044135a61780f55a284d5fae3f7ea1370c2d36f3943330d91d057ae"
+          "sha256": "8b6f55e8a9bb2413792a7383f5c0b93aa197c0af6c2ec3f6d2d4edba1e02a23e"
         },
         {
           "path": "boot_app0.bin",
