@@ -7,8 +7,8 @@
   "category": "productivity",
   "mode": "flash",
   "status": "beta",
-  "summary": "Personal assistant dashboard: clock, weather, indoor climate, to-dos and notes you add by voice, in English and Vietnamese.",
-  "description": "HeySticky turns Sticky into an e-paper home dashboard with a big clock, Open-Meteo weather, indoor temperature and humidity, and today's to-dos. Hold the top button and talk: an AI turns what you say into to-dos with deadlines or a note, using your own OpenAI-compatible API key (OpenRouter by default). To-dos and notes are plain Markdown on the microSD card, and a phone page on the Sticky's hotspot lets you set up Wi-Fi and add or edit them. Updates install over Wi-Fi from GitHub Releases.",
+  "summary": "Personal assistant dashboard and e-reader: clock, weather, to-dos and notes you add by voice, and EPUB books, in English and Vietnamese.",
+  "description": "HeySticky turns Sticky into an e-paper home dashboard with a big clock, Open-Meteo weather, indoor temperature and humidity, and today's to-dos. Hold the top button and talk: an AI turns what you say into to-dos with deadlines or a note, using your own OpenAI-compatible API key (OpenRouter by default). It also reads EPUB, TXT and Markdown books from the microSD card. To-dos, notes and books live on the card, and a phone page on the Sticky lets you set up Wi-Fi, edit to-dos and notes, and upload books and fonts. Updates install over Wi-Fi from GitHub Releases.",
   "author": {
     "name": "Duy Ta",
     "url": "https://github.com/TaDuy2005"
@@ -40,11 +40,16 @@
     "todo",
     "notes",
     "voice",
-    "weather",
+    "reader",
     "vietnamese"
   ],
   "flash": {
     "versions": [
+      {
+        "version": "1.3.1",
+        "channel": "beta",
+        "manifestPath": "firmware/1.3.1/manifest.json"
+      },
       {
         "version": "1.2.0",
         "channel": "beta",
@@ -58,7 +63,7 @@
       },
       {
         "title": "Installation",
-        "description": "The package writes the bootloader, partition table, OTA selector, and HeySticky application. Later versions install over Wi-Fi from Settings › Software Update."
+        "description": "The package writes the bootloader, partition table, OTA selector, and HeySticky application. Installed HeySticky before 1.3.1? Install 1.3.1 once here: earlier versions use a flash layout that can't take updates this big over Wi-Fi. After that, later versions install over Wi-Fi from Settings › Software Update; settings stay."
       },
       {
         "title": "First setup",
